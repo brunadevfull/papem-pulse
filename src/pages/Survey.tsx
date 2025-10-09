@@ -289,15 +289,15 @@ export default function Survey() {
     <div className="min-h-screen" style={{ backgroundColor: '#f1f5f9' }}>
       {/* Survey Header com PAPEM e Mascote */}
       <header className="bg-white border-b border-border sticky top-0 z-50 shadow-md transition-shadow">
-        <div className="flex flex-col md:flex-row items-center justify-between px-4 md:px-8 py-4 gap-4 md:gap-6">
-          <div className="flex items-center gap-3 md:gap-4">
+        <div className="flex flex-col md:flex-row items-center justify-between px-4 md:px-8 py-2 md:py-3 gap-3 md:gap-4">
+          <div className="flex items-center gap-2 md:gap-3">
             <img 
               src="/lovable-uploads/e0a4659d-a903-4c7c-b8ab-10694346d6f8.png" 
               alt="Brasão PAPEM" 
-              className="w-10 h-10 md:w-12 md:h-12 object-contain transition-transform hover:scale-110"
+              className="w-9 h-9 md:w-11 md:h-11 object-contain transition-transform hover:scale-110"
             />
             <div>
-              <h1 className="text-base md:text-xl font-bold text-primary">
+              <h1 className="text-sm md:text-lg font-bold text-primary">
                 PAPEM - Pagadoria de Pessoal da Marinha
               </h1>
               <span className="flex items-center gap-2 text-xs md:text-sm text-muted-foreground font-semibold">
@@ -358,16 +358,16 @@ export default function Survey() {
       <div className="container mx-auto max-w-7xl py-2 px-4 sm:px-6 lg:px-8 space-y-3">
         
         {/* Título da Pesquisa no Corpo */}
-        <div className="bg-gradient-to-br from-white to-primary/5 rounded-xl shadow-sm fade-in hover:shadow-md transition-all">
-          <div className="text-center space-y-4 py-6 px-4">
+        <div className="bg-gradient-to-br from-white to-primary/5 rounded-xl border border-border fade-in transition-all">
+          <div className="text-center space-y-2 py-3 px-4">
             <div className="flex justify-center">
               <img 
                 src="/lovable-uploads/e0a4659d-a903-4c7c-b8ab-10694346d6f8.png" 
                 alt="Brasão PAPEM" 
-                className="w-24 h-24 md:w-28 md:h-28 object-contain hover:scale-110 transition-transform"
+                className="w-16 h-16 md:w-20 md:h-20 object-contain hover:scale-110 transition-transform"
               />
             </div>
-            <h2 className="text-2xl md:text-3xl font-bold text-primary">
+            <h2 className="text-xl md:text-2xl font-bold text-primary">
               Pesquisa de Clima Organizacional
             </h2>
           </div>

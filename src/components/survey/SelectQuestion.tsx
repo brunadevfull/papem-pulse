@@ -27,7 +27,7 @@ export function SelectQuestion({
   return (
     <div
       id={`question-${name}`}
-      className={`question-card-enhanced px-4 py-4 sm:px-6 sm:py-5 mb-2 fade-in ${
+      className={`question-card-enhanced px-4 py-3 mb-2 fade-in ${
         hasError ? 'question-card-error border-destructive/40' : ''
       }`}
     >
@@ -40,74 +40,76 @@ export function SelectQuestion({
         </div>
       )}
 
-      <div className="flex items-start gap-2.5 mb-2">
-        <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 shadow-sm transition-all duration-300 ${
-          hasError
-            ? 'bg-destructive text-white'
-            : 'bg-gradient-primary text-white'
-        }`}>
-          {questionNumber ? (
-            <span className="font-bold text-sm">{questionNumber}</span>
-          ) : (
-            <Building2 className="w-4 h-4" />
-          )}
-        </div>
-        <div className="flex-1">
-          <Label
-            className={`text-sm sm:text-base font-semibold leading-snug block mb-1.5 ${
-              hasError ? 'text-destructive' : 'text-slate-800'
-            }`}
-          >
-            {question}
-            {required && (
-              <span className="text-destructive ml-1">*</span>
+      <div className="flex flex-col gap-3">
+        {/* Linha da pergunta */}
+        <div className="flex items-start gap-3">
+          <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 shadow-sm transition-all duration-300 ${
+            hasError
+              ? 'bg-destructive text-white'
+              : 'bg-gradient-primary text-white'
+          }`}>
+            {questionNumber ? (
+              <span className="font-bold text-sm">{questionNumber}</span>
+            ) : (
+              <Building2 className="w-4 h-4" />
             )}
-          </Label>
-
-          {!value && (
-            <p className="text-xs sm:text-sm text-muted-foreground mb-2 italic">
-              {placeholder}
-              {required ? ' *' : ''}
-            </p>
-          )}
-
-          <div className="flex justify-center">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 w-full max-w-4xl">
-              {options.map((option, index) => {
-                const isSelected = value === option.value;
-
-                return (
-                  <button
-                    key={option.value}
-                    type="button"
-                    onClick={() => onChange(option.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        onChange(option.value);
-                      }
-                    }}
-                    tabIndex={0}
-                    aria-pressed={isSelected}
-                    aria-label={`${option.label} ${isSelected ? '(selecionado)' : ''}`}
-                    className={`option-button-enhanced text-center min-h-[40px] flex items-center justify-center ${
-                      isSelected ? 'option-button-selected-enhanced pulse-success' : 'option-button-unselected-enhanced'
-                    }`}
-                    style={{
-                      animationDelay: `${index * 0.1}s`
-                    }}
-                  >
-                    <div className="flex items-center justify-center gap-1.5">
-                      {isSelected && <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0" />}
-                      <span className="font-medium leading-tight text-sm sm:text-base">
-                        {option.label}
-                      </span>
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
           </div>
+          <div className="flex-1">
+            <Label
+              className={`text-sm sm:text-base font-semibold leading-snug block ${
+                hasError ? 'text-destructive' : 'text-slate-800'
+              }`}
+            >
+              {question}
+              {required && (
+                <span className="text-destructive ml-1">*</span>
+              )}
+            </Label>
+
+            {!value && (
+              <p className="text-xs sm:text-sm text-muted-foreground mt-1 italic">
+                {placeholder}
+                {required ? ' *' : ''}
+              </p>
+            )}
+          </div>
+        </div>
+
+        {/* Linha das opções - inline */}
+        <div className="flex flex-wrap gap-2 pl-11">
+          {options.map((option, index) => {
+            const isSelected = value === option.value;
+
+            return (
+              <button
+                key={option.value}
+                type="button"
+                onClick={() => onChange(option.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    onChange(option.value);
+                  }
+                }}
+                tabIndex={0}
+                aria-pressed={isSelected}
+                aria-label={`${option.label} ${isSelected ? '(selecionado)' : ''}`}
+                className={`option-button-enhanced text-center px-4 py-2 min-h-[40px] flex items-center justify-center ${
+                  isSelected ? 'option-button-selected-enhanced pulse-success' : 'option-button-unselected-enhanced'
+                }`}
+                style={{
+                  animationDelay: `${index * 0.1}s`
+                }}
+              >
+                <div className="flex items-center justify-center gap-1.5">
+                  {isSelected && <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0" />}
+                  <span className="font-medium leading-tight text-xs sm:text-sm whitespace-nowrap">
+                    {option.label}
+                  </span>
+                </div>
+              </button>
+            );
+          })}
         </div>
       </div>
     </div>

@@ -16,7 +16,7 @@ export function Question({ question, name, value, onChange, options, required = 
   return (
     <div
       id={`question-${name}`}
-      className={`question-card-enhanced px-4 py-4 sm:px-6 sm:py-5 mb-2 fade-in ${
+      className={`question-card-enhanced px-4 py-3 mb-2 fade-in ${
         hasError ? 'question-card-error border-destructive/40' : ''
       }`}
     >
@@ -29,32 +29,34 @@ export function Question({ question, name, value, onChange, options, required = 
         </div>
       )}
 
-      <div className="flex items-start gap-2.5 mb-2">
-        <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 shadow-sm transition-all duration-300 ${
-          hasError
-            ? 'bg-destructive text-white'
-            : 'bg-gradient-primary text-white'
-        }`}>
-          {questionNumber ? (
-            <span className="font-bold text-sm">{questionNumber}</span>
-          ) : (
-            <Building2 className="w-4 h-4" />
-          )}
-        </div>
-        <div className="flex-1">
-          <Label className={`text-sm sm:text-base font-semibold leading-snug block ${
-            hasError ? 'text-destructive' : 'text-slate-800'
+      <div className="flex flex-col gap-3">
+        {/* Linha da pergunta */}
+        <div className="flex items-start gap-3">
+          <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 shadow-sm transition-all duration-300 ${
+            hasError
+              ? 'bg-destructive text-white'
+              : 'bg-gradient-primary text-white'
           }`}>
-            {question}
-            {!required && (
-              <span className="text-xs text-muted-foreground ml-2 font-normal">(Opcional)</span>
+            {questionNumber ? (
+              <span className="font-bold text-sm">{questionNumber}</span>
+            ) : (
+              <Building2 className="w-4 h-4" />
             )}
-          </Label>
+          </div>
+          <div className="flex-1">
+            <Label className={`text-sm sm:text-base font-semibold leading-snug ${
+              hasError ? 'text-destructive' : 'text-slate-800'
+            }`}>
+              {question}
+              {!required && (
+                <span className="text-xs text-muted-foreground ml-2 font-normal">(Opcional)</span>
+              )}
+            </Label>
+          </div>
         </div>
-      </div>
 
-      <div className="flex justify-center">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 w-full max-w-4xl">
+        {/* Linha das opções - inline */}
+        <div className="flex flex-wrap gap-2 pl-11">
           {options.map((option, index) => {
             const isSelected = value === option.value;
 
@@ -73,7 +75,7 @@ export function Question({ question, name, value, onChange, options, required = 
                 aria-pressed={isSelected}
                 aria-label={`${option.label} ${isSelected ? '(selecionado)' : ''}`}
                 className={`
-                  option-button-enhanced text-center min-h-[40px] flex items-center justify-center
+                  option-button-enhanced text-center px-4 py-2 min-h-[40px] flex items-center justify-center
                   ${isSelected ? 'option-button-selected-enhanced pulse-success' : 'option-button-unselected-enhanced'}
                 `}
                 style={{
@@ -82,7 +84,7 @@ export function Question({ question, name, value, onChange, options, required = 
               >
                 <div className="flex items-center justify-center gap-1.5">
                   {isSelected && <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0" />}
-                  <span className="font-medium leading-tight text-sm sm:text-base">{option.label}</span>
+                  <span className="font-medium leading-tight text-xs sm:text-sm whitespace-nowrap">{option.label}</span>
                 </div>
               </button>
             );

@@ -307,12 +307,21 @@ export default function Survey() {
                 Pesquisa de Clima Organizacional
               </h1>
               
-              {/* Card Informativo - Ultra Compacto */}
-              <div className="bg-gradient-to-r from-primary/10 via-primary/5 to-primary/10 rounded-lg p-2.5 border border-primary/20 w-full max-w-4xl mx-auto">
-                <p className="text-xs text-slate-700 text-center">
-                  <span className="text-sm mr-1">🔒</span>
-                  <span className="font-bold">Pesquisa 100% Anônima e Confidencial.</span> Responda com objetividade e precisão.
-                </p>
+              {/* Card informativo ultra compacto com mascote */}
+              <div className="w-full bg-gradient-to-r from-primary/10 to-primary/5 rounded-xl border-2 border-primary/20 p-3 flex items-center gap-3 max-w-4xl mx-auto">
+                <img 
+                  src="/lovable-uploads/a27f9473-5787-4cab-9c01-3f62a66a5e88.png" 
+                  alt="Mascote" 
+                  className="w-12 h-12 object-contain flex-shrink-0"
+                />
+                <div className="flex-1 text-left">
+                  <p className="text-xs font-bold text-primary mb-0.5">
+                    🔒 Pesquisa 100% Anônima e Confidencial 🛡️
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    Sua participação é fundamental. Responda com objetividade.
+                  </p>
+                </div>
               </div>
             </div>
           </div>

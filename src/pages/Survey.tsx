@@ -307,44 +307,48 @@ export default function Survey() {
                 Pesquisa de Clima Organizacional
               </h1>
               
-              <div className="bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5 rounded-2xl p-6 border border-primary/20 shadow-lg max-w-4xl mx-auto">
-                <div className="flex items-center justify-center gap-6">
+              {/* Card Informativo - Full Width */}
+              <div className="bg-gradient-to-r from-primary/10 via-primary/5 to-primary/10 rounded-2xl p-8 border-2 border-primary/20 shadow-xl w-full">
+                <div className="flex items-start gap-8">
                   <div className="flex-shrink-0">
-                    <img 
-                      src="/lovable-uploads/a27f9473-5787-4cab-9c01-3f62a66a5e88.png" 
-                      alt="Mascote PAPEM" 
-                      className="w-20 h-24 object-contain animate-bounce-slow"
-                    />
+                    <div className="w-20 h-20 bg-primary/10 rounded-2xl flex items-center justify-center shadow-lg">
+                      <img 
+                        src="/lovable-uploads/a27f9473-5787-4cab-9c01-3f62a66a5e88.png" 
+                        alt="Mascote PAPEM" 
+                        className="w-16 h-20 object-contain"
+                      />
+                    </div>
                   </div>
                   
-                  <div className="text-center">
-                    <div className="flex items-center justify-center gap-3 mb-2">
-                      <span className="text-2xl">🔒</span>
-                      <h2 className="text-xl font-bold text-primary">Pesquisa 100% Anônima e Confidencial</h2>
-                      <span className="text-2xl">🛡️</span>
+                  <div className="flex-1">
+                    <div className="mb-4">
+                      <h2 className="text-2xl font-bold text-primary mb-3 flex items-center gap-3">
+                        <span className="text-3xl">🔒</span>
+                        Pesquisa 100% Anônima e Confidencial
+                        <span className="text-3xl">🛡️</span>
+                      </h2>
+                      <p className="text-slate-700 text-lg leading-relaxed">
+                        Sua participação é fundamental para o <span className="font-bold text-foreground">aprimoramento e melhoria da nossa OM</span>.
+                        Responda com <span className="font-bold text-primary">objetividade e precisão</span>.
+                      </p>
                     </div>
-                    <p className="text-muted-foreground text-base leading-relaxed">
-                      Sua participação é fundamental para o <span className="font-semibold text-foreground">aprimoramento e melhoria da nossa OM</span>.
-                      <br />
-                      Responda com <span className="font-semibold text-primary">objetividade e precisão</span>.
-                    </p>
+                    
+                    <div className="bg-blue-50/80 border border-blue-200 rounded-xl p-4">
+                      <p className="text-base text-blue-800">
+                        <span className="text-xl mr-2">ℹ️</span>
+                        <span className="font-bold">Pesquisa Flexível:</span> Você pode pular perguntas que preferir não responder. 
+                        Apenas os <span className="font-bold">campos de localização</span> são obrigatórios para análise regional.
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
-
-              {/* Card Informativo sobre Perguntas Opcionais */}
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 max-w-3xl mx-auto">
-                <p className="text-sm text-blue-800">
-                  ℹ️ <span className="font-semibold">Pesquisa Flexível:</span> Você pode pular perguntas que preferir não responder. 
-                  Apenas os <span className="font-semibold">campos de localização</span> são obrigatórios para análise regional.
-                </p>
               </div>
             </div>
           </div>
         </div>
 
         {/* Enhanced Progress Section */}
-        <div className="survey-card-enhanced p-8 slide-up w-full max-w-6xl mx-auto">
+        <div className="survey-card-enhanced p-8 slide-up w-full max-w-[1400px] mx-auto">
           <div className="space-y-4">
             {/* Progress Info */}
             <div className="flex justify-between items-center text-sm text-foreground mb-2">
@@ -461,12 +465,12 @@ export default function Survey() {
         </div>
         
         {/* Survey Content */}
-        <div className="space-y-4 slide-up max-w-6xl mx-auto">
+        <div className="space-y-4 slide-up max-w-[1400px] mx-auto">
           {renderCurrentSection()}
         </div>
 
         {/* Enhanced Navigation */}
-        <div className="survey-card-enhanced p-4 max-w-5xl mx-auto">
+        <div className="survey-card-enhanced p-4 max-w-[1400px] mx-auto">
           <div className="flex justify-between items-center">
             <Button
               variant="outline"

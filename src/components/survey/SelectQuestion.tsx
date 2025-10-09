@@ -27,36 +27,36 @@ export function SelectQuestion({
   return (
     <div
       id={`question-${name}`}
-      className={`question-card-enhanced px-4 py-3 mb-2 fade-in ${
+      className={`question-card-enhanced px-6 py-5 mb-3 fade-in ${
         hasError ? 'question-card-error border-destructive/40' : ''
       }`}
     >
       {hasError && (
-        <div className="mb-2 p-2 bg-destructive/10 border border-destructive/20 rounded-lg">
-          <p className="text-destructive text-xs font-medium flex items-center gap-1.5">
-            <Building2 className="w-3.5 h-3.5" />
+        <div className="mb-3 p-3 bg-destructive/10 border border-destructive/20 rounded-lg">
+          <p className="text-destructive text-sm font-medium flex items-center gap-2">
+            <Building2 className="w-4 h-4" />
             Esta pergunta é obrigatória
           </p>
         </div>
       )}
 
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-4">
         {/* Linha da pergunta */}
-        <div className="flex items-start gap-3">
-          <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 shadow-sm transition-all duration-300 ${
+        <div className="flex items-start gap-4">
+          <div className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 shadow-sm transition-all duration-300 ${
             hasError
               ? 'bg-destructive text-white'
               : 'bg-gradient-primary text-white'
           }`}>
             {questionNumber ? (
-              <span className="font-bold text-sm">{questionNumber}</span>
+              <span className="font-bold text-base">{questionNumber}</span>
             ) : (
-              <Building2 className="w-4 h-4" />
+              <Building2 className="w-5 h-5" />
             )}
           </div>
           <div className="flex-1">
             <Label
-              className={`text-sm sm:text-base font-semibold leading-snug block ${
+              className={`text-base sm:text-lg font-semibold leading-relaxed block ${
                 hasError ? 'text-destructive' : 'text-slate-800'
               }`}
             >
@@ -67,7 +67,7 @@ export function SelectQuestion({
             </Label>
 
             {!value && (
-              <p className="text-xs sm:text-sm text-muted-foreground mt-1 italic">
+              <p className="text-sm sm:text-base text-muted-foreground mt-2 italic">
                 {placeholder}
                 {required ? ' *' : ''}
               </p>
@@ -75,8 +75,8 @@ export function SelectQuestion({
           </div>
         </div>
 
-        {/* Linha das opções - inline */}
-        <div className="flex flex-wrap gap-2 pl-11">
+        {/* Linha das opções - inline e justificadas */}
+        <div className="flex flex-wrap justify-between gap-3 pl-14">
           {options.map((option, index) => {
             const isSelected = value === option.value;
 
@@ -94,16 +94,17 @@ export function SelectQuestion({
                 tabIndex={0}
                 aria-pressed={isSelected}
                 aria-label={`${option.label} ${isSelected ? '(selecionado)' : ''}`}
-                className={`option-button-enhanced text-center px-4 py-2 min-h-[40px] flex items-center justify-center ${
+                className={`option-button-enhanced text-center px-6 py-3 min-h-[52px] flex items-center justify-center flex-1 ${
                   isSelected ? 'option-button-selected-enhanced pulse-success' : 'option-button-unselected-enhanced'
                 }`}
                 style={{
-                  animationDelay: `${index * 0.1}s`
+                  animationDelay: `${index * 0.1}s`,
+                  minWidth: '160px'
                 }}
               >
-                <div className="flex items-center justify-center gap-1.5">
-                  {isSelected && <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0" />}
-                  <span className="font-medium leading-tight text-xs sm:text-sm whitespace-nowrap">
+                <div className="flex items-center justify-center gap-2">
+                  {isSelected && <CheckCircle2 className="w-4 h-4 flex-shrink-0" />}
+                  <span className="font-semibold leading-tight text-sm sm:text-base whitespace-nowrap">
                     {option.label}
                   </span>
                 </div>

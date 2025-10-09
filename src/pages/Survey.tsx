@@ -288,55 +288,55 @@ export default function Survey() {
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#f1f5f9' }}>
       {/* Survey Header com PAPEM e Mascote */}
-      <header className="bg-white border-b border-border sticky top-0 z-50 shadow-md transition-shadow">
+      <header className="bg-gradient-to-r from-primary via-primary/95 to-naval-green border-b-4 border-naval-gold sticky top-0 z-50 shadow-lg transition-shadow">
         <div className="flex flex-col md:flex-row items-center justify-between px-4 md:px-8 py-2 md:py-3 gap-3 md:gap-4">
           <div className="flex items-center gap-2 md:gap-3">
             <img 
               src="/lovable-uploads/e0a4659d-a903-4c7c-b8ab-10694346d6f8.png" 
               alt="Brasão PAPEM" 
-              className="w-9 h-9 md:w-11 md:h-11 object-contain transition-transform hover:scale-110"
+              className="w-10 h-10 md:w-12 md:h-12 object-contain transition-transform hover:scale-110 drop-shadow-lg"
             />
             <div>
-              <h1 className="text-sm md:text-lg font-bold text-primary">
+              <h1 className="text-base md:text-xl font-bold text-white font-montserrat tracking-wide drop-shadow-md">
                 PAPEM - Pagadoria de Pessoal da Marinha
               </h1>
-              <span className="flex items-center gap-2 text-xs md:text-sm text-muted-foreground font-semibold">
-                <Shield className="w-3 h-3 md:w-4 md:h-4 text-success" />
+              <span className="flex items-center gap-2 text-xs md:text-sm text-naval-gold font-semibold font-merriweather tracking-wider drop-shadow-sm">
+                <Shield className="w-3 h-3 md:w-4 md:h-4" />
                 ORDEM, PRONTIDÃO E REGULARIDADE
               </span>
             </div>
           </div>
           
-          {/* Mascote com animação */}
-          <div className="flex items-center gap-3 bg-gradient-to-r from-primary/15 to-success/10 rounded-xl border border-primary/30 px-4 py-3 shadow-sm hover:shadow-md transition-all">
+          {/* Mascote com animação - Cores do brasão */}
+          <div className="flex items-center gap-3 bg-white/95 backdrop-blur-sm rounded-xl border-2 border-naval-gold px-4 py-3 shadow-lg hover:shadow-xl transition-all">
             <img 
               src="/lovable-uploads/a27f9473-5787-4cab-9c01-3f62a66a5e88.png" 
               alt="Mascote" 
-              className="w-12 h-12 md:w-16 md:h-16 object-contain animate-pulse"
+              className="w-12 h-12 md:w-16 md:h-16 object-contain animate-pulse drop-shadow-lg"
             />
             <div className="text-left">
-              <p className="text-xs md:text-sm font-bold text-primary leading-tight flex items-center gap-2">
-                <Lock className="w-4 h-4" />
+              <p className="text-xs md:text-sm font-bold text-primary leading-tight flex items-center gap-2 font-montserrat">
+                <Lock className="w-4 h-4 text-naval-green" />
                 Pesquisa 100% Anônima e Confidencial
-                <Shield className="w-4 h-4" />
+                <Shield className="w-4 h-4 text-naval-green" />
               </p>
-              <p className="text-[10px] md:text-xs text-muted-foreground leading-tight mt-1">
+              <p className="text-[10px] md:text-xs text-foreground/80 leading-tight mt-1 font-merriweather">
                 Sua participação é fundamental. Responda com objetividade.
               </p>
             </div>
           </div>
           
-          {/* Navigation Buttons */}
+          {/* Navigation Buttons - Cores do brasão */}
           <div className="flex items-center gap-2">
             <Button
               asChild
               variant="default"
               size="sm"
-              className="gap-2 hover:scale-105 transition-transform"
+              className="gap-2 hover:scale-105 transition-transform bg-white hover:bg-white/90 text-primary border-2 border-naval-gold shadow-md"
             >
               <NavLink to="/survey">
                 <ClipboardList className="w-4 h-4" />
-                <span className="hidden sm:inline">Pesquisa</span>
+                <span className="hidden sm:inline font-semibold">Pesquisa</span>
               </NavLink>
             </Button>
             
@@ -344,11 +344,11 @@ export default function Survey() {
               asChild
               variant="ghost"
               size="sm" 
-              className="gap-2 hover:scale-105 transition-transform"
+              className="gap-2 hover:scale-105 transition-transform text-white hover:bg-white/20 border border-white/30"
             >
               <NavLink to="/admin">
                 <BarChart3 className="w-4 h-4" />
-                <span className="hidden sm:inline">Dashboard</span>
+                <span className="hidden sm:inline font-semibold">Dashboard</span>
               </NavLink>
             </Button>
           </div>

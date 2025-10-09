@@ -85,6 +85,7 @@ export default {
 				},
 				'naval-gold': 'hsl(var(--naval-gold))',
 				'naval-burgundy': 'hsl(var(--naval-burgundy))',
+				'naval-green': 'hsl(var(--naval-green))',
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
@@ -100,6 +101,11 @@ export default {
 				lg: 'var(--radius)',
 				md: 'calc(var(--radius) - 2px)',
 				sm: 'calc(var(--radius) - 4px)'
+			},
+			fontFamily: {
+				'cinzel': ['Cinzel', 'serif'],
+				'montserrat': ['Montserrat', 'sans-serif'],
+				'merriweather': ['Merriweather', 'serif'],
 			},
 			keyframes: {
 				'accordion-down': {

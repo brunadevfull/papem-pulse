@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { CheckCircle2, ClipboardList, ArrowRight, ArrowLeft, Anchor, Shield, Star, Waves, BarChart3, Save, Info, Lock, TrendingUp, Clock } from "lucide-react";
 import { NavLink } from "react-router-dom";
@@ -359,17 +360,20 @@ export default function Survey() {
       <div className="container mx-auto max-w-7xl py-2 px-4 sm:px-6 lg:px-8 space-y-3">
         {/* Título da Pesquisa no Corpo */}
         <div className="bg-gradient-to-br from-white to-primary/5 rounded-lg border border-border fade-in transition-all">
-          <div className="text-center space-y-1.5 py-2 px-3">
-            <div className="flex justify-center">
-              <img 
-                src="/lovable-uploads/e0a4659d-a903-4c7c-b8ab-10694346d6f8.png" 
-                alt="Brasão PAPEM" 
-                className="w-12 h-12 md:w-14 md:h-14 object-contain hover:scale-110 transition-transform"
-              />
-            </div>
+          <div className="text-center space-y-2 py-2 px-3">
+            <Badge
+              variant="outline"
+              className="inline-flex items-center gap-2 text-primary border-primary/40 bg-primary/5 rounded-full px-3 py-1"
+            >
+              <ClipboardList className="w-3.5 h-3.5" />
+              Pesquisa PAPEM 2024
+            </Badge>
             <h2 className="text-lg md:text-xl font-bold text-primary">
               Pesquisa de Clima Organizacional
             </h2>
+            <p className="text-xs md:text-sm text-muted-foreground">
+              Suas respostas ajudam a aprimorar o ambiente de trabalho e serão tratadas com total confidencialidade.
+            </p>
           </div>
         </div>
         

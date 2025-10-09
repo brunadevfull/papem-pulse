@@ -5,7 +5,7 @@ export function AppHeader() {
     <header style={{ backgroundColor: '#001945' }} className="w-full">
       <div className="h-20 flex items-center px-8 gap-4">
         {/* Menu Hamburguer */}
-        <button className="text-white hover:opacity-80 transition-opacity">
+        <button className="text-white/90 hover:text-white transition-colors">
           <Menu className="w-6 h-6" />
         </button>
         
@@ -18,10 +18,10 @@ export function AppHeader() {
         
         {/* Texto do Header */}
         <div className="flex flex-col">
-          <h1 className="text-white text-xl font-bold tracking-wide">
+          <h1 className="text-white text-xl font-bold tracking-wide uppercase">
             PAGADORIA DE PESSOAL DA MARINHA
           </h1>
-          <p className="text-white/80 text-xs tracking-wider">
+          <p className="text-white/90 text-xs tracking-wider">
             "ORDEM, PRONTIDÃO E REGULARIDADE"
           </p>
         </div>

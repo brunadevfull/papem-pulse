@@ -339,18 +339,18 @@ export default function Survey() {
 
       <div className="container mx-auto max-w-7xl py-2 px-4 sm:px-6 lg:px-8 space-y-3">
         
-        {/* Card do Mascote */}
-        <div className="w-full bg-gradient-to-r from-primary/10 to-primary/5 rounded-xl border-2 border-primary/20 p-3 flex items-center gap-3 max-w-4xl mx-auto mb-6">
+        {/* Card do Mascote - Centralizado e Maior */}
+        <div className="w-full bg-gradient-to-r from-primary/10 to-primary/5 rounded-xl border-2 border-primary/20 p-6 flex flex-col items-center gap-4 max-w-5xl mx-auto mb-6 text-center">
           <img 
             src="/lovable-uploads/a27f9473-5787-4cab-9c01-3f62a66a5e88.png" 
             alt="Mascote" 
-            className="w-12 h-12 object-contain flex-shrink-0"
+            className="w-20 h-20 object-contain"
           />
-          <div className="flex-1 text-left">
-            <p className="text-xs font-bold text-primary mb-0.5">
+          <div>
+            <p className="text-base font-bold text-primary mb-2">
               🔒 Pesquisa 100% Anônima e Confidencial 🛡️
             </p>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-sm text-muted-foreground">
               Sua participação é fundamental. Responda com objetividade.
             </p>
           </div>

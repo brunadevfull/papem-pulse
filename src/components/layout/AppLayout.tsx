@@ -4,7 +4,6 @@ import { AppHeader } from "@/components/layout/AppHeader";
 export function AppLayout() {
   return (
     <div className="min-h-screen flex flex-col w-full bg-background">
-      <AppHeader />
       <main className="flex-1">
         <Outlet />
       </main>

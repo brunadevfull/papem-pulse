@@ -289,40 +289,36 @@ export default function Survey() {
     <div className="min-h-screen" style={{ backgroundColor: '#f1f5f9' }}>
       <div className="container mx-auto max-w-7xl py-4 px-4 sm:px-6 lg:px-8 space-y-4">
         
-        {/* Modern Header - Compacto */}
-        <div className="text-center space-y-3 py-3 fade-in">            
-          <div className="space-y-3">
+        {/* Header com Brasão e Card do Mascote */}
+        <div className="space-y-4 fade-in">
+          {/* Brasão e Título */}
+          <div className="text-center space-y-3">
             <div className="flex justify-center">
-              <div className="relative">
-                <img 
-                  src="/lovable-uploads/e0a4659d-a903-4c7c-b8ab-10694346d6f8.png" 
-                  alt="Brasão PAPEM" 
-                  className="w-20 h-20 object-contain"
-                />
-              </div>
+              <img 
+                src="/lovable-uploads/e0a4659d-a903-4c7c-b8ab-10694346d6f8.png" 
+                alt="Brasão PAPEM" 
+                className="w-20 h-20 object-contain"
+              />
             </div>
-            
-            <div className="space-y-3">
-              <h1 className="text-2xl font-bold text-primary">
-                Pesquisa de Clima Organizacional
-              </h1>
-              
-              {/* Card informativo ultra compacto com mascote */}
-              <div className="w-full bg-gradient-to-r from-primary/10 to-primary/5 rounded-xl border-2 border-primary/20 p-3 flex items-center gap-3 max-w-4xl mx-auto">
-                <img 
-                  src="/lovable-uploads/a27f9473-5787-4cab-9c01-3f62a66a5e88.png" 
-                  alt="Mascote" 
-                  className="w-12 h-12 object-contain flex-shrink-0"
-                />
-                <div className="flex-1 text-left">
-                  <p className="text-xs font-bold text-primary mb-0.5">
-                    🔒 Pesquisa 100% Anônima e Confidencial 🛡️
-                  </p>
-                  <p className="text-xs text-muted-foreground">
-                    Sua participação é fundamental. Responda com objetividade.
-                  </p>
-                </div>
-              </div>
+            <h1 className="text-2xl font-bold text-primary">
+              Pesquisa de Clima Organizacional
+            </h1>
+          </div>
+          
+          {/* Card do Mascote */}
+          <div className="w-full bg-gradient-to-r from-primary/10 to-primary/5 rounded-xl border-2 border-primary/20 p-3 flex items-center gap-3 max-w-4xl mx-auto">
+            <img 
+              src="/lovable-uploads/a27f9473-5787-4cab-9c01-3f62a66a5e88.png" 
+              alt="Mascote" 
+              className="w-12 h-12 object-contain flex-shrink-0"
+            />
+            <div className="flex-1 text-left">
+              <p className="text-xs font-bold text-primary mb-0.5">
+                🔒 Pesquisa 100% Anônima e Confidencial 🛡️
+              </p>
+              <p className="text-xs text-muted-foreground">
+                Sua participação é fundamental. Responda com objetividade.
+              </p>
             </div>
           </div>
         </div>

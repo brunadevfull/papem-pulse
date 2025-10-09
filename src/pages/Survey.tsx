@@ -375,45 +375,45 @@ export default function Survey() {
         
         
         {/* Enhanced Progress Section - Compacto */}
-        <div className="survey-card-enhanced p-5 slide-up w-full max-w-[1400px] mx-auto shadow-sm hover:shadow-md transition-all">
-          <div className="space-y-4">
+        <div className="survey-card-enhanced p-3 slide-up w-full max-w-4xl mx-auto shadow-sm hover:shadow-md transition-all">
+          <div className="space-y-2">
             {/* Progress Info */}
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 text-sm text-foreground">
-              <div className="flex flex-wrap items-center gap-3">
-                <span className="font-semibold flex items-center gap-2">
-                  <TrendingUp className="w-4 h-4 text-primary" />
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 text-xs text-foreground">
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="font-semibold flex items-center gap-1.5">
+                  <TrendingUp className="w-3.5 h-3.5 text-primary" />
                   Seção {currentSection + 1} de {totalSections}
                 </span>
                 
                 {/* Auto-save indicator */}
                 {lastSaved && (
-                  <div className="flex items-center gap-1.5 text-xs text-success bg-success/10 px-3 py-1.5 rounded-full font-medium shadow-sm">
-                    <Save className="w-3.5 h-3.5" />
+                  <div className="flex items-center gap-1 text-[10px] text-success bg-success/10 px-2 py-1 rounded-full font-medium shadow-sm">
+                    <Save className="w-3 h-3" />
                     <span>Salvo {lastSaved.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</span>
                   </div>
                 )}
                 
                 {/* Contextual hint */}
                 {showHint && currentSection === 0 && (
-                  <div className="flex items-center gap-1.5 text-xs text-primary bg-primary/10 px-3 py-1.5 rounded-full cursor-pointer hover:bg-primary/20 transition-all hover:scale-105"
+                  <div className="flex items-center gap-1 text-[10px] text-primary bg-primary/10 px-2 py-1 rounded-full cursor-pointer hover:bg-primary/20 transition-all hover:scale-105"
                        onClick={() => setShowHint(false)}>
-                    <Info className="w-3.5 h-3.5" />
+                    <Info className="w-3 h-3" />
                     <span>Respostas salvas automaticamente</span>
                   </div>
                 )}
               </div>
               
               <div className="text-left sm:text-right">
-                <span className="font-bold text-primary text-base">{Math.round(progress)}% concluído</span>
-                <div className="text-xs text-muted-foreground flex items-center gap-1 mt-0.5">
-                  <Clock className="w-3 h-3" />
+                <span className="font-bold text-primary text-sm">{Math.round(progress)}% concluído</span>
+                <div className="text-[10px] text-muted-foreground flex items-center gap-0.5 mt-0.5">
+                  <Clock className="w-2.5 h-2.5" />
                   ~{Math.max(1, Math.ceil((4 - currentSection - 1) * 2))} min restantes
                 </div>
               </div>
             </div>
             
             {/* Enhanced Progress Bar com gradiente */}
-            <div className="relative h-4 w-full overflow-hidden rounded-full bg-secondary shadow-inner">
+            <div className="relative h-2 w-full overflow-hidden rounded-full bg-secondary shadow-inner">
               <div 
                 className="h-full bg-gradient-to-r from-primary via-primary/90 to-success transition-all duration-500 ease-out relative overflow-hidden"
                 style={{ width: `${progress}%` }}
@@ -421,11 +421,11 @@ export default function Survey() {
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-pulse" />
               </div>
               {/* Progress milestones */}
-              <div className="absolute inset-0 flex justify-between items-center px-2">
+              <div className="absolute inset-0 flex justify-between items-center px-1">
                 {[25, 50, 75].map((milestone) => (
                   <div 
                     key={milestone}
-                    className={`w-1.5 h-6 rounded-full transition-all duration-300 ${
+                    className={`w-1 h-4 rounded-full transition-all duration-300 ${
                       progress >= milestone ? 'bg-white shadow-md scale-110' : 'bg-slate-300'
                     }`}
                   />
@@ -434,18 +434,18 @@ export default function Survey() {
             </div>
             
             {/* Section Indicators - Modernos com ícones */}
-            <div className="grid grid-cols-2 md:flex md:justify-between items-center gap-2">
+            <div className="grid grid-cols-2 md:flex md:justify-between items-center gap-1.5">
               {sectionData.map((section, index) => {
                 const isActive = index === currentSection;
                 const isCompleted = index < currentSection;
                 const SectionIcon = section.icon;
                 
                 return (
-                  <div key={index} className={`flex items-center gap-2 flex-1 px-3 py-2 rounded-xl transition-all duration-300 hover:scale-105 ${
+                  <div key={index} className={`flex items-center gap-1.5 flex-1 px-2 py-1.5 rounded-lg transition-all duration-300 hover:scale-105 ${
                     isActive ? 'bg-primary/10 border-2 border-primary/30 shadow-sm' : 'border border-transparent'
                   }`}>
                     <div className={`
-                      w-8 h-8 rounded-full border-2 flex items-center justify-center text-xs font-bold transition-all duration-300 shadow-sm
+                      w-6 h-6 rounded-full border-2 flex items-center justify-center text-xs font-bold transition-all duration-300 shadow-sm
                       ${isActive 
                         ? 'border-primary text-primary bg-primary/15 scale-110' 
                         : isCompleted
@@ -454,13 +454,13 @@ export default function Survey() {
                       }
                     `}>
                       {isCompleted ? (
-                        <CheckCircle2 className="w-4 h-4" />
+                        <CheckCircle2 className="w-3.5 h-3.5" />
                       ) : (
-                        <SectionIcon className="w-4 h-4" />
+                        <SectionIcon className="w-3.5 h-3.5" />
                       )}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className={`text-xs md:text-sm font-semibold transition-colors duration-300 truncate ${
+                      <p className={`text-[10px] md:text-xs font-semibold transition-colors duration-300 truncate ${
                         isActive 
                           ? 'text-primary' 
                           : isCompleted

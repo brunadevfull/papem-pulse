@@ -374,93 +374,79 @@ export default function Survey() {
         </div>
         
         
-        {/* Enhanced Progress Section - Compacto */}
-        <div className="survey-card-enhanced p-3 slide-up w-full max-w-4xl mx-auto shadow-sm hover:shadow-md transition-all">
-          <div className="space-y-2">
-            {/* Progress Info */}
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 text-xs text-foreground">
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="font-semibold flex items-center gap-1.5">
-                  <TrendingUp className="w-3.5 h-3.5 text-primary" />
-                  Seção {currentSection + 1} de {totalSections}
-                </span>
+        {/* Enhanced Progress Section - UI/UX Otimizado */}
+        <div className="bg-white/80 backdrop-blur-sm rounded-lg border border-primary/20 shadow-sm p-4 slide-up w-full max-w-5xl mx-auto">
+          <div className="space-y-3">
+            {/* Header com Info e Status */}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2 text-sm font-semibold text-primary">
+                  <TrendingUp className="w-4 h-4" />
+                  <span>Seção {currentSection + 1} de {totalSections}</span>
+                </div>
                 
-                {/* Auto-save indicator */}
                 {lastSaved && (
-                  <div className="flex items-center gap-1 text-[10px] text-success bg-success/10 px-2 py-1 rounded-full font-medium shadow-sm">
+                  <div className="hidden sm:flex items-center gap-1.5 text-xs text-success bg-success/10 px-2.5 py-1 rounded-full">
                     <Save className="w-3 h-3" />
                     <span>Salvo {lastSaved.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</span>
                   </div>
                 )}
-                
-                {/* Contextual hint */}
-                {showHint && currentSection === 0 && (
-                  <div className="flex items-center gap-1 text-[10px] text-primary bg-primary/10 px-2 py-1 rounded-full cursor-pointer hover:bg-primary/20 transition-all hover:scale-105"
-                       onClick={() => setShowHint(false)}>
-                    <Info className="w-3 h-3" />
-                    <span>Respostas salvas automaticamente</span>
-                  </div>
-                )}
               </div>
               
-              <div className="text-left sm:text-right">
-                <span className="font-bold text-primary text-sm">{Math.round(progress)}% concluído</span>
-                <div className="text-[10px] text-muted-foreground flex items-center gap-0.5 mt-0.5">
-                  <Clock className="w-2.5 h-2.5" />
-                  ~{Math.max(1, Math.ceil((4 - currentSection - 1) * 2))} min restantes
+              <div className="flex items-center gap-3">
+                <div className="text-right">
+                  <div className="text-lg font-bold text-primary">{Math.round(progress)}%</div>
+                  <div className="text-[10px] text-muted-foreground flex items-center gap-1">
+                    <Clock className="w-3 h-3" />
+                    {Math.max(1, Math.ceil((4 - currentSection - 1) * 2))} min
+                  </div>
                 </div>
               </div>
             </div>
             
-            {/* Enhanced Progress Bar com gradiente */}
-            <div className="relative h-2 w-full overflow-hidden rounded-full bg-secondary shadow-inner">
+            {/* Progress Bar */}
+            <div className="relative h-2.5 w-full overflow-hidden rounded-full bg-primary/10">
               <div 
-                className="h-full bg-gradient-to-r from-primary via-primary/90 to-success transition-all duration-500 ease-out relative overflow-hidden"
+                className="h-full bg-gradient-to-r from-primary via-primary/90 to-success transition-all duration-500 ease-out rounded-full shadow-sm"
                 style={{ width: `${progress}%` }}
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-pulse" />
-              </div>
-              {/* Progress milestones */}
-              <div className="absolute inset-0 flex justify-between items-center px-1">
-                {[25, 50, 75].map((milestone) => (
-                  <div 
-                    key={milestone}
-                    className={`w-1 h-4 rounded-full transition-all duration-300 ${
-                      progress >= milestone ? 'bg-white shadow-md scale-110' : 'bg-slate-300'
-                    }`}
-                  />
-                ))}
-              </div>
+              />
             </div>
             
-            {/* Section Indicators - Modernos com ícones */}
-            <div className="grid grid-cols-2 md:flex md:justify-between items-center gap-1.5">
+            {/* Section Indicators */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 pt-1">
               {sectionData.map((section, index) => {
                 const isActive = index === currentSection;
                 const isCompleted = index < currentSection;
                 const SectionIcon = section.icon;
                 
                 return (
-                  <div key={index} className={`flex items-center gap-1.5 flex-1 px-2 py-1.5 rounded-lg transition-all duration-300 hover:scale-105 ${
-                    isActive ? 'bg-primary/10 border-2 border-primary/30 shadow-sm' : 'border border-transparent'
-                  }`}>
-                    <div className={`
-                      w-6 h-6 rounded-full border-2 flex items-center justify-center text-xs font-bold transition-all duration-300 shadow-sm
-                      ${isActive 
-                        ? 'border-primary text-primary bg-primary/15 scale-110' 
+                  <div 
+                    key={index} 
+                    className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-300 ${
+                      isActive 
+                        ? 'bg-primary/10 border border-primary/30' 
                         : isCompleted
-                        ? 'border-success text-white bg-success'
-                        : 'border-muted-foreground text-muted-foreground bg-muted/20'
+                        ? 'bg-success/5 border border-success/20'
+                        : 'bg-muted/30 border border-transparent'
+                    }`}
+                  >
+                    <div className={`
+                      w-7 h-7 rounded-full flex items-center justify-center transition-all
+                      ${isActive 
+                        ? 'bg-primary text-white' 
+                        : isCompleted
+                        ? 'bg-success text-white'
+                        : 'bg-muted text-muted-foreground'
                       }
                     `}>
                       {isCompleted ? (
-                        <CheckCircle2 className="w-3.5 h-3.5" />
+                        <CheckCircle2 className="w-4 h-4" />
                       ) : (
-                        <SectionIcon className="w-3.5 h-3.5" />
+                        <SectionIcon className="w-4 h-4" />
                       )}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className={`text-[10px] md:text-xs font-semibold transition-colors duration-300 truncate ${
+                      <p className={`text-xs font-medium truncate ${
                         isActive 
                           ? 'text-primary' 
                           : isCompleted
@@ -474,6 +460,17 @@ export default function Survey() {
                 );
               })}
             </div>
+            
+            {/* Auto-save hint - mobile */}
+            {showHint && currentSection === 0 && (
+              <div 
+                className="flex sm:hidden items-center gap-2 text-xs text-primary/80 bg-primary/5 px-3 py-2 rounded-lg cursor-pointer hover:bg-primary/10 transition-all"
+                onClick={() => setShowHint(false)}
+              >
+                <Info className="w-3.5 h-3.5 flex-shrink-0" />
+                <span>Suas respostas são salvas automaticamente</span>
+              </div>
+            )}
           </div>
         </div>
 

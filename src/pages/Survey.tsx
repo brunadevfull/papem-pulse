@@ -300,9 +300,9 @@ export default function Survey() {
               <h1 className="text-base md:text-xl font-bold text-primary">
                 PAPEM - Pagadoria de Pessoal da Marinha
               </h1>
-              <span className="flex items-center gap-2 text-xs md:text-sm text-muted-foreground">
+              <span className="flex items-center gap-2 text-xs md:text-sm text-muted-foreground font-semibold">
                 <Shield className="w-3 h-3 md:w-4 md:h-4 text-success" />
-                100% Anônimo
+                ORDEM, PRONTIDÃO E REGULARIDADE
               </span>
             </div>
           </div>

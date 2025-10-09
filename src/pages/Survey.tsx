@@ -375,7 +375,7 @@ export default function Survey() {
         
         
         {/* Enhanced Progress Section - Compacto como cabeçalho */}
-        <div className="survey-card-enhanced p-3 slide-up w-full max-w-[1400px] mx-auto shadow-sm transition-all">
+        <div className="bg-primary/5 backdrop-blur-sm rounded-xl border border-primary/10 p-3 slide-up w-full max-w-[1400px] mx-auto shadow-sm transition-all">
           <div className="space-y-2">
             {/* Progress Info */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 text-xs text-foreground">

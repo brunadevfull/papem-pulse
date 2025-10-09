@@ -44,12 +44,12 @@ export function Question({ question, name, value, onChange, options, required = 
             )}
           </div>
           <div className="flex-1">
-            <Label className={`text-base sm:text-lg font-semibold leading-relaxed ${
+            <Label className={`text-sm sm:text-base font-semibold leading-relaxed ${
               hasError ? 'text-destructive' : 'text-slate-800'
             }`}>
               {question}
               {!required && (
-                <span className="text-sm text-muted-foreground ml-2 font-normal">(Opcional)</span>
+                <span className="text-xs text-muted-foreground ml-2 font-normal">(Opcional)</span>
               )}
             </Label>
           </div>
@@ -85,7 +85,7 @@ export function Question({ question, name, value, onChange, options, required = 
               >
                 <div className="flex items-center justify-center gap-2">
                   {isSelected && <CheckCircle2 className="w-4 h-4 flex-shrink-0" />}
-                  <span className="font-semibold leading-tight text-sm sm:text-base whitespace-nowrap">{option.label}</span>
+                  <span className="font-semibold leading-tight text-xs sm:text-sm whitespace-nowrap">{option.label}</span>
                 </div>
               </button>
             );

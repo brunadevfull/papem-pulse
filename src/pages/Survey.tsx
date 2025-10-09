@@ -307,37 +307,11 @@ export default function Survey() {
                 Pesquisa de Clima Organizacional
               </h1>
               
-              {/* Card Informativo - Compacto */}
-              <div className="bg-gradient-to-r from-primary/10 via-primary/5 to-primary/10 rounded-xl p-4 border border-primary/20 shadow-md w-full max-w-5xl mx-auto">
-                <div className="flex items-center gap-4">
-                  <div className="flex-shrink-0">
-                    <img 
-                      src="/lovable-uploads/a27f9473-5787-4cab-9c01-3f62a66a5e88.png" 
-                      alt="Mascote PAPEM" 
-                      className="w-12 h-16 object-contain"
-                    />
-                  </div>
-                  
-                  <div className="flex-1">
-                    <h2 className="text-base font-bold text-primary mb-1 flex items-center gap-2">
-                      <span className="text-lg">🔒</span>
-                      Pesquisa 100% Anônima e Confidencial
-                      <span className="text-lg">🛡️</span>
-                    </h2>
-                    <p className="text-slate-700 text-sm leading-relaxed">
-                      Sua participação é fundamental para o <span className="font-semibold">aprimoramento e melhoria da nossa OM</span>.
-                      Responda com <span className="font-semibold text-primary">objetividade e precisão</span>.
-                    </p>
-                  </div>
-                </div>
-              </div>
-              
-              {/* Card Pesquisa Flexível - Compacto */}
-              <div className="bg-blue-50/80 border border-blue-200 rounded-lg p-3 max-w-4xl mx-auto">
-                <p className="text-xs text-blue-800">
-                  <span className="text-sm mr-1">ℹ️</span>
-                  <span className="font-semibold">Pesquisa Flexível:</span> Você pode pular perguntas que preferir não responder. 
-                  Apenas os <span className="font-semibold">campos de localização</span> são obrigatórios para análise regional.
+              {/* Card Informativo - Ultra Compacto */}
+              <div className="bg-gradient-to-r from-primary/10 via-primary/5 to-primary/10 rounded-lg p-2.5 border border-primary/20 w-full max-w-4xl mx-auto">
+                <p className="text-xs text-slate-700 text-center">
+                  <span className="text-sm mr-1">🔒</span>
+                  <span className="font-bold">Pesquisa 100% Anônima e Confidencial.</span> Responda com objetividade e precisão.
                 </p>
               </div>
             </div>

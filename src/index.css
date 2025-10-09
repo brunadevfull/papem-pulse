@@ -17,9 +17,9 @@
     --popover-foreground: 220 20% 15%;
 
     /* PAPEM Naval Colors - Exact colors from style guide */
-    --primary: 207 100% 29%;        /* #005b94 - Exact PAPEM blue */
+    --primary: 207 100% 22%;        /* Azul PAPEM escurecido */
     --primary-foreground: 0 0% 100%;
-    --primary-hover: 207 100% 24%;  /* #004a7c - Darker PAPEM blue */
+    --primary-hover: 207 100% 18%;  /* Darker PAPEM blue */
     --primary-light: 220 70% 60%;
     --primary-glow: 220 100% 70%;
 
@@ -55,12 +55,12 @@
     --ring: 220 100% 25%;
 
     /* Modern Gradients - Updated with PAPEM colors */
-    --gradient-primary: linear-gradient(135deg, hsl(207, 100%, 29%) 0%, hsl(207, 100%, 35%) 50%, hsl(207, 100%, 24%) 100%);
+    --gradient-primary: linear-gradient(135deg, hsl(207, 100%, 22%) 0%, hsl(207, 100%, 26%) 50%, hsl(207, 100%, 18%) 100%);
     --gradient-secondary: linear-gradient(135deg, hsl(210, 40%, 98%) 0%, hsl(220, 50%, 97%) 100%);
-    --gradient-hero: linear-gradient(135deg, hsl(207, 100%, 24%) 0%, hsl(207, 100%, 29%) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(207, 100%, 18%) 0%, hsl(207, 100%, 22%) 100%);
     --gradient-card: linear-gradient(145deg, hsl(0, 0%, 100%) 0%, hsl(210, 25%, 99%) 100%);
     --gradient-accent: linear-gradient(135deg, hsl(350, 85%, 45%) 0%, hsl(350, 85%, 55%) 100%);
-    --gradient-naval: linear-gradient(135deg, hsl(207, 100%, 29%) 0%, hsl(207, 100%, 35%) 100%);
+    --gradient-naval: linear-gradient(135deg, hsl(207, 100%, 22%) 0%, hsl(207, 100%, 26%) 100%);
     --gradient-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.1) 100%);
     --gradient-subtle: linear-gradient(145deg, hsl(210, 30%, 99%) 0%, hsl(220, 20%, 98%) 100%);
 
@@ -182,8 +182,8 @@
   }
 
   .option-button-selected {
-    @apply bg-[#005b94] text-white border-2 border-[#004a7c] shadow-md;
-    @apply hover:bg-[#004a7c] hover:shadow-lg;
+    @apply bg-primary text-white border-2 border-primary-hover shadow-md;
+    @apply hover:bg-primary-hover hover:shadow-lg;
   }
 
   .option-button-unselected {

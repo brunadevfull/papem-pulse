@@ -289,22 +289,20 @@ export default function Survey() {
     <div className="min-h-screen" style={{ backgroundColor: '#f1f5f9' }}>
       <div className="container mx-auto max-w-7xl py-4 px-4 sm:px-6 lg:px-8 space-y-4">
         
-        {/* Modern Header - Compacto */}
-        <div className="text-center space-y-3 py-3 fade-in">            
-          <div className="space-y-3">
-            <div className="flex justify-center">
-              <div className="relative">
-                <img 
-                  src="/lovable-uploads/a27f9473-5787-4cab-9c01-3f62a66a5e88.png" 
-                  alt="Mascote PAPEM" 
-                  className="w-20 h-20 object-contain"
-                />
-              </div>
-            </div>
-            
-            <h1 className="text-2xl font-bold text-primary">
-              Pesquisa de Clima Organizacional
-            </h1>
+        {/* Card informativo com mascote */}
+        <div className="w-full bg-gradient-to-r from-primary/10 to-primary/5 rounded-xl border-2 border-primary/20 p-3 flex items-center gap-3 max-w-4xl mx-auto fade-in">
+          <img 
+            src="/lovable-uploads/a27f9473-5787-4cab-9c01-3f62a66a5e88.png" 
+            alt="Mascote" 
+            className="w-12 h-12 object-contain flex-shrink-0"
+          />
+          <div className="flex-1 text-left">
+            <p className="text-xs font-bold text-primary mb-0.5">
+              🔒 Pesquisa 100% Anônima e Confidencial 🛡️
+            </p>
+            <p className="text-xs text-muted-foreground">
+              Sua participação é fundamental. Responda com objetividade.
+            </p>
           </div>
         </div>
 
@@ -404,26 +402,6 @@ export default function Survey() {
           </div>
         </div>
 
-        {/* Modern Section Title - Compacto */}
-        <div className="text-center fade-in">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-xl border border-primary/20">
-            <IconComponent className="w-5 h-5 text-primary" />
-            <div className="text-center">
-              <h2 className="text-base font-bold text-foreground">
-                {currentSection === 0 && `${currentSection + 1}. Condições de Trabalho, Serviço e TFM`}
-                {currentSection === 1 && `${currentSection + 1}. Relacionamento`}
-                {currentSection === 2 && `${currentSection + 1}. Motivação e Desenvolvimento Profissional`}
-                {currentSection === 3 && `${currentSection + 1}. Comentários e Sugestões`}
-              </h2>
-              <p className="text-xs text-primary/70 font-medium">
-                {currentSection === 0 && "32 perguntas"}
-                {currentSection === 1 && "10 perguntas"}
-                {currentSection === 2 && "12 perguntas"}
-                {currentSection === 3 && "4 perguntas"}
-              </p>
-            </div>
-          </div>
-        </div>
         
         {/* Survey Content */}
         <div className="space-y-3 slide-up max-w-[1400px] mx-auto">

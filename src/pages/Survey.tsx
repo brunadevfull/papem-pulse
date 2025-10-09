@@ -289,7 +289,7 @@ export default function Survey() {
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#f1f5f9' }}>
       {/* Survey Header com PAPEM e Mascote */}
-      <header className="bg-gradient-to-r from-primary via-primary/95 to-naval-green border-b-4 border-naval-gold sticky top-0 z-50 shadow-lg transition-shadow">
+      <header style={{ backgroundColor: '#001945' }} className="sticky top-0 z-50 shadow-lg transition-shadow">
         <div className="flex flex-col md:flex-row items-center justify-between px-4 md:px-8 py-2 md:py-3 gap-3 md:gap-4">
           <div className="flex items-center gap-2 md:gap-3">
             <img 

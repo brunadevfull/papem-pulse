@@ -54,7 +54,7 @@ const recreioOptions = [
 const ranchoOptions = [
   { value: "Distrito", label: "Distrito" },
   { value: "DAbM", label: "DAbM" },
-  { value: "Praça d’armas", label: "Praça d’armas" }
+  { value: "Praça d'armas", label: "Praça d'armas" }
 ];
 
 const escalaOptions = [
@@ -89,6 +89,7 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
         value={data.setor_computadores || ""}
         onChange={handleChange("setor_computadores")}
         options={likertOptions}
+        required={false}
         hasError={errors.includes("setor_computadores")}
       />
 
@@ -99,6 +100,7 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
         value={data.setor_mobiliario || ""}
         onChange={handleChange("setor_mobiliario")}
         options={likertOptions}
+        required={false}
         hasError={errors.includes("setor_mobiliario")}
       />
 
@@ -109,6 +111,7 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
         value={data.setor_limpeza || ""}
         onChange={handleChange("setor_limpeza")}
         options={likertOptions}
+        required={false}
         hasError={errors.includes("setor_limpeza")}
       />
 
@@ -119,6 +122,7 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
         value={data.setor_temperatura || ""}
         onChange={handleChange("setor_temperatura")}
         options={likertOptions}
+        required={false}
         hasError={errors.includes("setor_temperatura")}
       />
 
@@ -129,6 +133,7 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
         value={data.setor_iluminacao || ""}
         onChange={handleChange("setor_iluminacao")}
         options={likertOptions}
+        required={false}
         hasError={errors.includes("setor_iluminacao")}
       />
 
@@ -149,6 +154,7 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
         value={data.alojamento_limpeza || ""}
         onChange={handleChange("alojamento_limpeza")}
         options={likertOptions}
+        required={false}
         hasError={errors.includes("alojamento_limpeza")}
       />
 
@@ -159,6 +165,7 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
         value={data.alojamento_temperatura || ""}
         onChange={handleChange("alojamento_temperatura")}
         options={likertOptions}
+        required={false}
         hasError={errors.includes("alojamento_temperatura")}
       />
 
@@ -169,6 +176,7 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
         value={data.alojamento_iluminacao || ""}
         onChange={handleChange("alojamento_iluminacao")}
         options={likertOptions}
+        required={false}
         hasError={errors.includes("alojamento_iluminacao")}
       />
 
@@ -179,6 +187,7 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
         value={data.alojamento_armarios_condicao || ""}
         onChange={handleChange("alojamento_armarios_condicao")}
         options={likertOptions}
+        required={false}
         hasError={errors.includes("alojamento_armarios_condicao")}
       />
 
@@ -189,6 +198,7 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
         value={data.alojamento_armario_preservado || ""}
         onChange={handleChange("alojamento_armario_preservado")}
         options={likertOptions}
+        required={false}
         hasError={errors.includes("alojamento_armario_preservado")}
       />
 
@@ -209,6 +219,7 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
         value={data.banheiro_vasos_suficientes || ""}
         onChange={handleChange("banheiro_vasos_suficientes")}
         options={likertOptions}
+        required={false}
         hasError={errors.includes("banheiro_vasos_suficientes")}
       />
 
@@ -219,6 +230,7 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
         value={data.banheiro_vasos_preservados || ""}
         onChange={handleChange("banheiro_vasos_preservados")}
         options={likertOptions}
+        required={false}
         hasError={errors.includes("banheiro_vasos_preservados")}
       />
 
@@ -229,6 +241,7 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
         value={data.banheiro_torneiras_funcionam || ""}
         onChange={handleChange("banheiro_torneiras_funcionam")}
         options={likertOptions}
+        required={false}
         hasError={errors.includes("banheiro_torneiras_funcionam")}
       />
 
@@ -239,6 +252,7 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
         value={data.banheiro_chuveiros_suficientes || ""}
         onChange={handleChange("banheiro_chuveiros_suficientes")}
         options={likertOptions}
+        required={false}
         hasError={errors.includes("banheiro_chuveiros_suficientes")}
       />
 
@@ -249,6 +263,7 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
         value={data.banheiro_chuveiros_funcionam || ""}
         onChange={handleChange("banheiro_chuveiros_funcionam")}
         options={likertOptions}
+        required={false}
         hasError={errors.includes("banheiro_chuveiros_funcionam")}
       />
 
@@ -259,6 +274,7 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
         value={data.banheiro_limpeza || ""}
         onChange={handleChange("banheiro_limpeza")}
         options={likertOptions}
+        required={false}
         hasError={errors.includes("banheiro_limpeza")}
       />
 
@@ -269,6 +285,7 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
         value={data.banheiro_iluminacao || ""}
         onChange={handleChange("banheiro_iluminacao")}
         options={likertOptions}
+        required={false}
         hasError={errors.includes("banheiro_iluminacao")}
       />
 
@@ -289,6 +306,7 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
         value={data.recreio_mobiliario_quantidade || ""}
         onChange={handleChange("recreio_mobiliario_quantidade")}
         options={likertOptions}
+        required={false}
         hasError={errors.includes("recreio_mobiliario_quantidade")}
       />
 
@@ -299,6 +317,7 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
         value={data.recreio_mobiliario_condicao || ""}
         onChange={handleChange("recreio_mobiliario_condicao")}
         options={likertOptions}
+        required={false}
         hasError={errors.includes("recreio_mobiliario_condicao")}
       />
 
@@ -309,6 +328,7 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
         value={data.recreio_limpeza || ""}
         onChange={handleChange("recreio_limpeza")}
         options={likertOptions}
+        required={false}
         hasError={errors.includes("recreio_limpeza")}
       />
 
@@ -319,6 +339,7 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
         value={data.recreio_temperatura || ""}
         onChange={handleChange("recreio_temperatura")}
         options={likertOptions}
+        required={false}
         hasError={errors.includes("recreio_temperatura")}
       />
 
@@ -329,6 +350,7 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
         value={data.recreio_iluminacao || ""}
         onChange={handleChange("recreio_iluminacao")}
         options={likertOptions}
+        required={false}
         hasError={errors.includes("recreio_iluminacao")}
       />
 
@@ -349,6 +371,7 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
         value={data.rancho_qualidade_comida || ""}
         onChange={handleChange("rancho_qualidade_comida")}
         options={likertOptions}
+        required={false}
         hasError={errors.includes("rancho_qualidade_comida")}
       />
 
@@ -359,6 +382,7 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
         value={data.rancho_mobiliario_condicao || ""}
         onChange={handleChange("rancho_mobiliario_condicao")}
         options={likertOptions}
+        required={false}
         hasError={errors.includes("rancho_mobiliario_condicao")}
       />
 
@@ -369,6 +393,7 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
         value={data.rancho_limpeza || ""}
         onChange={handleChange("rancho_limpeza")}
         options={likertOptions}
+        required={false}
         hasError={errors.includes("rancho_limpeza")}
       />
 
@@ -379,6 +404,7 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
         value={data.rancho_temperatura || ""}
         onChange={handleChange("rancho_temperatura")}
         options={likertOptions}
+        required={false}
         hasError={errors.includes("rancho_temperatura")}
       />
 
@@ -389,6 +415,7 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
         value={data.rancho_iluminacao || ""}
         onChange={handleChange("rancho_iluminacao")}
         options={likertOptions}
+        required={false}
         hasError={errors.includes("rancho_iluminacao")}
       />
 
@@ -409,6 +436,7 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
         value={data.escala_equipamentos_condicao || ""}
         onChange={handleChange("escala_equipamentos_condicao")}
         options={likertOptions}
+        required={false}
         hasError={errors.includes("escala_equipamentos_condicao")}
       />
 
@@ -419,6 +447,7 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
         value={data.escala_pernoite_adequada || ""}
         onChange={handleChange("escala_pernoite_adequada")}
         options={likertOptions}
+        required={false}
         hasError={errors.includes("escala_pernoite_adequada")}
       />
 
@@ -429,6 +458,7 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
         value={data.tfm_participa_regularmente || ""}
         onChange={handleChange("tfm_participa_regularmente")}
         options={likertOptions}
+        required={false}
         hasError={errors.includes("tfm_participa_regularmente")}
       />
 
@@ -439,6 +469,7 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
         value={data.tfm_incentivo_pratica || ""}
         onChange={handleChange("tfm_incentivo_pratica")}
         options={likertOptions}
+        required={false}
         hasError={errors.includes("tfm_incentivo_pratica")}
       />
 
@@ -449,6 +480,7 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
         value={data.tfm_instalacoes_adequadas || ""}
         onChange={handleChange("tfm_instalacoes_adequadas")}
         options={likertOptions}
+        required={false}
         hasError={errors.includes("tfm_instalacoes_adequadas")}
       />
     </div>

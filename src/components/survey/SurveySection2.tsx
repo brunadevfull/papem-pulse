@@ -27,6 +27,7 @@ export function SurveySection2({ data, onUpdate, errors = [] }: SurveySection2Pr
         value={data.encarregado_ouve_melhorias || ""}
         onChange={handleChange("encarregado_ouve_melhorias")}
         options={likertOptions}
+        required={false}
         hasError={errors.includes("encarregado_ouve_melhorias")}
       />
 
@@ -37,6 +38,7 @@ export function SurveySection2({ data, onUpdate, errors = [] }: SurveySection2Pr
         value={data.encarregado_fornece_meios || ""}
         onChange={handleChange("encarregado_fornece_meios")}
         options={likertOptions}
+        required={false}
         hasError={errors.includes("encarregado_fornece_meios")}
       />
 
@@ -47,6 +49,7 @@ export function SurveySection2({ data, onUpdate, errors = [] }: SurveySection2Pr
         value={data.disposicao_contribuir_setor || ""}
         onChange={handleChange("disposicao_contribuir_setor")}
         options={likertOptions}
+        required={false}
         hasError={errors.includes("disposicao_contribuir_setor")}
       />
 
@@ -57,6 +60,7 @@ export function SurveySection2({ data, onUpdate, errors = [] }: SurveySection2Pr
         value={data.encarregado_delega || ""}
         onChange={handleChange("encarregado_delega")}
         options={likertOptions}
+        required={false}
         hasError={errors.includes("encarregado_delega")}
       />
 
@@ -67,6 +71,7 @@ export function SurveySection2({ data, onUpdate, errors = [] }: SurveySection2Pr
         value={data.pares_auxiliam_setor || ""}
         onChange={handleChange("pares_auxiliam_setor")}
         options={likertOptions}
+        required={false}
         hasError={errors.includes("pares_auxiliam_setor")}
       />
 
@@ -77,6 +82,7 @@ export function SurveySection2({ data, onUpdate, errors = [] }: SurveySection2Pr
         value={data.relacionamento_intersetorial || ""}
         onChange={handleChange("relacionamento_intersetorial")}
         options={likertOptions}
+        required={false}
         hasError={errors.includes("relacionamento_intersetorial")}
       />
 
@@ -87,16 +93,18 @@ export function SurveySection2({ data, onUpdate, errors = [] }: SurveySection2Pr
         value={data.entrosamento_tripulacao || ""}
         onChange={handleChange("entrosamento_tripulacao")}
         options={likertOptions}
+        required={false}
         hasError={errors.includes("entrosamento_tripulacao")}
       />
 
       <Question
         questionNumber={8}
-        question="A convivência com meus pares e superiores observa as regras do “bom convívio”."
+        question='A convivência com meus pares e superiores observa as regras do "bom convívio".'
         name="convivencia_regras"
         value={data.convivencia_regras || ""}
         onChange={handleChange("convivencia_regras")}
         options={likertOptions}
+        required={false}
         hasError={errors.includes("convivencia_regras")}
       />
 
@@ -107,6 +115,7 @@ export function SurveySection2({ data, onUpdate, errors = [] }: SurveySection2Pr
         value={data.confianca_respeito_relacoes || ""}
         onChange={handleChange("confianca_respeito_relacoes")}
         options={likertOptions}
+        required={false}
         hasError={errors.includes("confianca_respeito_relacoes")}
       />
 
@@ -117,6 +126,7 @@ export function SurveySection2({ data, onUpdate, errors = [] }: SurveySection2Pr
         value={data.integracao_familia_papem || ""}
         onChange={handleChange("integracao_familia_papem")}
         options={likertOptions}
+        required={false}
         hasError={errors.includes("integracao_familia_papem")}
       />
     </div>

@@ -239,37 +239,23 @@ export default function Survey() {
   };
 
   const getMissingFields = () => {
-    const section1Fields = [
-      'setor_localizacao', 'setor_computadores', 'setor_mobiliario', 'setor_limpeza', 'setor_temperatura', 'setor_iluminacao',
-      'alojamento_localizacao', 'alojamento_limpeza', 'alojamento_temperatura', 'alojamento_iluminacao', 'alojamento_armarios_condicao', 'alojamento_armario_preservado',
-      'banheiro_localizacao', 'banheiro_vasos_suficientes', 'banheiro_vasos_preservados', 'banheiro_torneiras_funcionam',
-      'banheiro_chuveiros_suficientes', 'banheiro_chuveiros_funcionam', 'banheiro_limpeza', 'banheiro_iluminacao',
-      'recreio_localizacao', 'recreio_mobiliario_quantidade', 'recreio_mobiliario_condicao', 'recreio_limpeza', 'recreio_temperatura', 'recreio_iluminacao',
-      'rancho_localizacao', 'rancho_qualidade_comida', 'rancho_mobiliario_condicao', 'rancho_limpeza', 'rancho_temperatura', 'rancho_iluminacao',
-      'escala_servico_tipo', 'escala_equipamentos_condicao', 'escala_pernoite_adequada',
-      'tfm_participa_regularmente', 'tfm_incentivo_pratica', 'tfm_instalacoes_adequadas'
+    // Apenas campos de localização são obrigatórios
+    const requiredLocationFields = [
+      'setor_localizacao',
+      'alojamento_localizacao',
+      'banheiro_localizacao',
+      'recreio_localizacao',
+      'rancho_localizacao',
+      'escala_servico_tipo'
     ];
 
-    const section2Fields = [
-      'encarregado_ouve_melhorias', 'encarregado_fornece_meios', 'disposicao_contribuir_setor', 'encarregado_delega',
-      'pares_auxiliam_setor', 'relacionamento_intersetorial', 'entrosamento_tripulacao', 'convivencia_regras',
-      'confianca_respeito_relacoes', 'integracao_familia_papem'
-    ];
+    // Verificar apenas na seção 1 (onde estão os campos de localização)
+    if (currentSection === 0) {
+      return requiredLocationFields.filter(field => !surveyData[field as keyof SurveyData]);
+    }
 
-    const section3Fields = [
-      'feedback_desempenho_regular', 'conceito_compativel_desempenho', 'importancia_funcao_papem', 'trabalho_reconhecido_valorizado',
-      'crescimento_profissional_estimulado', 'cursos_suficientes_atividade', 'programa_adestramento_regular', 'orgulho_trabalhar_papem',
-      'atuacao_area_especializacao', 'potencial_melhor_em_outra_funcao', 'carga_trabalho_justa', 'licenca_autorizada_sem_prejuizo'
-    ];
-
-    const section4Fields = [
-      'aspecto_positivo', 'aspecto_negativo', 'proposta_processo', 'proposta_satisfacao'
-    ];
-
-    const sectionFields = [section1Fields, section2Fields, section3Fields, section4Fields];
-    const requiredFields = sectionFields[currentSection];
-
-    return requiredFields.filter(field => !surveyData[field as keyof SurveyData]);
+    // Outras seções não têm campos obrigatórios
+    return [];
   };
 
   const isCurrentSectionComplete = () => {
@@ -344,6 +330,14 @@ export default function Survey() {
                     </p>
                   </div>
                 </div>
+              </div>
+
+              {/* Card Informativo sobre Perguntas Opcionais */}
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 max-w-3xl mx-auto">
+                <p className="text-sm text-blue-800">
+                  ℹ️ <span className="font-semibold">Pesquisa Flexível:</span> Você pode pular perguntas que preferir não responder. 
+                  Apenas os <span className="font-semibold">campos de localização</span> são obrigatórios para análise regional.
+                </p>
               </div>
             </div>
           </div>

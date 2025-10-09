@@ -106,7 +106,7 @@ export const insertSurveyResponseSchema = createInsertSchema(surveyResponses).om
   created_at: true,
 });
 
-// Schema personalizado com validações
+// Schema personalizado com validações - apenas campos de localização obrigatórios
 export const surveyValidationSchema = z.object({
   setor_localizacao: z.string().min(1, "Localização do setor é obrigatória"),
   alojamento_localizacao: z.string().min(1, "Localização do alojamento é obrigatória"),
@@ -114,7 +114,8 @@ export const surveyValidationSchema = z.object({
   recreio_localizacao: z.string().min(1, "Localização do salão de recreio é obrigatória"),
   rancho_localizacao: z.string().min(1, "Localização do rancho é obrigatória"),
   escala_servico_tipo: z.string().min(1, "Escala de serviço é obrigatória"),
-});
+  // Todos os outros campos são opcionais
+}).passthrough(); // Permite campos adicionais sem validação
 
 // Comment out for now since frontend doesn't use actual database operations
 // export type InsertSurveyResponseType = z.infer<typeof insertSurveyResponseSchema>;

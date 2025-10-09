@@ -46,6 +46,9 @@ export function Question({ question, name, value, onChange, options, required = 
             hasError ? 'text-destructive' : 'text-slate-800'
           }`}>
             {question}
+            {!required && (
+              <span className="text-xs text-muted-foreground ml-2 font-normal">(Opcional)</span>
+            )}
           </Label>
         </div>
       </div>

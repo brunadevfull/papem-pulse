@@ -199,11 +199,18 @@ app.post('/api/survey', async (req, res) => {
     // Get client IP for duplicate prevention
     const ip = req.ip || req.connection.remoteAddress || 'unknown';
     
+    // Convert empty strings to NULL for optional fields
+    const cleanData = Object.fromEntries(
+      Object.entries(surveyData).map(([key, value]) => 
+        [key, value === '' || value === undefined ? null : value]
+      )
+    );
+    
     // Insert survey response
     const [response] = await db
       .insert(surveyResponses)
       .values({
-        ...surveyData,
+        ...cleanData,
         ip_address: ip,
       })
       .returning();

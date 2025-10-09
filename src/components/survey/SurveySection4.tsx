@@ -50,15 +50,6 @@ export function SurveySection4({ data, onUpdate, errors = [] }: SurveySection4Pr
               hasError ? 'question-card-error' : ''
             }`}
           >
-            {hasError && (
-              <div className="mb-2 p-3 bg-destructive/10 border border-destructive/20 rounded-xl">
-                <p className="text-destructive text-sm font-medium flex items-center gap-2">
-                  <MessageSquare className="w-4 h-4" />
-                  Esta pergunta é obrigatória
-                </p>
-              </div>
-            )}
-
             <div className="flex items-start gap-3 mb-3">
               <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm transition-all duration-300 ${
                 hasError
@@ -72,6 +63,7 @@ export function SurveySection4({ data, onUpdate, errors = [] }: SurveySection4Pr
                   hasError ? 'text-destructive' : 'text-slate-800'
                 }`}>
                   {question.question}
+                  <span className="text-xs text-muted-foreground ml-2 font-normal">(Opcional - compartilhe se desejar)</span>
                 </Label>
 
                 <div className="relative">

@@ -59,6 +59,9 @@ export function SelectQuestion({
             }`}
           >
             {question}
+            {required && (
+              <span className="text-destructive ml-1">*</span>
+            )}
           </Label>
 
           {!value && (

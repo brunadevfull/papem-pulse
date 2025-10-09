@@ -27,6 +27,7 @@ export function SurveySection3({ data, onUpdate, errors = [] }: SurveySection3Pr
         value={data.feedback_desempenho_regular || ""}
         onChange={handleChange("feedback_desempenho_regular")}
         options={likertOptions}
+        required={false}
         hasError={errors.includes("feedback_desempenho_regular")}
       />
 
@@ -37,6 +38,7 @@ export function SurveySection3({ data, onUpdate, errors = [] }: SurveySection3Pr
         value={data.conceito_compativel_desempenho || ""}
         onChange={handleChange("conceito_compativel_desempenho")}
         options={likertOptions}
+        required={false}
         hasError={errors.includes("conceito_compativel_desempenho")}
       />
 
@@ -47,6 +49,7 @@ export function SurveySection3({ data, onUpdate, errors = [] }: SurveySection3Pr
         value={data.importancia_funcao_papem || ""}
         onChange={handleChange("importancia_funcao_papem")}
         options={likertOptions}
+        required={false}
         hasError={errors.includes("importancia_funcao_papem")}
       />
 
@@ -57,6 +60,7 @@ export function SurveySection3({ data, onUpdate, errors = [] }: SurveySection3Pr
         value={data.trabalho_reconhecido_valorizado || ""}
         onChange={handleChange("trabalho_reconhecido_valorizado")}
         options={likertOptions}
+        required={false}
         hasError={errors.includes("trabalho_reconhecido_valorizado")}
       />
 
@@ -67,6 +71,7 @@ export function SurveySection3({ data, onUpdate, errors = [] }: SurveySection3Pr
         value={data.crescimento_profissional_estimulado || ""}
         onChange={handleChange("crescimento_profissional_estimulado")}
         options={likertOptions}
+        required={false}
         hasError={errors.includes("crescimento_profissional_estimulado")}
       />
 
@@ -77,6 +82,7 @@ export function SurveySection3({ data, onUpdate, errors = [] }: SurveySection3Pr
         value={data.cursos_suficientes_atividade || ""}
         onChange={handleChange("cursos_suficientes_atividade")}
         options={likertOptions}
+        required={false}
         hasError={errors.includes("cursos_suficientes_atividade")}
       />
 
@@ -87,6 +93,7 @@ export function SurveySection3({ data, onUpdate, errors = [] }: SurveySection3Pr
         value={data.programa_adestramento_regular || ""}
         onChange={handleChange("programa_adestramento_regular")}
         options={likertOptions}
+        required={false}
         hasError={errors.includes("programa_adestramento_regular")}
       />
 
@@ -97,6 +104,7 @@ export function SurveySection3({ data, onUpdate, errors = [] }: SurveySection3Pr
         value={data.orgulho_trabalhar_papem || ""}
         onChange={handleChange("orgulho_trabalhar_papem")}
         options={likertOptions}
+        required={false}
         hasError={errors.includes("orgulho_trabalhar_papem")}
       />
 
@@ -107,6 +115,7 @@ export function SurveySection3({ data, onUpdate, errors = [] }: SurveySection3Pr
         value={data.atuacao_area_especializacao || ""}
         onChange={handleChange("atuacao_area_especializacao")}
         options={likertOptions}
+        required={false}
         hasError={errors.includes("atuacao_area_especializacao")}
       />
 
@@ -117,6 +126,7 @@ export function SurveySection3({ data, onUpdate, errors = [] }: SurveySection3Pr
         value={data.potencial_melhor_em_outra_funcao || ""}
         onChange={handleChange("potencial_melhor_em_outra_funcao")}
         options={likertOptions}
+        required={false}
         hasError={errors.includes("potencial_melhor_em_outra_funcao")}
       />
 
@@ -127,6 +137,7 @@ export function SurveySection3({ data, onUpdate, errors = [] }: SurveySection3Pr
         value={data.carga_trabalho_justa || ""}
         onChange={handleChange("carga_trabalho_justa")}
         options={likertOptions}
+        required={false}
         hasError={errors.includes("carga_trabalho_justa")}
       />
 
@@ -137,6 +148,7 @@ export function SurveySection3({ data, onUpdate, errors = [] }: SurveySection3Pr
         value={data.licenca_autorizada_sem_prejuizo || ""}
         onChange={handleChange("licenca_autorizada_sem_prejuizo")}
         options={likertOptions}
+        required={false}
         hasError={errors.includes("licenca_autorizada_sem_prejuizo")}
       />
     </div>

@@ -80,20 +80,16 @@ async function getQuestionStats(question: SectionQuestion, filters: FilterParams
   const column = surveyResponses[question.id as keyof typeof surveyResponses] as any;
   const filterClause = buildWhereClause(filters);
 
-  let query = db
+  const baseQuery = db
     .select({
       rating: column,
       count: count(),
     })
     .from(surveyResponses);
 
-  if (filterClause) {
-    query = query.where(filterClause);
-  }
-
-  const grouped = await query
-    .groupBy(column)
-    .orderBy(sql`count DESC`);
+  const grouped = filterClause
+    ? await baseQuery.where(filterClause).groupBy(column).orderBy(sql`count DESC`)
+    : await baseQuery.groupBy(column).orderBy(sql`count DESC`);
 
   const formattedRatings = grouped
     .filter((row) => row.rating !== null && row.rating !== '')
@@ -138,7 +134,7 @@ async function getSectionStats(section: SectionKey, filters: FilterParams): Prom
 async function getComments(filters: FilterParams): Promise<CommentRecord[]> {
   const filterClause = buildWhereClause(filters);
 
-  let query = db
+  const baseQuery = db
     .select({
       id: surveyResponses.id,
       setor_localizacao: surveyResponses.setor_localizacao,
@@ -150,12 +146,9 @@ async function getComments(filters: FilterParams): Promise<CommentRecord[]> {
     })
     .from(surveyResponses);
 
-  if (filterClause) {
-    query = query.where(filterClause);
-  }
-
-  const rows = await query
-    .orderBy(sql`${surveyResponses.created_at} DESC`);
+  const rows = filterClause
+    ? await baseQuery.where(filterClause).orderBy(sql`${surveyResponses.created_at} DESC`)
+    : await baseQuery.orderBy(sql`${surveyResponses.created_at} DESC`);
 
   return rows
     .filter((row) =>

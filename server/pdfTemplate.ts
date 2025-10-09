@@ -437,7 +437,7 @@ export function generatePdfTemplate(data: {
                 <li><strong>Setor Mais Engajado:</strong> ${mostActiveSection} com ${stats.setorDistribution[0]?.count || 0} participações demonstra alto interesse</li>
                 <li><strong>Distribuição:</strong> ${stats.setorDistribution.length} setores diferentes participaram, mostrando abrangência organizacional</li>
                 <li><strong>Áreas de Destaque:</strong> ${Object.entries(analytics.satisfactionAverages)
-                  .filter(([_, avg]) => avg !== null && avg >= 4)
+                  .filter(([_, avg]) => avg !== null && typeof avg === 'number' && avg >= 4)
                   .map(([field, _]) => getFriendlyFieldName(field))
                   .slice(0, 3)
                   .join(', ') || 'Necessário análise detalhada'}</li>

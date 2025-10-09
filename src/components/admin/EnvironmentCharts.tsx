@@ -293,7 +293,7 @@ export function EnvironmentCharts() {
           if (typeof neutroPercentage === "number" && counts.neutro > 0) {
             chartData.splice(2, 0, {
               category: "Neutro (legado)",
-              key: "neutro" as const,
+              key: "neutro" as any,
               percentage: neutroPercentage,
               count: counts.neutro,
               fill: "#94a3b8",

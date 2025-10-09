@@ -45,7 +45,7 @@ export function generateSectorChartHtml(sectorDistribution: any[]): string {
             const y1 = 150 + 120 * Math.sin((segment.startAngle - 90) * Math.PI / 180);
             const x2 = 150 + 120 * Math.cos((segment.endAngle - 90) * Math.PI / 180);
             const y2 = 150 + 120 * Math.sin((segment.endAngle - 90) * Math.PI / 180);
-            const largeArcFlag = segment.percentage > 50 ? 1 : 0;
+            const largeArcFlag = Number(segment.percentage) > 50 ? 1 : 0;
             
             return `
               <path d="M 150,150 L ${x1},${y1} A 120,120 0 ${largeArcFlag},1 ${x2},${y2} Z" 

@@ -289,37 +289,36 @@ export default function Survey() {
     <div className="min-h-screen" style={{ backgroundColor: '#f1f5f9' }}>
       <div className="container mx-auto max-w-7xl py-2 px-4 sm:px-6 lg:px-8 space-y-3">
         
-        {/* Header com Brasão e Card do Mascote - Compacto */}
-        <div className="space-y-2 fade-in">
-          {/* Brasão e Título */}
-          <div className="text-center space-y-2">
+        {/* Header Limpo - Estilo Institucional */}
+        <div className="bg-white border-b border-border pb-4 mb-6 fade-in">
+          <div className="text-center space-y-3 py-4">
             <div className="flex justify-center">
               <img 
                 src="/lovable-uploads/e0a4659d-a903-4c7c-b8ab-10694346d6f8.png" 
                 alt="Brasão PAPEM" 
-                className="w-16 h-16 object-contain"
+                className="w-24 h-24 object-contain"
               />
             </div>
-            <h1 className="text-xl font-bold text-primary">
+            <h1 className="text-2xl font-bold text-primary">
               Pesquisa de Clima Organizacional
             </h1>
           </div>
-          
-          {/* Card do Mascote - Ultra Compacto */}
-          <div className="w-full bg-gradient-to-r from-primary/10 to-primary/5 rounded-lg border border-primary/20 p-2 flex items-center gap-2 max-w-3xl mx-auto">
-            <img 
-              src="/lovable-uploads/a27f9473-5787-4cab-9c01-3f62a66a5e88.png" 
-              alt="Mascote" 
-              className="w-10 h-10 object-contain flex-shrink-0"
-            />
-            <div className="flex-1 text-left">
-              <p className="text-[10px] font-bold text-primary leading-tight">
-                🔒 Pesquisa 100% Anônima e Confidencial 🛡️
-              </p>
-              <p className="text-[10px] text-muted-foreground leading-tight">
-                Sua participação é fundamental. Responda com objetividade.
-              </p>
-            </div>
+        </div>
+
+        {/* Card do Mascote - Restaurado */}
+        <div className="w-full bg-gradient-to-r from-primary/10 to-primary/5 rounded-xl border-2 border-primary/20 p-3 flex items-center gap-3 max-w-4xl mx-auto mb-6">
+          <img 
+            src="/lovable-uploads/a27f9473-5787-4cab-9c01-3f62a66a5e88.png" 
+            alt="Mascote" 
+            className="w-12 h-12 object-contain flex-shrink-0"
+          />
+          <div className="flex-1 text-left">
+            <p className="text-xs font-bold text-primary mb-0.5">
+              🔒 Pesquisa 100% Anônima e Confidencial 🛡️
+            </p>
+            <p className="text-xs text-muted-foreground">
+              Sua participação é fundamental. Responda com objetividade.
+            </p>
           </div>
         </div>
 

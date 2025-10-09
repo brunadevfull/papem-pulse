@@ -358,16 +358,16 @@ export default function Survey() {
       <div className="container mx-auto max-w-7xl py-2 px-4 sm:px-6 lg:px-8 space-y-3">
         
         {/* Título da Pesquisa no Corpo */}
-        <div className="bg-gradient-to-br from-white to-primary/5 rounded-xl border border-border fade-in transition-all">
-          <div className="text-center space-y-2 py-3 px-4">
+        <div className="bg-gradient-to-br from-white to-primary/5 rounded-lg border border-border fade-in transition-all">
+          <div className="text-center space-y-1.5 py-2 px-3">
             <div className="flex justify-center">
               <img 
                 src="/lovable-uploads/e0a4659d-a903-4c7c-b8ab-10694346d6f8.png" 
                 alt="Brasão PAPEM" 
-                className="w-16 h-16 md:w-20 md:h-20 object-contain hover:scale-110 transition-transform"
+                className="w-12 h-12 md:w-14 md:h-14 object-contain hover:scale-110 transition-transform"
               />
             </div>
-            <h2 className="text-xl md:text-2xl font-bold text-primary">
+            <h2 className="text-lg md:text-xl font-bold text-primary">
               Pesquisa de Clima Organizacional
             </h2>
           </div>

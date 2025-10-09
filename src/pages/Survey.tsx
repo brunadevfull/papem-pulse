@@ -288,7 +288,7 @@ export default function Survey() {
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#f1f5f9' }}>
       {/* Survey Header com PAPEM e Mascote */}
-      <header className="bg-gradient-to-r from-primary via-primary/95 to-naval-green border-b-4 border-naval-gold sticky top-0 z-50 shadow-lg transition-shadow">
+      <header className="bg-gradient-to-r from-primary via-primary/90 to-accent border-b-4 border-naval-gold sticky top-0 z-50 shadow-lg transition-shadow">
         <div className="flex flex-col md:flex-row items-center justify-between px-4 md:px-8 py-2 md:py-3 gap-3 md:gap-4">
           <div className="flex items-center gap-2 md:gap-3">
             <img 
@@ -308,7 +308,7 @@ export default function Survey() {
           </div>
           
           {/* Mascote com animação - Cores do brasão */}
-          <div className="flex items-center gap-3 bg-white/95 backdrop-blur-sm rounded-xl border-2 border-naval-gold px-4 py-3 shadow-lg hover:shadow-xl transition-all">
+          <div className="flex items-center gap-3 bg-white/95 backdrop-blur-sm rounded-xl border-2 border-primary/20 px-4 py-3 shadow-lg hover:shadow-xl transition-all">
             <img 
               src="/lovable-uploads/a27f9473-5787-4cab-9c01-3f62a66a5e88.png" 
               alt="Mascote" 
@@ -316,9 +316,9 @@ export default function Survey() {
             />
             <div className="text-left">
               <p className="text-xs md:text-sm font-bold text-primary leading-tight flex items-center gap-2 font-montserrat">
-                <Lock className="w-4 h-4 text-naval-green" />
+                <Lock className="w-4 h-4 text-primary" />
                 Pesquisa 100% Anônima e Confidencial
-                <Shield className="w-4 h-4 text-naval-green" />
+                <Shield className="w-4 h-4 text-primary" />
               </p>
               <p className="text-[10px] md:text-xs text-foreground/80 leading-tight mt-1 font-merriweather">
                 Sua participação é fundamental. Responda com objetividade.
@@ -332,7 +332,7 @@ export default function Survey() {
               asChild
               variant="default"
               size="sm"
-              className="gap-2 hover:scale-105 transition-transform bg-white hover:bg-white/90 text-primary border-2 border-naval-gold shadow-md"
+              className="gap-2 hover:scale-105 transition-transform bg-white hover:bg-white/90 text-primary border-2 border-primary/30 shadow-md"
             >
               <NavLink to="/survey">
                 <ClipboardList className="w-4 h-4" />

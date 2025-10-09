@@ -429,12 +429,6 @@ export default function Survey() {
                 {currentSection === 2 && `${currentSection + 1}. Motivação e Desenvolvimento Profissional`}
                 {currentSection === 3 && `${currentSection + 1}. Comentários e Sugestões`}
               </h2>
-              <p className="text-xs text-primary/70 font-medium">
-                {currentSection === 0 && "32 perguntas"}
-                {currentSection === 1 && "10 perguntas"}
-                {currentSection === 2 && "12 perguntas"}
-                {currentSection === 3 && "4 perguntas"}
-              </p>
             </div>
           </div>
         </div>

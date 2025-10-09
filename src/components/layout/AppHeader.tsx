@@ -18,7 +18,7 @@ export function AppHeader() {
           
           <div className="flex items-center gap-4">
             <h1 className="text-xl font-bold text-primary">
-              PAPEM - Pagadoria de Pessoal da Marinha
+              Pesquisa
             </h1>
             <span className="flex items-center gap-2 text-sm text-muted-foreground">
               <Shield className="w-4 h-4 text-success" />

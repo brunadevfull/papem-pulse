@@ -287,24 +287,34 @@ export default function Survey() {
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#f1f5f9' }}>
-      {/* Survey Header com título da seção */}
+      {/* Survey Header com mascote e informações */}
       <header className="bg-white border-b border-border sticky top-0 z-50">
-        <div className="h-20 flex items-center px-8 gap-6">
-          <div className="flex-1 flex items-center gap-4">
+        <div className="flex items-center justify-between px-8 py-4 gap-6">
+          <div className="flex items-center gap-4">
             <img 
               src="/lovable-uploads/e0a4659d-a903-4c7c-b8ab-10694346d6f8.png" 
               alt="Brasão PAPEM" 
               className="w-12 h-12 object-contain"
             />
-            
-            <div className="flex items-center gap-4">
-              <h1 className="text-xl font-bold text-primary">
-                Pesquisa de Clima Organizacional
-              </h1>
-              <span className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Shield className="w-4 h-4 text-success" />
-                100% Anônimo
-              </span>
+            <h1 className="text-xl font-bold text-primary">
+              Pesquisa de Clima Organizacional
+            </h1>
+          </div>
+          
+          {/* Mascote e Texto Anônimo */}
+          <div className="flex items-center gap-3 bg-gradient-to-r from-primary/10 to-primary/5 rounded-lg border border-primary/20 px-4 py-2">
+            <img 
+              src="/lovable-uploads/a27f9473-5787-4cab-9c01-3f62a66a5e88.png" 
+              alt="Mascote" 
+              className="w-10 h-10 object-contain"
+            />
+            <div className="text-left">
+              <p className="text-xs font-bold text-primary leading-tight">
+                🔒 Pesquisa 100% Anônima e Confidencial 🛡️
+              </p>
+              <p className="text-[10px] text-muted-foreground leading-tight">
+                Sua participação é fundamental. Responda com objetividade.
+              </p>
             </div>
           </div>
           
@@ -339,23 +349,7 @@ export default function Survey() {
 
       <div className="container mx-auto max-w-7xl py-2 px-4 sm:px-6 lg:px-8 space-y-3">
         
-        {/* Card do Mascote - Centralizado e Maior */}
-        <div className="w-full bg-gradient-to-r from-primary/10 to-primary/5 rounded-xl border-2 border-primary/20 p-6 flex flex-col items-center gap-4 max-w-5xl mx-auto mb-6 text-center">
-          <img 
-            src="/lovable-uploads/a27f9473-5787-4cab-9c01-3f62a66a5e88.png" 
-            alt="Mascote" 
-            className="w-20 h-20 object-contain"
-          />
-          <div>
-            <p className="text-base font-bold text-primary mb-2">
-              🔒 Pesquisa 100% Anônima e Confidencial 🛡️
-            </p>
-            <p className="text-sm text-muted-foreground">
-              Sua participação é fundamental. Responda com objetividade.
-            </p>
-          </div>
-        </div>
-
+        
         {/* Enhanced Progress Section - Compacto */}
         <div className="survey-card-enhanced p-4 slide-up w-full max-w-[1400px] mx-auto">
           <div className="space-y-3">

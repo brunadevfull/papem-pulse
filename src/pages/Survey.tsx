@@ -299,10 +299,7 @@ export default function Survey() {
             
             <div className="flex items-center gap-4">
               <h1 className="text-xl font-bold text-primary">
-                {currentSection === 0 && "1. Condições de Trabalho, Serviço e TFM"}
-                {currentSection === 1 && "2. Relacionamento"}
-                {currentSection === 2 && "3. Motivação e Desenvolvimento Profissional"}
-                {currentSection === 3 && "4. Comentários e Sugestões"}
+                Pesquisa de Clima Organizacional
               </h1>
               <span className="flex items-center gap-2 text-sm text-muted-foreground">
                 <Shield className="w-4 h-4 text-success" />

@@ -287,77 +287,74 @@ export default function Survey() {
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#f1f5f9' }}>
-      <div className="container mx-auto max-w-7xl py-8 px-4 sm:px-6 lg:px-8 space-y-8">
+      <div className="container mx-auto max-w-7xl py-4 px-4 sm:px-6 lg:px-8 space-y-4">
         
-        {/* Modern Header */}
-        <div className="text-center space-y-8 py-8 fade-in">            
-          <div className="space-y-8">
+        {/* Modern Header - Compacto */}
+        <div className="text-center space-y-3 py-3 fade-in">            
+          <div className="space-y-3">
             <div className="flex justify-center">
               <div className="relative">
                 <img 
                   src="/lovable-uploads/e0a4659d-a903-4c7c-b8ab-10694346d6f8.png" 
                   alt="Brasão PAPEM" 
-                  className="w-28 h-28 object-contain floating-element"
+                  className="w-20 h-20 object-contain"
                 />
               </div>
             </div>
             
-            <div className="space-y-4">
-              <h1 className="text-4xl font-bold text-foreground">
+            <div className="space-y-3">
+              <h1 className="text-2xl font-bold text-primary">
                 Pesquisa de Clima Organizacional
               </h1>
               
-              {/* Card Informativo - Full Width */}
-              <div className="bg-gradient-to-r from-primary/10 via-primary/5 to-primary/10 rounded-2xl p-8 border-2 border-primary/20 shadow-xl w-full">
-                <div className="flex items-start gap-8">
+              {/* Card Informativo - Compacto */}
+              <div className="bg-gradient-to-r from-primary/10 via-primary/5 to-primary/10 rounded-xl p-4 border border-primary/20 shadow-md w-full max-w-5xl mx-auto">
+                <div className="flex items-center gap-4">
                   <div className="flex-shrink-0">
-                    <div className="w-20 h-20 bg-primary/10 rounded-2xl flex items-center justify-center shadow-lg">
-                      <img 
-                        src="/lovable-uploads/a27f9473-5787-4cab-9c01-3f62a66a5e88.png" 
-                        alt="Mascote PAPEM" 
-                        className="w-16 h-20 object-contain"
-                      />
-                    </div>
+                    <img 
+                      src="/lovable-uploads/a27f9473-5787-4cab-9c01-3f62a66a5e88.png" 
+                      alt="Mascote PAPEM" 
+                      className="w-12 h-16 object-contain"
+                    />
                   </div>
                   
                   <div className="flex-1">
-                    <div className="mb-4">
-                      <h2 className="text-2xl font-bold text-primary mb-3 flex items-center gap-3">
-                        <span className="text-3xl">🔒</span>
-                        Pesquisa 100% Anônima e Confidencial
-                        <span className="text-3xl">🛡️</span>
-                      </h2>
-                      <p className="text-slate-700 text-lg leading-relaxed">
-                        Sua participação é fundamental para o <span className="font-bold text-foreground">aprimoramento e melhoria da nossa OM</span>.
-                        Responda com <span className="font-bold text-primary">objetividade e precisão</span>.
-                      </p>
-                    </div>
-                    
-                    <div className="bg-blue-50/80 border border-blue-200 rounded-xl p-4">
-                      <p className="text-base text-blue-800">
-                        <span className="text-xl mr-2">ℹ️</span>
-                        <span className="font-bold">Pesquisa Flexível:</span> Você pode pular perguntas que preferir não responder. 
-                        Apenas os <span className="font-bold">campos de localização</span> são obrigatórios para análise regional.
-                      </p>
-                    </div>
+                    <h2 className="text-base font-bold text-primary mb-1 flex items-center gap-2">
+                      <span className="text-lg">🔒</span>
+                      Pesquisa 100% Anônima e Confidencial
+                      <span className="text-lg">🛡️</span>
+                    </h2>
+                    <p className="text-slate-700 text-sm leading-relaxed">
+                      Sua participação é fundamental para o <span className="font-semibold">aprimoramento e melhoria da nossa OM</span>.
+                      Responda com <span className="font-semibold text-primary">objetividade e precisão</span>.
+                    </p>
                   </div>
                 </div>
+              </div>
+              
+              {/* Card Pesquisa Flexível - Compacto */}
+              <div className="bg-blue-50/80 border border-blue-200 rounded-lg p-3 max-w-4xl mx-auto">
+                <p className="text-xs text-blue-800">
+                  <span className="text-sm mr-1">ℹ️</span>
+                  <span className="font-semibold">Pesquisa Flexível:</span> Você pode pular perguntas que preferir não responder. 
+                  Apenas os <span className="font-semibold">campos de localização</span> são obrigatórios para análise regional.
+                </p>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Enhanced Progress Section */}
-        <div className="survey-card-enhanced p-8 slide-up w-full max-w-[1400px] mx-auto">
-          <div className="space-y-4">
+        {/* Enhanced Progress Section - Compacto */}
+        <div className="survey-card-enhanced p-4 slide-up w-full max-w-[1400px] mx-auto">
+          <div className="space-y-3">
             {/* Progress Info */}
-            <div className="flex justify-between items-center text-sm text-foreground mb-2">
-              <div className="flex items-center gap-3">
+            <div className="flex justify-between items-center text-xs text-foreground">
+              <div className="flex items-center gap-2">
                 <span className="font-medium">Seção {currentSection + 1} de {totalSections}</span>
                 
                 {/* Auto-save indicator */}
                 {lastSaved && (
-                  <div className="flex items-center gap-1 text-xs text-emerald-600 floating-feedback">
+                  <div className="flex items-center gap-1 text-xs text-emerald-600">
                     <Save className="w-3 h-3" />
                     <span>Salvo {lastSaved.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</span>
                   </div>
@@ -365,17 +362,17 @@ export default function Survey() {
                 
                 {/* Contextual hint */}
                 {showHint && currentSection === 0 && (
-                  <div className="flex items-center gap-1 text-xs text-primary bg-primary/10 px-2 py-1 rounded-full cursor-pointer hover:bg-primary/20 transition-colors"
+                  <div className="flex items-center gap-1 text-xs text-primary bg-primary/10 px-2 py-0.5 rounded-full cursor-pointer hover:bg-primary/20 transition-colors"
                        onClick={() => setShowHint(false)}>
                     <Info className="w-3 h-3" />
-                    <span>Suas respostas são salvas automaticamente</span>
+                    <span>Respostas salvas automaticamente</span>
                   </div>
                 )}
               </div>
               
               <div className="text-right">
-                <span className="font-semibold text-primary">{Math.round(progress)}% concluído</span>
-                <div className="text-xs text-muted-foreground mt-1">
+                <span className="font-semibold text-primary text-sm">{Math.round(progress)}% concluído</span>
+                <div className="text-xs text-muted-foreground">
                   ⏱️ ~{Math.max(1, Math.ceil((4 - currentSection - 1) * 2))} min restantes
                 </div>
               </div>
@@ -402,32 +399,32 @@ export default function Survey() {
               </div>
             </div>
             
-            {/* Section Indicators */}
-            <div className="flex justify-between items-center">
+            {/* Section Indicators - Mais compactos */}
+            <div className="flex justify-between items-center gap-2">
               {sectionData.map((section, index) => {
                 const isActive = index === currentSection;
                 const isCompleted = index < currentSection;
                 
                 return (
-                  <div key={index} className={`section-indicator-enhanced flex-1 ${
-                    isActive ? 'section-indicator-active' : ''
+                  <div key={index} className={`flex items-center gap-2 flex-1 px-2 py-1.5 rounded-lg transition-all duration-300 ${
+                    isActive ? 'bg-primary/10 border border-primary/20' : ''
                   }`}>
                     <div className={`
-                      w-8 h-8 rounded-full border-2 flex items-center justify-center text-sm font-medium transition-all duration-300 ${isCompleted ? 'micro-bounce' : ''}
+                      w-6 h-6 rounded-full border-2 flex items-center justify-center text-xs font-medium transition-all duration-300
                       ${isActive 
-                        ? 'border-primary text-primary bg-primary/10 shadow-sm' 
+                        ? 'border-primary text-primary bg-primary/10' 
                         : isCompleted
-                        ? 'border-success text-white bg-success shadow-sm'
+                        ? 'border-success text-white bg-success'
                         : 'border-muted-foreground text-muted-foreground bg-transparent'
                       }
                     `}>
                       {isCompleted ? (
-                        <CheckCircle2 className="w-4 h-4" />
+                        <CheckCircle2 className="w-3 h-3" />
                       ) : (
                         <span>{index + 1}</span>
                       )}
                     </div>
-                    <p className={`text-sm font-medium transition-colors duration-300 ${
+                    <p className={`text-xs font-medium transition-colors duration-300 ${
                       isActive 
                         ? 'text-primary' 
                         : isCompleted
@@ -443,18 +440,18 @@ export default function Survey() {
           </div>
         </div>
 
-        {/* Modern Section Title */}
-        <div className="text-center space-y-4 fade-in">
-          <div className="inline-flex items-center gap-3 px-6 py-3 bg-primary/10 rounded-2xl border border-primary/20">
-            <IconComponent className="w-6 h-6 text-primary" />
+        {/* Modern Section Title - Compacto */}
+        <div className="text-center fade-in">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-xl border border-primary/20">
+            <IconComponent className="w-5 h-5 text-primary" />
             <div className="text-center">
-              <h2 className="text-xl font-bold text-foreground">
+              <h2 className="text-base font-bold text-foreground">
                 {currentSection === 0 && `${currentSection + 1}. Condições de Trabalho, Serviço e TFM`}
                 {currentSection === 1 && `${currentSection + 1}. Relacionamento`}
                 {currentSection === 2 && `${currentSection + 1}. Motivação e Desenvolvimento Profissional`}
                 {currentSection === 3 && `${currentSection + 1}. Comentários e Sugestões`}
               </h2>
-              <p className="text-sm text-primary/70 font-medium mt-1">
+              <p className="text-xs text-primary/70 font-medium">
                 {currentSection === 0 && "32 perguntas"}
                 {currentSection === 1 && "10 perguntas"}
                 {currentSection === 2 && "12 perguntas"}
@@ -465,7 +462,7 @@ export default function Survey() {
         </div>
         
         {/* Survey Content */}
-        <div className="space-y-4 slide-up max-w-[1400px] mx-auto">
+        <div className="space-y-3 slide-up max-w-[1400px] mx-auto">
           {renderCurrentSection()}
         </div>
 

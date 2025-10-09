@@ -76,7 +76,7 @@ export function SelectQuestion({
         </div>
 
         {/* Linha das opções - inline e justificadas */}
-        <div className="flex flex-nowrap justify-between gap-2 pl-10 overflow-x-auto">
+        <div className="flex flex-nowrap justify-between gap-2 pl-10">
           {options.map((option, index) => {
             const isSelected = value === option.value;
 

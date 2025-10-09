@@ -287,32 +287,38 @@ export default function Survey() {
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#f1f5f9' }}>
-      {/* Survey Header com mascote e informações */}
+      {/* Survey Header com PAPEM e Mascote */}
       <header className="bg-white border-b border-border sticky top-0 z-50">
-        <div className="flex items-center justify-between px-8 py-4 gap-6">
+        <div className="flex items-center justify-between px-8 py-3 gap-6">
           <div className="flex items-center gap-4">
             <img 
               src="/lovable-uploads/e0a4659d-a903-4c7c-b8ab-10694346d6f8.png" 
               alt="Brasão PAPEM" 
               className="w-12 h-12 object-contain"
             />
-            <h1 className="text-xl font-bold text-primary">
-              Pesquisa de Clima Organizacional
-            </h1>
+            <div>
+              <h1 className="text-xl font-bold text-primary">
+                PAPEM - Pagadoria de Pessoal da Marinha
+              </h1>
+              <span className="flex items-center gap-2 text-sm text-muted-foreground">
+                <Shield className="w-4 h-4 text-success" />
+                100% Anônimo
+              </span>
+            </div>
           </div>
           
-          {/* Mascote e Texto Anônimo */}
+          {/* Mascote */}
           <div className="flex items-center gap-3 bg-gradient-to-r from-primary/10 to-primary/5 rounded-lg border border-primary/20 px-4 py-2">
             <img 
               src="/lovable-uploads/a27f9473-5787-4cab-9c01-3f62a66a5e88.png" 
               alt="Mascote" 
-              className="w-10 h-10 object-contain"
+              className="w-16 h-16 object-contain"
             />
             <div className="text-left">
-              <p className="text-xs font-bold text-primary leading-tight">
+              <p className="text-sm font-bold text-primary leading-tight">
                 🔒 Pesquisa 100% Anônima e Confidencial 🛡️
               </p>
-              <p className="text-[10px] text-muted-foreground leading-tight">
+              <p className="text-xs text-muted-foreground leading-tight">
                 Sua participação é fundamental. Responda com objetividade.
               </p>
             </div>
@@ -348,6 +354,22 @@ export default function Survey() {
       </header>
 
       <div className="container mx-auto max-w-7xl py-2 px-4 sm:px-6 lg:px-8 space-y-3">
+        
+        {/* Título da Pesquisa no Corpo */}
+        <div className="bg-white border-b border-border pb-4 mb-4 fade-in">
+          <div className="text-center space-y-3 py-4">
+            <div className="flex justify-center">
+              <img 
+                src="/lovable-uploads/e0a4659d-a903-4c7c-b8ab-10694346d6f8.png" 
+                alt="Brasão PAPEM" 
+                className="w-24 h-24 object-contain"
+              />
+            </div>
+            <h2 className="text-2xl font-bold text-primary">
+              Pesquisa de Clima Organizacional
+            </h2>
+          </div>
+        </div>
         
         
         {/* Enhanced Progress Section - Compacto */}

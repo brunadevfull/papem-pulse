@@ -2,8 +2,7 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { CheckCircle2, ClipboardList, ArrowRight, ArrowLeft, Anchor, Shield, Star, Waves, BarChart3, Save, Info, TrendingUp, Clock } from "lucide-react";
-import { NavLink } from "react-router-dom";
+import { CheckCircle2, ArrowRight, ArrowLeft, Anchor, Shield, Star, Waves, BarChart3, Save, Info, TrendingUp, Clock } from "lucide-react";
 import { SurveySection1 } from "@/components/survey/SurveySection1";
 import { SurveySection2 } from "@/components/survey/SurveySection2";
 import { SurveySection3 } from "@/components/survey/SurveySection3";
@@ -288,55 +287,6 @@ export default function Survey() {
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#f1f5f9' }}>
-      {/* Survey Header com PAPEM e Mascote */}
-      <header style={{ backgroundColor: '#001945' }} className="sticky top-0 z-50 shadow-lg transition-shadow">
-        <div className="flex flex-col md:flex-row items-center justify-between px-4 md:px-8 py-2 md:py-3 gap-3 md:gap-4">
-          <div className="flex items-center gap-2 md:gap-3">
-            <img 
-              src="/lovable-uploads/e0a4659d-a903-4c7c-b8ab-10694346d6f8.png" 
-              alt="Brasão PAPEM" 
-              className="w-10 h-10 md:w-12 md:h-12 object-contain transition-transform hover:scale-110 drop-shadow-lg"
-            />
-            <div>
-              <h1 className="text-base md:text-xl font-bold text-white font-montserrat tracking-wide drop-shadow-md">
-                PAPEM - Pagadoria de Pessoal da Marinha
-              </h1>
-              <span className="flex items-center gap-2 text-xs md:text-sm text-naval-gold font-semibold font-merriweather tracking-wider drop-shadow-sm">
-                <Shield className="w-3 h-3 md:w-4 md:h-4" />
-                ORDEM, PRONTIDÃO E REGULARIDADE
-              </span>
-            </div>
-          </div>
-          
-          {/* Navigation Buttons - Cores do brasão */}
-          <div className="flex items-center gap-2">
-            <Button
-              asChild
-              variant="default"
-              size="sm"
-              className="gap-2 hover:scale-105 transition-transform bg-white hover:bg-white/90 text-primary border-2 border-naval-gold shadow-md"
-            >
-              <NavLink to="/survey">
-                <ClipboardList className="w-4 h-4" />
-                <span className="hidden sm:inline font-semibold">Pesquisa</span>
-              </NavLink>
-            </Button>
-            
-            <Button
-              asChild
-              variant="ghost"
-              size="sm" 
-              className="gap-2 hover:scale-105 transition-transform text-white hover:bg-white/20 border border-white/30"
-            >
-              <NavLink to="/admin">
-                <BarChart3 className="w-4 h-4" />
-                <span className="hidden sm:inline font-semibold">Dashboard</span>
-              </NavLink>
-            </Button>
-          </div>
-        </div>
-      </header>
-
       <div className="container mx-auto max-w-7xl py-2 px-4 sm:px-6 lg:px-8 space-y-3">
         {/* Título da Pesquisa no Corpo */}
         <div className="bg-gradient-to-br from-white to-primary/5 rounded-lg border border-border fade-in transition-all">

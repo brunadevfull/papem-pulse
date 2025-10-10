@@ -13,12 +13,12 @@ export function AppHeader() {
             className="w-10 h-10 md:w-12 md:h-12 object-contain transition-transform hover:scale-110 drop-shadow-lg"
           />
           <div>
-            <h1 className="text-base md:text-xl font-bold text-white font-montserrat tracking-wide drop-shadow-md">
+            <h1 className="text-lg md:text-2xl font-bold text-white font-cinzel tracking-wide drop-shadow-md">
               PAPEM - Pagadoria de Pessoal da Marinha
             </h1>
-            <span className="flex items-center gap-2 text-xs md:text-sm text-naval-gold font-semibold font-merriweather tracking-wider drop-shadow-sm">
+            <span className="flex items-center gap-2 text-sm md:text-lg text-white font-semibold font-cinzel tracking-wider drop-shadow-sm">
               <Shield className="w-3 h-3 md:w-4 md:h-4" />
-              ORDEM, PRONTIDÃO E REGULARIDADE
+              "ORDEM, PRONTIDÃO E REGULARIDADE"
             </span>
           </div>
         </div>

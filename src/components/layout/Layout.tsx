@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { PropsWithChildren } from "react";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { ClipboardList, BarChart3 } from "lucide-react";
@@ -20,10 +20,9 @@ const navigationItems = [
   }
 ];
 
-interface LayoutProps {
-  children: ReactNode;
+type LayoutProps = PropsWithChildren<{
   currentPageName: string;
-}
+}>;
 
 export default function Layout({ children, currentPageName }: LayoutProps) {
   return (

@@ -1,28 +1,25 @@
-import { Menu } from "lucide-react";
-
 export function AppHeader() {
   return (
-    <header style={{ backgroundColor: '#001945' }} className="w-full">
-      <div className="h-20 flex items-center px-8 gap-4">
-        {/* Menu Hamburguer */}
-        <button className="text-white/90 hover:text-white transition-colors">
-          <Menu className="w-6 h-6" />
-        </button>
-        
-        {/* Brasão PAPEM */}
-        <img 
-          src="/lovable-uploads/e0a4659d-a903-4c7c-b8ab-10694346d6f8.png" 
-          alt="Brasão PAPEM" 
-          className="w-14 h-14 object-contain"
+    <header className="w-full bg-[#001a48] text-white">
+      <div className="mx-auto flex h-24 w-full max-w-7xl items-center gap-6 px-10">
+        <div className="flex flex-col items-center gap-1">
+          <span className="h-1 w-6 rounded-full bg-white" />
+          <span className="h-1 w-6 rounded-full bg-white" />
+          <span className="h-1 w-6 rounded-full bg-white" />
+        </div>
+
+        <img
+          src="/lovable-uploads/e0a4659d-a903-4c7c-b8ab-10694346d6f8.png"
+          alt="Brasão PAPEM"
+          className="h-16 w-16 object-contain"
         />
-        
-        {/* Texto do Header */}
-        <div className="flex flex-col">
-          <h1 className="text-white text-xl font-bold tracking-wide uppercase">
+
+        <div className="flex flex-col gap-1">
+          <h1 className="text-xl font-semibold uppercase tracking-[0.35em] text-white">
             PAGADORIA DE PESSOAL DA MARINHA
           </h1>
-          <p className="text-white/90 text-xs tracking-wider">
-            "ORDEM, PRONTIDÃO E REGULARIDADE"
+          <p className="text-xs font-light tracking-[0.45em] text-white/80">
+            ORDEM, PRONTIDÃO E REGULARIDADE
           </p>
         </div>
       </div>

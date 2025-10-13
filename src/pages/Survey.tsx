@@ -1,3 +1,6 @@
+// SUBSTITUA o conteúdo do arquivo src/pages/Survey.tsx por este código
+// Mantém TODA a lógica existente, apenas muda o visual para Timeline Horizontal
+
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -87,64 +90,63 @@ export default function Survey() {
   const [surveyData, setSurveyData] = useState<Partial<SurveyData>>({});
   const [validationErrors, setValidationErrors] = useState<string[]>([]);
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
-  const [showHint, setShowHint] = useState(true);
+  const [completedSections, setCompletedSections] = useState<number[]>([]);
 
   const totalSections = 4;
   const progress = ((currentSection + 1) / totalSections) * 100;
 
   const sectionData = [
     {
+      id: 'ambiente',
       title: "Condições do Ambiente",
-      icon: Anchor,
-      color: "text-primary",
-      bgColor: "bg-primary/10",
-      borderColor: "border-primary/20"
+      icon: "🏢",
+      shortTitle: "Ambiente"
     },
     {
+      id: 'relacionamento',
       title: "Relacionamento",
-      icon: Shield,
-      color: "text-accent",
-      bgColor: "bg-accent/10",
-      borderColor: "border-accent/20"
+      icon: "👥",
+      shortTitle: "Relacionamento"
     },
     {
+      id: 'motivacao',
       title: "Motivação & Desenvolvimento",
-      icon: Star,
-      color: "text-naval-gold",
-      bgColor: "bg-warning/10",
-      borderColor: "border-warning/20"
+      icon: "📈",
+      shortTitle: "Motivação"
     },
     {
+      id: 'comentarios',
       title: "Comentários & Sugestões",
-      icon: BarChart3,
-      color: "text-accent",
-      bgColor: "bg-accent/10",
-      borderColor: "border-accent/20"
+      icon: "💬",
+      shortTitle: "Comentários"
     }
   ];
 
   // Auto-save functionality
   useEffect(() => {
-    // Load saved data on mount
     const savedData = localStorage.getItem('papem-survey-data');
     const savedSection = localStorage.getItem('papem-survey-section');
+    const savedCompleted = localStorage.getItem('papem-survey-completed');
+    
     if (savedData) {
       setSurveyData(JSON.parse(savedData));
     }
     if (savedSection) {
       setCurrentSection(parseInt(savedSection));
     }
+    if (savedCompleted) {
+      setCompletedSections(JSON.parse(savedCompleted));
+    }
   }, []);
 
-  // Auto-save data whenever it changes
   useEffect(() => {
     if (Object.keys(surveyData).length > 0) {
       localStorage.setItem('papem-survey-data', JSON.stringify(surveyData));
       localStorage.setItem('papem-survey-section', currentSection.toString());
+      localStorage.setItem('papem-survey-completed', JSON.stringify(completedSections));
       setLastSaved(new Date());
     }
-  }, [surveyData, currentSection]);
-
+  }, [surveyData, currentSection, completedSections]);
 
   const updateSurveyData = (data: Partial<SurveyData>) => {
     setSurveyData(prev => ({ ...prev, ...data }));
@@ -154,12 +156,10 @@ export default function Survey() {
     const missingFields = getMissingFields();
     if (missingFields.length > 0) {
       setValidationErrors(missingFields);
-      // Scroll para a primeira pergunta com erro
       setTimeout(() => {
         const firstErrorElement = document.getElementById(`question-${missingFields[0]}`);
         if (firstErrorElement) {
           firstErrorElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          // Add micro-feedback for error
           firstErrorElement.classList.add('micro-bounce');
           setTimeout(() => firstErrorElement.classList.remove('micro-bounce'), 400);
         }
@@ -168,18 +168,15 @@ export default function Survey() {
     }
     
     setValidationErrors([]);
+    
+    // Marcar seção atual como completa
+    if (!completedSections.includes(currentSection)) {
+      setCompletedSections([...completedSections, currentSection]);
+    }
+    
     if (currentSection < totalSections - 1) {
-      // Celebrar conclusão da seção
-      const currentElement = document.querySelector('.section-indicator-active');
-      if (currentElement) {
-        currentElement.classList.add('pulse-success');
-        setTimeout(() => currentElement.classList.remove('pulse-success'), 600);
-      }
-      
-      // Transição suave para próxima seção
       setTimeout(() => {
         setCurrentSection(currentSection + 1);
-        // Auto-scroll para o topo da nova seção
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }, 300);
     }
@@ -195,7 +192,6 @@ export default function Survey() {
     const missingFields = getMissingFields();
     if (missingFields.length > 0) {
       setValidationErrors(missingFields);
-      // Scroll para a primeira pergunta com erro
       setTimeout(() => {
         const firstErrorElement = document.getElementById(`question-${missingFields[0]}`);
         if (firstErrorElement) {
@@ -208,7 +204,6 @@ export default function Survey() {
     setIsSubmitting(true);
     
     try {
-      // Submit to backend API
       const response = await fetch('/api/survey', {
         method: 'POST',
         headers: {
@@ -223,9 +218,9 @@ export default function Survey() {
         setIsSubmitted(true);
         console.log("Survey submitted successfully:", result);
         
-        // Clear saved data after successful submission
         localStorage.removeItem('papem-survey-data');
         localStorage.removeItem('papem-survey-section');
+        localStorage.removeItem('papem-survey-completed');
         setLastSaved(null);
       } else {
         throw new Error(result.message || 'Erro ao enviar pesquisa');
@@ -239,7 +234,6 @@ export default function Survey() {
   };
 
   const getMissingFields = () => {
-    // Apenas campos de localização são obrigatórios
     const requiredLocationFields = [
       'setor_localizacao',
       'alojamento_localizacao',
@@ -249,18 +243,11 @@ export default function Survey() {
       'escala_servico_tipo'
     ];
 
-    // Verificar apenas na seção 1 (onde estão os campos de localização)
     if (currentSection === 0) {
       return requiredLocationFields.filter(field => !surveyData[field as keyof SurveyData]);
     }
 
-    // Outras seções não têm campos obrigatórios
     return [];
-  };
-
-  const isCurrentSectionComplete = () => {
-    // Usar a mesma lógica condicional do getMissingFields
-    return getMissingFields().length === 0;
   };
 
   const renderCurrentSection = () => {
@@ -282,144 +269,125 @@ export default function Survey() {
     return <SuccessMessage />;
   }
 
-  const currentSectionData = sectionData[currentSection];
-  const IconComponent = currentSectionData.icon;
-
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#f1f5f9' }}>
-      <div className="container mx-auto max-w-7xl py-2 px-4 sm:px-6 lg:px-8 space-y-3">
-        {/* Título da Pesquisa no Corpo */}
-        <div className="bg-gradient-to-br from-white to-primary/5 rounded-lg border border-border fade-in transition-all">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4 py-4 px-5">
-            <div className="text-center md:text-left space-y-2">
-              <h2 className="text-lg md:text-xl font-bold text-primary">
+      <div className="container mx-auto max-w-7xl py-2 px-4 sm:px-6 lg:px-8 space-y-4">
+        
+        {/* ========== OPÇÃO 3: TIMELINE HORIZONTAL ========== */}
+        
+        {/* Header com Gradiente e Mascote */}
+        <div className="relative bg-gradient-to-r from-blue-900 via-blue-700 to-blue-900 text-white px-6 py-6 rounded-2xl overflow-hidden shadow-xl">
+          {/* Efeito de brilho de fundo */}
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-blue-400/10 to-transparent"></div>
+          
+          {/* Conteúdo do Header */}
+          <div className="relative flex items-center justify-between">
+            <div className="flex-1">
+              <h1 className="text-2xl md:text-3xl font-bold mb-2">
                 Pesquisa de Clima Organizacional 2024
-              </h2>
-              <p className="text-xs md:text-sm text-muted-foreground">
-                Pesquisa 100% Anônima e Confidencial
-              </p>
-            </div>
-            <div className="flex items-center gap-3 bg-white/95 backdrop-blur-sm rounded-xl border-2 border-naval-gold px-4 py-3 shadow-lg hover:shadow-xl transition-all">
-              <img
-                src="/lovable-uploads/a27f9473-5787-4cab-9c01-3f62a66a5e88.png"
-                alt="Mascote"
-                className="w-12 h-12 md:w-16 md:h-16 object-contain animate-pulse drop-shadow-lg"
-              />
-            </div>
-          </div>
-        </div>
-        
-        
-        {/* Enhanced Progress Section - Compacto como cabeçalho */}
-        <div className="bg-primary/5 backdrop-blur-sm rounded-xl border border-primary/10 p-3 slide-up w-full max-w-[1400px] mx-auto shadow-sm transition-all">
-          <div className="space-y-2">
-            {/* Progress Info */}
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 text-xs text-foreground">
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="font-semibold flex items-center gap-1.5">
-                  <TrendingUp className="w-3.5 h-3.5 text-primary" />
-                  Seção {currentSection + 1} de {totalSections}
-                </span>
-                
-                {/* Auto-save indicator */}
-                {lastSaved && (
-                  <div className="flex items-center gap-1 text-[10px] text-success bg-success/10 px-2 py-1 rounded-full font-medium">
-                    <Save className="w-3 h-3" />
-                    <span>Salvo {lastSaved.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</span>
-                  </div>
-                )}
-                
-                {/* Contextual hint */}
-                {showHint && currentSection === 0 && (
-                  <div className="flex items-center gap-1 text-[10px] text-primary bg-primary/10 px-2 py-1 rounded-full cursor-pointer hover:bg-primary/20 transition-all"
-                       onClick={() => setShowHint(false)}>
-                    <Info className="w-3 h-3" />
-                    <span>Respostas salvas automaticamente</span>
-                  </div>
-                )}
-              </div>
-              
-              <div className="text-left sm:text-right">
-                <span className="font-bold text-primary text-sm">{Math.round(progress)}% concluído</span>
-                <div className="text-[10px] text-muted-foreground flex items-center gap-1">
-                  <Clock className="w-3 h-3" />
-                  ~{Math.max(1, Math.ceil((4 - currentSection - 1) * 2))} min restantes
-                </div>
-              </div>
+              </h1>
+              <p className="text-blue-100 text-xs md:text-sm flex items-center gap-2">
+                <Shield className="w-4 h-4" />
+                Pesquisa 100% Anônima e Confidencial · {totalSections} seções ·              </p>
             </div>
             
-            {/* Enhanced Progress Bar com gradiente - mais fino */}
-            <div className="relative h-2 w-full overflow-hidden rounded-full bg-secondary shadow-inner">
-              <div 
-                className="h-full bg-gradient-to-r from-primary via-primary/90 to-success transition-all duration-500 ease-out relative overflow-hidden"
-                style={{ width: `${progress}%` }}
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-pulse" />
-              </div>
-              {/* Progress milestones */}
-              <div className="absolute inset-0 flex justify-between items-center px-2">
-                {[25, 50, 75].map((milestone) => (
-                  <div 
-                    key={milestone}
-                    className={`w-1 h-4 rounded-full transition-all duration-300 ${
-                      progress >= milestone ? 'bg-white shadow-md' : 'bg-slate-300'
-                    }`}
-                  />
-                ))}
-              </div>
-            </div>
-            
-            {/* Section Indicators - Compactos */}
-            <div className="grid grid-cols-2 md:flex md:justify-between items-center gap-1.5">
-              {sectionData.map((section, index) => {
-                const isActive = index === currentSection;
-                const isCompleted = index < currentSection;
-                const SectionIcon = section.icon;
-                
-                return (
-                  <div key={index} className={`flex items-center gap-1.5 flex-1 px-2 py-1.5 rounded-lg transition-all duration-300 ${
-                    isActive ? 'bg-primary/10 border border-primary/30' : 'border border-transparent'
-                  }`}>
-                    <div className={`
-                      w-6 h-6 rounded-full border-2 flex items-center justify-center text-xs font-bold transition-all duration-300
-                      ${isActive 
-                        ? 'border-primary text-primary bg-primary/15' 
-                        : isCompleted
-                        ? 'border-success text-white bg-success'
-                        : 'border-muted-foreground text-muted-foreground bg-muted/20'
-                      }
-                    `}>
-                      {isCompleted ? (
-                        <CheckCircle2 className="w-3.5 h-3.5" />
-                      ) : (
-                        <SectionIcon className="w-3.5 h-3.5" />
-                      )}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className={`text-[10px] md:text-xs font-semibold transition-colors duration-300 truncate ${
-                        isActive 
-                          ? 'text-primary' 
-                          : isCompleted
-                          ? 'text-success'
-                          : 'text-muted-foreground'
-                      }`}>
-                        {section.title}
-                      </p>
-                    </div>
-                  </div>
-                );
-              })}
+            {/* Mascote */}
+            <div className="text-6xl md:text-8xl drop-shadow-2xl">
+              <img 
+    src="/uploads/pg.png" 
+    alt="Ícone Pong"
+    className="w-24 h-24 md:w-32 md:h-32 drop-shadow-2xl object-contain"
+  />
             </div>
           </div>
         </div>
 
+        {/* Timeline Progress */}
+        <div className="bg-white px-6 py-6 shadow-lg rounded-2xl">
+          <div className="flex items-center justify-between gap-3 md:gap-4 relative">
+            {sectionData.map((section, index) => {
+              const isActive = index === currentSection;
+              const isCompleted = completedSections.includes(index);
+              
+              return (
+                <div key={section.id} className="flex flex-col items-center flex-1 relative">
+                  {/* Linha conectora */}
+                  {index < sectionData.length - 1 && (
+                    <div
+                      className={`absolute top-5 left-[60%] w-full h-[3px] transition-all duration-500 ${
+                        isCompleted
+                          ? 'bg-gradient-to-r from-green-500 to-green-600'
+                          : 'bg-gray-200'
+                      }`}
+                      style={{ zIndex: 0 }}
+                    />
+                  )}
+
+                  {/* Ícone */}
+                  <div
+                    className={`relative z-10 w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center text-lg md:text-xl font-bold transition-all duration-300 ${
+                      isCompleted
+                        ? 'bg-gradient-to-br from-green-500 to-green-600 text-white shadow-lg scale-110'
+                        : isActive
+                        ? 'bg-gradient-to-br from-blue-500 to-blue-600 text-white shadow-lg ring-4 ring-blue-200 scale-110'
+                        : 'bg-gray-200 text-gray-500'
+                    }`}
+                  >
+                    {isCompleted ? '✓' : section.icon}
+                  </div>
+
+                  {/* Label */}
+                  <div
+                    className={`mt-2 text-[10px] md:text-xs font-semibold text-center transition-all duration-300 ${
+                      isActive
+                        ? 'text-blue-600'
+                        : isCompleted
+                        ? 'text-green-600'
+                        : 'text-gray-500'
+                    }`}
+                  >
+                    <span className="hidden sm:inline">{section.title}</span>
+                    <span className="sm:hidden">{section.shortTitle}</span>
+                  </div>
+
+                  {/* Indicador ativo */}
+                  {isActive && (
+                    <div className="mt-1 w-2 h-2 bg-blue-600 rounded-full animate-pulse"></div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Info adicional */}
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mt-6 pt-4 border-t border-gray-100">
+            <div className="flex items-center gap-2">
+              <span className="text-xs md:text-sm text-gray-600">
+                📊 Seção {currentSection + 1} de {totalSections}
+              </span>
+              
+              {lastSaved && (
+                <span className="text-[10px] md:text-xs text-green-600 bg-green-50 px-2 py-1 rounded-full font-medium flex items-center gap-1">
+                  <Save className="w-3 h-3" />
+                  Salvo {lastSaved.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
+                </span>
+              )}
+            </div>
+            
+            <span className="text-xs md:text-sm font-semibold text-green-600 bg-green-50 px-3 py-1.5 rounded-full">
+              {Math.round((completedSections.length / totalSections) * 100)}% concluído
+            </span>
+          </div>
+        </div>
         
-        {/* Survey Content */}
+        {/* ========== FIM DA TIMELINE ========== */}
+
+        {/* Survey Content - Mantém tudo igual */}
         <div className="space-y-3 slide-up max-w-[1400px] mx-auto">
           {renderCurrentSection()}
         </div>
 
-        {/* Enhanced Navigation */}
+        {/* Navigation - Mantém tudo igual */}
         <div className="survey-card-enhanced p-5 max-w-[1400px] mx-auto shadow-sm hover:shadow-md transition-all">
           <div className="flex justify-between items-center gap-4">
             <Button

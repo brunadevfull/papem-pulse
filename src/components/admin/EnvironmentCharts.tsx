@@ -16,32 +16,34 @@ const sectorOptions = [
   { value: "PAPEM-40", label: "PAPEM-40" },
   { value: "PAPEM-51", label: "PAPEM-51" },
   { value: "PAPEM-52", label: "PAPEM-52" },
-  { value: "SECOM", label: "SECOM" }
+  { value: "SECOM", label: "SECOM" },
+  { value: "GABINETE", label: "GABINETE" },
 ];
 
 const alojamentoOptions = [
   { value: "all", label: "Todos os alojamentos" },
-  { value: "CB/MN MASCULINO", label: "CB/MN MASCULINO" },
-  { value: "CB/MN FEMININO", label: "CB/MN FEMININO" },
-  { value: "SO/SG MASCULINO", label: "SO/SG MASCULINO" },
-  { value: "SO/SG FEMININO", label: "SO/SG FEMININO" },
-  { value: "OFICIAIS FEMININO", label: "OFICIAIS FEMININO" },
-  { value: "CT/1T MASCULINO", label: "CT/1T MASCULINO" },
-  { value: "OFICIAIS SUPERIORES MASCULINO", label: "OFICIAIS SUPERIORES MASCULINO" }
+  { value: "CB/MN Masc.", label: "CB/MN Masc." },
+  { value: "CB/MN Fem.", label: "CB/MN Fem." },
+  { value: "SO/SG Masc.", label: "SO/SG Masc." },
+  { value: "SO/SG Fem.", label: "SO/SG Fem." },
+  { value: "Of. Fem.", label: "Of. Fem." },
+  { value: "CT/T Masc.", label: "CT/T Masc." },
+  { value: "Of Sup. Masc.", label: "Of Sup. Masc." },
 ];
 
 const ranchoOptions = [
   { value: "all", label: "Todos os ranchos" },
   { value: "Distrito", label: "Distrito" },
-  { value: "DABM", label: "DABM" },
-  { value: "Praça D'armas", label: "Praça D'armas" }
+  { value: "DAbM", label: "DAbM" },
+  { value: "Praça d'armas", label: "Praça d'armas" },
 ];
 
 const escalaOptions = [
   { value: "all", label: "Todas as escalas" },
   { value: "Oficiais", label: "Oficiais" },
   { value: "SG", label: "SG" },
-  { value: "Cb/MN", label: "Cb/MN" }
+  { value: "CB/MN", label: "CB/MN" },
+  { value: "Não se aplica", label: "Não se aplica" },
 ];
 
 const categoricalColors = [

@@ -7,12 +7,13 @@ import { Button } from "@/components/ui/button";
 
 const SETOR_COLORS = {
   "PAPEM-10": "#22c55e",
-  "PAPEM-20": "#eab308", 
+  "PAPEM-20": "#eab308",
   "PAPEM-30": "#ef4444",
   "PAPEM-40": "#3b82f6",
   "PAPEM-51": "#a855f7",
   "PAPEM-52": "#f97316",
-  "SECOM": "#06b6d4"
+  "SECOM": "#06b6d4",
+  "GABINETE": "#0ea5e9",
 };
 
 export function StatsOverview() {

@@ -156,8 +156,6 @@ export function MotivationCharts() {
             });
           }
 
-          const averageScore = stats?.average ? Math.round(stats.average * 20) : null;
-
           return (
             <Card key={question.id} className="h-full">
               <CardHeader className="pb-3">
@@ -198,11 +196,6 @@ export function MotivationCharts() {
                   ))}
                 </div>
 
-                {averageScore !== null && (
-                  <div className="text-sm text-muted-foreground">
-                    Média ponderada: <span className="font-medium text-foreground">{averageScore}%</span>
-                  </div>
-                )}
               </CardContent>
             </Card>
           );

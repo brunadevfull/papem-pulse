@@ -302,20 +302,13 @@ export function EnvironmentCharts() {
             });
           }
 
-          const averageScore = stats?.average ? Math.round(stats.average * 20) : null;
-
           return (
             <Card key={question.id} className="h-full">
               <CardHeader>
                 <CardTitle className="text-base font-semibold">{question.label}</CardTitle>
                 <CardDescription className="flex items-center gap-2 text-sm">
                   {totalResponses > 0 ? (
-                    <>
-                      <Badge variant="secondary">{totalResponses} respostas</Badge>
-                      {averageScore !== null && (
-                        <span className="text-muted-foreground">Média: {averageScore}%</span>
-                      )}
-                    </>
+                    <Badge variant="secondary">{totalResponses} respostas</Badge>
                   ) : (
                     <span className="text-muted-foreground">Nenhuma resposta registrada</span>
                   )}

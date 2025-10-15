@@ -45,17 +45,17 @@ const ratingColumns = [
 type RatingColumn = (typeof ratingColumns)[number];
 
 const ratingColorClasses: Record<RatingColumn, string> = {
-  "Concordo totalmente": "bg-emerald-100 text-emerald-900",
-  Concordo: "bg-sky-100 text-sky-900",
-  Discordo: "bg-amber-100 text-amber-900",
-  "Discordo totalmente": "bg-rose-100 text-rose-900",
+  "Concordo totalmente": "bg-blue-50 text-blue-900",
+  Concordo: "bg-blue-100 text-blue-900",
+  Discordo: "bg-slate-50 text-slate-800",
+  "Discordo totalmente": "bg-slate-100 text-slate-900",
 };
 
 const ratingColorDescriptions: Record<RatingColumn, string> = {
-  "Concordo totalmente": "Tons de verde destacam o grau máximo de concordância",
-  Concordo: "Tons de azul representam concordância moderada",
-  Discordo: "Tons de amarelo indicam discordância moderada",
-  "Discordo totalmente": "Tons de vermelho realçam a discordância total",
+  "Concordo totalmente": "Tons suaves de azul destacam o grau máximo de concordância",
+  Concordo: "Azuis claros sinalizam concordância moderada sem perder o tom neutro",
+  Discordo: "Cinzas claros representam discordância moderada de forma neutra",
+  "Discordo totalmente": "Cinzas mais marcantes evidenciam a discordância total mantendo a paleta sóbria",
 };
 
 type TableRowData = {

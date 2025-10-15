@@ -6,7 +6,7 @@ import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Toolti
 import { AlertCircle, Loader2 } from "lucide-react";
 import { motivationQuestions, type SectionStatsResponse } from "@shared/section-metadata";
 import { useSectionStats } from "@/hooks/useSectionStats";
-import { ratingToNumber, ratingToPercentage } from "@/hooks/useStats";
+import { ratingToNumber } from "@/hooks/useStats";
 
 const sectorOptions = [
   { value: "all", label: "Todos os setores" },
@@ -42,6 +42,14 @@ const mapRatingToCategory = (rating: string) => {
   }
 };
 
+type ChartEntry = {
+  category: string;
+  key: string;
+  percentage: number;
+  count: number;
+  fill: string;
+};
+
 export function MotivationCharts() {
   const [selectedSector, setSelectedSector] = useState("all");
   const { data, loading, error } = useSectionStats("motivation", useMemo(() => ({
@@ -49,6 +57,9 @@ export function MotivationCharts() {
   }), [selectedSector]));
 
   const totalParticipants = data?.totalResponses ?? 0;
+
+  const toPercentage = (value: number) =>
+    totalParticipants > 0 ? Math.round((value / totalParticipants) * 100) : 0;
 
   const questionsById = useMemo(() => {
     const map = new Map<string, SectionStatsResponse["questions"][number]>();
@@ -103,7 +114,6 @@ export function MotivationCharts() {
             return null;
           }
 
-          const percentages = ratingToPercentage(stats?.ratings ?? []);
           const counts = {
             concordoTotalmente: 0,
             concordo: 0,
@@ -118,47 +128,54 @@ export function MotivationCharts() {
             }
           });
 
-          const chartData = [
+          const chartData: ChartEntry[] = [
             {
               category: "Concordo totalmente",
-              key: "concordoTotalmente" as const,
-              percentage: percentages.concordoTotalmente,
+              key: "concordoTotalmente",
+              percentage: toPercentage(counts.concordoTotalmente),
               count: counts.concordoTotalmente,
               fill: "hsl(var(--success))",
             },
             {
               category: "Concordo",
-              key: "concordo" as const,
-              percentage: percentages.concordo,
+              key: "concordo",
+              percentage: toPercentage(counts.concordo),
               count: counts.concordo,
               fill: "#4ade80",
             },
             {
               category: "Discordo",
-              key: "discordo" as const,
-              percentage: percentages.discordo,
+              key: "discordo",
+              percentage: toPercentage(counts.discordo),
               count: counts.discordo,
               fill: "#f97316",
             },
             {
               category: "Discordo totalmente",
-              key: "discordoTotalmente" as const,
-              percentage: percentages.discordoTotalmente,
+              key: "discordoTotalmente",
+              percentage: toPercentage(counts.discordoTotalmente),
               count: counts.discordoTotalmente,
               fill: "hsl(var(--destructive))",
             },
           ];
 
-          const neutroPercentage = 'neutro' in percentages ? percentages.neutro : undefined;
-          if (typeof neutroPercentage === "number" && counts.neutro > 0) {
+          if (counts.neutro > 0) {
             chartData.splice(2, 0, {
               category: "Neutro (legado)",
-              key: "neutro" as any,
-              percentage: neutroPercentage,
+              key: "neutro",
+              percentage: toPercentage(counts.neutro),
               count: counts.neutro,
               fill: "#94a3b8",
             });
           }
+
+          chartData.push({
+            category: "Não respondidas",
+            key: "naoRespondidas",
+            percentage: toPercentage(unanswered),
+            count: unanswered,
+            fill: "#9ca3af",
+          });
 
           const averageScore = stats?.average ? Math.round(stats.average * 20) : null;
 

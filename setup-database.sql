@@ -1,12 +1,12 @@
 -- Script de configuração inicial do banco de dados para usuários administradores
 -- Garante a existência do usuário padrão "admin" com senha "pco2025"
--- A senha é armazenada no formato salt:hash (compatível com bcrypt)
+-- A senha é armazenada utilizando hash bcrypt (custo 12)
 
 INSERT INTO admin_users (username, email, password_hash, created_at, updated_at)
 VALUES (
     'admin',
-    'admin@papem.local',
-    '$2b$12$laxHbR.42vWvvqDpZLiaCu:QtC5KZMVuK5Jg/4BtzZvUH0fVf/CpoO',
+    NULL,
+    '$2b$12$3.p4JnP9sApX1TRGJ7aWyOsnVsxG5u0gNbRKSL546tRx7Eq6nvzFu',
     NOW(),
     NOW()
 )

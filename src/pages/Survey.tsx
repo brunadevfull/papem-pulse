@@ -325,7 +325,7 @@ export default function Survey() {
           <div className="relative flex items-center justify-between">
             <div className="flex-1">
               <h1 className="text-2xl md:text-3xl font-bold mb-2">
-                Pesquisa de Clima Organizacional 2024
+                Pesquisa de Clima Organizacional 2025
               </h1>
               <p className="text-blue-100 text-xs md:text-sm flex items-center gap-2">
                 <Shield className="w-4 h-4" />

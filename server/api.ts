@@ -1,8 +1,9 @@
 import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
+import { randomUUID } from 'node:crypto';
 import { db } from './db';
-import { surveyResponses, surveyStats } from '@shared/schema';
+import { surveyResponses, surveyStats, adminUsers } from '@shared/schema';
 import { eq, count, sql, and } from 'drizzle-orm';
 import { generateAllChartsHtml } from './simpleCharts';
 import { generatePdfTemplate } from './pdfTemplate';
@@ -15,12 +16,67 @@ import {
   type CommentRecord,
 } from '@shared/section-metadata';
 
+import { verifyPassword } from './utils/bcrypt';
+
 const app = express();
 const PORT = process.env.PORT || 3001;
 
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+app.post('/api/admin/login', async (req, res) => {
+  try {
+    const { username, password } = req.body ?? {};
+
+    if (typeof username !== 'string' || typeof password !== 'string') {
+      return res.status(400).json({
+        success: false,
+        message: 'Usuário e senha são obrigatórios.',
+      });
+    }
+
+    const sanitizedUsername = username.trim();
+    const [admin] = await db
+      .select()
+      .from(adminUsers)
+      .where(eq(adminUsers.username, sanitizedUsername))
+      .limit(1);
+
+    if (!admin) {
+      return res.status(401).json({
+        success: false,
+        message: 'Credenciais inválidas.',
+      });
+    }
+
+    const isValid = await verifyPassword(password, admin.passwordHash);
+
+    if (!isValid) {
+      return res.status(401).json({
+        success: false,
+        message: 'Credenciais inválidas.',
+      });
+    }
+
+    const token = randomUUID();
+
+    res.json({
+      success: true,
+      token,
+      user: {
+        username: admin.username,
+        email: admin.email,
+      },
+    });
+  } catch (error) {
+    console.error('Erro ao autenticar administrador:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Erro interno do servidor',
+    });
+  }
+});
 
 type FilterParams = {
   setor?: string;

@@ -1,4 +1,4 @@
-import { pgTable, serial, varchar, text, timestamp, integer } from "drizzle-orm/pg-core";
+import { pgTable, serial, varchar, text, timestamp, integer, uniqueIndex } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -96,9 +96,26 @@ export const surveyStats = pgTable("survey_stats", {
   last_updated: timestamp("last_updated").defaultNow(),
 });
 
+export const adminUsers = pgTable(
+  "admin_users",
+  {
+    id: serial("id").primaryKey(),
+    username: varchar("username", { length: 255 }).notNull(),
+    email: varchar("email", { length: 255 }),
+    passwordHash: varchar("password_hash", { length: 255 }).notNull(),
+    createdAt: timestamp("created_at").defaultNow(),
+    updatedAt: timestamp("updated_at").defaultNow(),
+  },
+  (table) => ({
+    usernameIdx: uniqueIndex("admin_users_username_unique").on(table.username),
+  })
+);
+
 // Tipos TypeScript inferidos
 export type SurveyResponse = typeof surveyResponses.$inferSelect;
 export type InsertSurveyResponse = typeof surveyResponses.$inferInsert;
+export type AdminUser = typeof adminUsers.$inferSelect;
+export type InsertAdminUser = typeof adminUsers.$inferInsert;
 
 // Schemas de validação com Zod
 export const insertSurveyResponseSchema = createInsertSchema(surveyResponses).omit({

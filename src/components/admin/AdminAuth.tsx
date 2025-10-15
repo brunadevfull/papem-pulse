@@ -7,28 +7,50 @@ import { Shield, Lock } from "lucide-react";
 import { toast } from "sonner";
 
 interface AdminAuthProps {
-  onAuthenticated: () => void;
+  onAuthenticated: (token: string) => void;
 }
 
+type LoginResponse = {
+  success: boolean;
+  token?: string;
+  message?: string;
+};
+
 export function AdminAuth({ onAuthenticated }: AdminAuthProps) {
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    
-    // Simula verificação de senha
-    setTimeout(() => {
-      if (password === "pco2025") {
-        toast.success("Acesso autorizado!");
-        onAuthenticated();
-      } else {
-        toast.error("Senha incorreta!");
+
+    try {
+      const response = await fetch("/api/admin/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+      });
+
+      const data: LoginResponse = await response.json();
+
+      if (!response.ok || !data.success || !data.token) {
+        const message = data.message || "Não foi possível autenticar.";
+        toast.error(message);
         setPassword("");
+        return;
       }
+
+      toast.success("Acesso autorizado!");
+      onAuthenticated(data.token);
+    } catch (error) {
+      console.error("Erro ao autenticar administrador:", error);
+      toast.error("Erro de comunicação com o servidor.");
+    } finally {
       setIsLoading(false);
-    }, 1000);
+    }
   };
 
   return (
@@ -42,12 +64,28 @@ export function AdminAuth({ onAuthenticated }: AdminAuthProps) {
           </div>
           <CardTitle className="text-2xl font-bold">Dashboard Administrativo</CardTitle>
           <CardDescription>
-            Acesso restrito - Digite a senha para continuar
+            Acesso restrito - Informe suas credenciais para continuar
           </CardDescription>
         </CardHeader>
-        
+
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="space-y-2">
+              <Label htmlFor="username" className="text-base font-semibold">
+                Usuário ou e-mail
+              </Label>
+              <Input
+                id="username"
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder="Digite seu usuário"
+                className="h-12 text-base"
+                required
+                disabled={isLoading}
+              />
+            </div>
+
             <div className="space-y-2">
               <Label htmlFor="password" className="text-base font-semibold">
                 Senha de Acesso

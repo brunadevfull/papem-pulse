@@ -13,10 +13,24 @@ import { RealTimeStats } from "@/components/admin/RealTimeStats";
 import { AdminAuth } from "@/components/admin/AdminAuth";
 
 export default function Admin() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [authToken, setAuthToken] = useState<string | null>(() => {
+    if (typeof window === "undefined") {
+      return null;
+    }
+    return sessionStorage.getItem("adminAuthToken");
+  });
 
-  if (!isAuthenticated) {
-    return <AdminAuth onAuthenticated={() => setIsAuthenticated(true)} />;
+  if (!authToken) {
+    return (
+      <AdminAuth
+        onAuthenticated={(token) => {
+          if (typeof window !== "undefined") {
+            sessionStorage.setItem("adminAuthToken", token);
+          }
+          setAuthToken(token);
+        }}
+      />
+    );
   }
 
   return (

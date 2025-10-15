@@ -154,8 +154,7 @@ export default function Survey() {
       const header = document.querySelector('header');
       const headerHeight = header instanceof HTMLElement ? header.getBoundingClientRect().height : 0;
 
-      const firstQuestion = document.querySelector('.question-card-enhanced');
-      const targetElement = (firstQuestion as HTMLElement | null) ?? pageTopRef.current;
+      const targetElement = pageTopRef.current;
 
       if (targetElement) {
         const elementTop = targetElement.getBoundingClientRect().top + window.scrollY;

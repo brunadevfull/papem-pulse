@@ -1,11 +1,12 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { CheckCircle2, Shield, Sparkles, Star, Anchor, Home } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 
-export function SuccessMessage() {
-  const navigate = useNavigate();
+type SuccessMessageProps = {
+  onRestart: () => void;
+};
 
+export function SuccessMessage({ onRestart }: SuccessMessageProps) {
   return (
     <div className="max-w-4xl mx-auto space-y-8 animate-slide-up">
       <Card className="bg-gradient-hero text-primary-foreground shadow-naval overflow-hidden relative border-0">
@@ -36,7 +37,7 @@ export function SuccessMessage() {
         <CardContent className="pt-8 text-center">
           <div className="flex justify-center">
             <Button
-              onClick={() => navigate("/")}
+              onClick={onRestart}
               className="flex items-center gap-3 px-8 py-4 text-lg font-bold bg-gradient-primary hover:scale-105 shadow-glow transition-all duration-300 rounded-2xl"
             >
               <Home className="w-6 h-6" />

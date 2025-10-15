@@ -4,7 +4,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { BarChart3, Users, TrendingUp, AlertTriangle, Target, Award, Building2, MessageSquare } from "lucide-react";
-import { StatsOverview } from "@/components/admin/StatsOverview";
 import { EnvironmentCharts } from "@/components/admin/EnvironmentCharts";
 import { RelationshipCharts } from "@/components/admin/RelationshipCharts";
 import { MotivationCharts } from "@/components/admin/MotivationCharts";
@@ -26,9 +25,6 @@ export default function Admin() {
           <h1 className="text-3xl font-bold tracking-tight text-gray-900">Dashboard Administrativo</h1>
           <p className="text-gray-600">Análise dos resultados da pesquisa de clima organizacional</p>
         </div>
-
-        {/* Stats Overview */}
-        <StatsOverview />
 
         {/* Main Analysis */}
         <Card className="shadow-custom-md">

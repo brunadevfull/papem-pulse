@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { AlertCircle, Loader2 } from "lucide-react";
 import { useSectionStats } from "@/hooks/useSectionStats";
 import {
@@ -11,6 +12,12 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
+import {
+  alojamentoOptions,
+  escalaOptions,
+  ranchoOptions,
+  sectorOptions,
+} from "./filterOptions";
 
 const sectionsMeta = [
   {
@@ -43,10 +50,24 @@ type TableRowData = {
 };
 
 export function DetailedAnalysis() {
-  const baseFilters = useMemo(() => ({}), []);
-  const environment = useSectionStats("environment", baseFilters);
-  const relationship = useSectionStats("relationship", baseFilters);
-  const motivation = useSectionStats("motivation", baseFilters);
+  const [selectedSector, setSelectedSector] = useState("all");
+  const [alojamentoFilter, setAlojamentoFilter] = useState("all");
+  const [ranchoFilter, setRanchoFilter] = useState("all");
+  const [escalaFilter, setEscalaFilter] = useState("all");
+
+  const filters = useMemo(
+    () => ({
+      ...(selectedSector !== "all" ? { setor: selectedSector } : {}),
+      ...(alojamentoFilter !== "all" ? { alojamento: alojamentoFilter } : {}),
+      ...(ranchoFilter !== "all" ? { rancho: ranchoFilter } : {}),
+      ...(escalaFilter !== "all" ? { escala: escalaFilter } : {}),
+    }),
+    [selectedSector, alojamentoFilter, ranchoFilter, escalaFilter]
+  );
+
+  const environment = useSectionStats("environment", filters);
+  const relationship = useSectionStats("relationship", filters);
+  const motivation = useSectionStats("motivation", filters);
 
   const loading = environment.loading || relationship.loading || motivation.loading;
   const error = environment.error || relationship.error || motivation.error;
@@ -152,6 +173,60 @@ export function DetailedAnalysis() {
           </CardDescription>
         </CardHeader>
         <CardContent>
+          <div className="grid gap-4 pb-6 md:grid-cols-2 lg:grid-cols-4">
+            <Select value={selectedSector} onValueChange={setSelectedSector}>
+              <SelectTrigger className="bg-background">
+                <SelectValue placeholder="Filtrar por setor" />
+              </SelectTrigger>
+              <SelectContent className="border-border bg-background">
+                {sectorOptions.map((sector) => (
+                  <SelectItem key={sector.value} value={sector.value}>
+                    {sector.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            <Select value={alojamentoFilter} onValueChange={setAlojamentoFilter}>
+              <SelectTrigger className="bg-background">
+                <SelectValue placeholder="Filtrar por alojamento" />
+              </SelectTrigger>
+              <SelectContent className="border-border bg-background">
+                {alojamentoOptions.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            <Select value={ranchoFilter} onValueChange={setRanchoFilter}>
+              <SelectTrigger className="bg-background">
+                <SelectValue placeholder="Filtrar por rancho" />
+              </SelectTrigger>
+              <SelectContent className="border-border bg-background">
+                {ranchoOptions.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            <Select value={escalaFilter} onValueChange={setEscalaFilter}>
+              <SelectTrigger className="bg-background">
+                <SelectValue placeholder="Filtrar por escala" />
+              </SelectTrigger>
+              <SelectContent className="border-border bg-background">
+                {escalaOptions.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
           {sortedRows.length === 0 ? (
             <p className="text-sm text-muted-foreground">
               Nenhum dado suficiente para exibir a distribuição de respostas.

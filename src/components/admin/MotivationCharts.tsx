@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Cell } from "recharts";
 import { AlertCircle, Loader2 } from "lucide-react";
@@ -46,6 +47,8 @@ export function MotivationCharts() {
   const { data, loading, error } = useSectionStats("motivation", useMemo(() => ({
     ...(selectedSector !== "all" ? { setor: selectedSector } : {}),
   }), [selectedSector]));
+
+  const totalParticipants = data?.totalResponses ?? 0;
 
   const questionsById = useMemo(() => {
     const map = new Map<string, SectionStatsResponse["questions"][number]>();
@@ -94,6 +97,7 @@ export function MotivationCharts() {
         {motivationQuestions.map((question) => {
           const stats = questionsById.get(question.id as string);
           const totalResponses = stats?.totalResponses ?? 0;
+          const unanswered = Math.max(totalParticipants - totalResponses, 0);
 
           if (!stats && !loading) {
             return null;
@@ -162,10 +166,20 @@ export function MotivationCharts() {
             <Card key={question.id} className="h-full">
               <CardHeader className="pb-3">
                 <CardTitle className="text-base font-semibold">{question.label}</CardTitle>
-                <CardDescription>
-                  {totalResponses > 0
-                    ? `${totalResponses} respostas registradas`
-                    : "Sem respostas registradas"}
+                <CardDescription className="space-y-1 text-sm text-muted-foreground">
+                  {totalParticipants > 0 ? (
+                    <div className="flex flex-wrap items-center gap-2 text-xs">
+                      <Badge variant="outline" className="font-medium">
+                        {totalResponses} respostas
+                      </Badge>
+                      <span className="text-muted-foreground">|</span>
+                      <Badge variant="outline" className="font-medium">
+                        {unanswered} não respondidas
+                      </Badge>
+                    </div>
+                  ) : (
+                    <span>Sem respostas registradas</span>
+                  )}
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">

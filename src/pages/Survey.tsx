@@ -1,7 +1,7 @@
 // SUBSTITUA o conteúdo do arquivo src/pages/Survey.tsx por este código
 // Mantém TODA a lógica existente, apenas muda o visual para Timeline Horizontal
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -91,6 +91,7 @@ export default function Survey() {
   const [validationErrors, setValidationErrors] = useState<string[]>([]);
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
   const [completedSections, setCompletedSections] = useState<number[]>([]);
+  const pageTopRef = useRef<HTMLDivElement | null>(null);
 
   const totalSections = 4;
   const progress = ((currentSection + 1) / totalSections) * 100;
@@ -147,6 +148,31 @@ export default function Survey() {
       setLastSaved(new Date());
     }
   }, [surveyData, currentSection, completedSections]);
+
+  useEffect(() => {
+    const scrollToSectionStart = () => {
+      if (pageTopRef.current) {
+        pageTopRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      const firstQuestion = document.querySelector('.question-card-enhanced');
+      if (firstQuestion instanceof HTMLElement) {
+        firstQuestion.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    };
+
+    const timeoutId = window.setTimeout(scrollToSectionStart, 50);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [currentSection]);
+
+  useEffect(() => {
+    if (isSubmitted) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [isSubmitted]);
 
   const updateSurveyData = (data: Partial<SurveyData>) => {
     setSurveyData(prev => ({ ...prev, ...data }));
@@ -270,7 +296,7 @@ export default function Survey() {
   }
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#f1f5f9' }}>
+    <div ref={pageTopRef} className="min-h-screen" style={{ backgroundColor: '#f1f5f9' }}>
       <div className="container mx-auto max-w-7xl py-2 px-4 sm:px-6 lg:px-8 space-y-4">
         
         {/* ========== OPÇÃO 3: TIMELINE HORIZONTAL ========== */}

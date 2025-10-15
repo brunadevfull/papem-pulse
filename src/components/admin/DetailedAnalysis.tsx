@@ -1,14 +1,16 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { AlertTriangle, AlertCircle, Loader2 } from "lucide-react";
+import { AlertCircle, Loader2 } from "lucide-react";
 import { useSectionStats } from "@/hooks/useSectionStats";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { cn } from "@/lib/utils";
 
 const sectionsMeta = [
   {
@@ -25,6 +27,21 @@ const sectionsMeta = [
   },
 ];
 
+const ratingColumns = [
+  "Concordo totalmente",
+  "Concordo",
+  "Discordo",
+  "Discordo totalmente",
+] as const;
+
+type RatingColumn = (typeof ratingColumns)[number];
+
+type TableRowData = {
+  section: string;
+  question: string;
+  ratings: Record<RatingColumn, { count: number; percentage: number }>;
+};
+
 export function DetailedAnalysis() {
   const baseFilters = useMemo(() => ({}), []);
   const environment = useSectionStats("environment", baseFilters);
@@ -34,39 +51,84 @@ export function DetailedAnalysis() {
   const loading = environment.loading || relationship.loading || motivation.loading;
   const error = environment.error || relationship.error || motivation.error;
 
-  const criticalPoints = useMemo(() => {
-    const questions = sectionsMeta.flatMap((section) => {
-      const stats = section.key === "environment" ? environment.data
-        : section.key === "relationship" ? relationship.data
-        : motivation.data;
+  type SortColumn = "section" | RatingColumn;
+
+  const [sortColumn, setSortColumn] = useState<SortColumn>("section");
+  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
+
+  const rows = useMemo<TableRowData[]>(() => {
+    return sectionsMeta.flatMap((section) => {
+      const stats =
+        section.key === "environment"
+          ? environment.data
+          : section.key === "relationship"
+            ? relationship.data
+            : motivation.data;
 
       if (!stats) {
         return [];
       }
 
       return stats.questions
-        .filter((question) => question.type === "likert" && question.average !== null)
+        .filter((question) => question.type === "likert")
         .map((question) => {
-          const negativeCount = question.ratings.reduce((total, rating) => {
-            if (rating.rating === "Discordo" || rating.rating === "Discordo totalmente") {
-              return total + rating.count;
-            }
-            return total;
-          }, 0);
+          const totalResponses = question.totalResponses ?? 0;
+          const ratings: TableRowData["ratings"] = {} as TableRowData["ratings"];
+
+          ratingColumns.forEach((column) => {
+            const match = question.ratings.find((rating) => rating.rating === column);
+            const count = match?.count ?? 0;
+            const percentage = totalResponses > 0 ? (count / totalResponses) * 100 : 0;
+
+            ratings[column] = {
+              count,
+              percentage,
+            };
+          });
 
           return {
             section: section.title,
             question: question.label,
-            score: Math.round((question.average ?? 0) * 20),
-            negativeCount,
+            ratings,
           };
         });
     });
+  }, [environment.data, motivation.data, relationship.data]);
 
-    return questions
-      .sort((a, b) => a.score - b.score)
-      .slice(0, 5);
-  }, [environment.data, relationship.data, motivation.data]);
+  const sortedRows = useMemo(() => {
+    const getSortValue = (row: TableRowData) => {
+      if (sortColumn === "section") {
+        return `${row.section} ${row.question}`.toLowerCase();
+      }
+
+      const ratingData = row.ratings[sortColumn];
+
+      return ratingData?.percentage ?? 0;
+    };
+
+    return [...rows].sort((a, b) => {
+      const valueA = getSortValue(a);
+      const valueB = getSortValue(b);
+
+      if (typeof valueA === "string" && typeof valueB === "string") {
+        return sortDirection === "asc"
+          ? valueA.localeCompare(valueB)
+          : valueB.localeCompare(valueA);
+      }
+
+      return sortDirection === "asc" ? valueA - valueB : valueB - valueA;
+    });
+  }, [rows, sortColumn, sortDirection]);
+
+  const handleSort = (column: SortColumn) => {
+    if (column === sortColumn) {
+      setSortDirection((current) => (current === "asc" ? "desc" : "asc"));
+      return;
+    }
+
+    setSortColumn(column);
+    setSortDirection(column === "section" ? "asc" : "desc");
+  };
 
   return (
     <div className="space-y-6">
@@ -84,57 +146,99 @@ export function DetailedAnalysis() {
 
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <AlertTriangle className="w-5 h-5 text-warning" />
-            Pontos que Precisam de Atenção
-          </CardTitle>
+          <CardTitle>Distribuição das respostas por questão</CardTitle>
           <CardDescription>
-            Scores calculados pela média das respostas em escala Likert multiplicada por 20. Listamos as 5 questões com menores índices de satisfação.
+            Quantidade de respostas e porcentagem por alternativa nas seções Ambiente de Trabalho, Relacionamento e Motivação.
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <TooltipProvider delayDuration={150}>
-            <div className="space-y-4">
-              {criticalPoints.length === 0 && (
-                <p className="text-sm text-muted-foreground">Nenhum dado suficiente para identificar pontos críticos.</p>
-              )}
-              {criticalPoints.map((point, index) => (
-                <div
-                  key={`${point.question}-${index}`}
-                  className="flex items-center justify-between p-3 bg-warning-light rounded-lg border border-warning/20"
-                >
-                  <div className="flex-1">
-                    <p className="text-sm font-medium">{point.question}</p>
-                    <p className="text-xs text-muted-foreground">{point.section}</p>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Badge
-                      variant="outline"
-                      className={
-                        point.score < 50
-                          ? "text-destructive"
-                          : point.score < 70
-                            ? "text-warning"
-                            : "text-success"
-                      }
+          {sortedRows.length === 0 ? (
+            <p className="text-sm text-muted-foreground">
+              Nenhum dado suficiente para exibir a distribuição de respostas.
+            </p>
+          ) : (
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead
+                    className={cn(
+                      "w-[320px]",
+                      sortColumn === "section" && "text-foreground bg-muted/40"
+                    )}
+                  >
+                    <button
+                      type="button"
+                      onClick={() => handleSort("section")}
+                      className="flex items-center gap-2 font-medium text-left transition-colors hover:text-foreground"
                     >
-                      {point.score}%
-                    </Badge>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Badge variant="secondary" className="text-xs font-medium">
-                          {point.negativeCount} discordâncias
-                        </Badge>
-                      </TooltipTrigger>
-                      <TooltipContent side="bottom" className="max-w-[220px] text-xs">
-                        Total de respostas "Discordo" ou "Discordo totalmente" para esta pergunta.
-                      </TooltipContent>
-                    </Tooltip>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </TooltipProvider>
+                      Seção / Questão
+                      {sortColumn === "section" && (
+                        <span className="text-xs text-muted-foreground">
+                          {sortDirection === "asc" ? "↑" : "↓"}
+                        </span>
+                      )}
+                    </button>
+                  </TableHead>
+                  {ratingColumns.map((column) => (
+                    <TableHead
+                      key={column}
+                      className={cn(
+                        "min-w-[160px]",
+                        sortColumn === column && "text-foreground bg-muted/40"
+                      )}
+                    >
+                      <button
+                        type="button"
+                        onClick={() => handleSort(column)}
+                        className="flex items-center gap-2 font-medium text-left transition-colors hover:text-foreground"
+                      >
+                        {column}
+                        {sortColumn === column && (
+                          <span className="text-xs text-muted-foreground">
+                            {sortDirection === "asc" ? "↑" : "↓"}
+                          </span>
+                        )}
+                      </button>
+                    </TableHead>
+                  ))}
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {sortedRows.map((row) => (
+                  <TableRow key={`${row.section}-${row.question}`}>
+                    <TableCell
+                      className={cn(
+                        "align-top",
+                        sortColumn === "section" && "bg-muted/40"
+                      )}
+                    >
+                      <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                        {row.section}
+                      </div>
+                      <div className="text-sm font-medium text-foreground">{row.question}</div>
+                    </TableCell>
+                    {ratingColumns.map((column) => {
+                      const rating = row.ratings[column];
+
+                      return (
+                        <TableCell
+                          key={column}
+                          className={cn(
+                            "text-sm",
+                            sortColumn === column && "bg-muted/40"
+                          )}
+                        >
+                          <div className="text-sm font-medium text-foreground">
+                            {rating?.count ?? 0} ({(rating?.percentage ?? 0).toFixed(1)}%)
+                          </div>
+                        </TableCell>
+                      );
+                    })}
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          )}
         </CardContent>
       </Card>
     </div>

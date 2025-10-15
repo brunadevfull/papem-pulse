@@ -209,12 +209,14 @@ export function EnvironmentCharts() {
               fill: categoricalColors[idx % categoricalColors.length],
             }));
 
-            chartData.push({
-              name: "Não respondidas",
-              count: unanswered,
-              percentage: toPercentage(unanswered),
-              fill: "#9ca3af",
-            });
+            if (unanswered > 0) {
+              chartData.push({
+                name: "Não respondidas",
+                count: unanswered,
+                percentage: toPercentage(unanswered),
+                fill: "#9ca3af",
+              });
+            }
 
             return (
               <Card key={question.id} className="h-full">
@@ -226,10 +228,14 @@ export function EnvironmentCharts() {
                         <Badge variant="outline" className="font-medium">
                           {totalResponses} respostas
                         </Badge>
-                        <span className="text-muted-foreground">|</span>
-                        <Badge variant="outline" className="font-medium">
-                          {unanswered} não respondidas
-                        </Badge>
+                        {unanswered > 0 && (
+                          <>
+                            <span className="text-muted-foreground">|</span>
+                            <Badge variant="outline" className="font-medium">
+                              {unanswered} não respondidas
+                            </Badge>
+                          </>
+                        )}
                       </div>
                     ) : totalResponses > 0 ? (
                       `${totalResponses} respostas consideradas`

@@ -151,15 +151,18 @@ export default function Survey() {
 
   useEffect(() => {
     const scrollToSectionStart = () => {
-      if (pageTopRef.current) {
-        pageTopRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      } else {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
+      const header = document.querySelector('header');
+      const headerHeight = header instanceof HTMLElement ? header.getBoundingClientRect().height : 0;
 
       const firstQuestion = document.querySelector('.question-card-enhanced');
-      if (firstQuestion instanceof HTMLElement) {
-        firstQuestion.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const targetElement = (firstQuestion as HTMLElement | null) ?? pageTopRef.current;
+
+      if (targetElement) {
+        const elementTop = targetElement.getBoundingClientRect().top + window.scrollY;
+        const targetTop = Math.max(elementTop - headerHeight - 8, 0);
+        window.scrollTo({ top: targetTop, behavior: 'smooth' });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       }
     };
 
@@ -202,8 +205,7 @@ export default function Survey() {
     
     if (currentSection < totalSections - 1) {
       setTimeout(() => {
-        setCurrentSection(currentSection + 1);
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        setCurrentSection(prev => Math.min(prev + 1, totalSections - 1));
       }, 300);
     }
   };

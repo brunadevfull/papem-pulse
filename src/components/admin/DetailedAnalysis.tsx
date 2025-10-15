@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { AlertCircle, Loader2 } from "lucide-react";
+import { AlertCircle, ChevronDown, Loader2 } from "lucide-react";
 import { useSectionStats } from "@/hooks/useSectionStats";
 import {
   Table,
@@ -263,11 +263,17 @@ export function DetailedAnalysis() {
                       className="flex items-center gap-2 font-medium text-left transition-colors hover:text-foreground"
                     >
                       Seção / Questão
-                      {sortColumn === "section" && (
-                        <span className="text-xs text-muted-foreground">
-                          {sortDirection === "asc" ? "↑" : "↓"}
-                        </span>
-                      )}
+                      <ChevronDown
+                        aria-hidden
+                        className={cn(
+                          "h-3.5 w-3.5 transition-transform",
+                          sortColumn === "section"
+                            ? sortDirection === "asc"
+                              ? "rotate-180"
+                              : "rotate-0"
+                            : "rotate-180 text-muted-foreground/70"
+                        )}
+                      />
                     </button>
                   </TableHead>
                   {ratingColumns.map((column) => (
@@ -289,11 +295,17 @@ export function DetailedAnalysis() {
                             className="flex items-center gap-2 font-semibold text-left transition-colors hover:text-foreground"
                           >
                             {column}
-                            {sortColumn === column && (
-                              <span className="text-xs text-muted-foreground">
-                                {sortDirection === "asc" ? "↑" : "↓"}
-                              </span>
-                            )}
+                            <ChevronDown
+                              aria-hidden
+                              className={cn(
+                                "h-3.5 w-3.5 transition-transform",
+                                sortColumn === column
+                                  ? sortDirection === "asc"
+                                    ? "rotate-180"
+                                    : "rotate-0"
+                                  : "rotate-0 text-muted-foreground/70"
+                              )}
+                            />
                           </button>
                         </TooltipTrigger>
                         <TooltipContent>{ratingColorDescriptions[column]}</TooltipContent>

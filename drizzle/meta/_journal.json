@@ -1,0 +1,18 @@
+{
+  "version": "5",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "when": 1760560000000,
+      "tag": "0000_create_admin_users",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "when": 1760563403961,
+      "tag": "0003_update_admin_password",
+      "breakpoints": true
+    }
+  ]
+}

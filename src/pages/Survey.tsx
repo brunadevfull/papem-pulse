@@ -260,6 +260,20 @@ export default function Survey() {
     }
   };
 
+  const handleRestart = () => {
+    setSurveyData({});
+    setCompletedSections([]);
+    setCurrentSection(0);
+    setIsSubmitted(false);
+    setValidationErrors([]);
+    setIsSubmitting(false);
+    setLastSaved(null);
+
+    localStorage.removeItem('papem-survey-data');
+    localStorage.removeItem('papem-survey-section');
+    localStorage.removeItem('papem-survey-completed');
+  };
+
   const getMissingFields = () => {
     const requiredLocationFields = [
       'setor_localizacao',
@@ -293,7 +307,7 @@ export default function Survey() {
   };
 
   if (isSubmitted) {
-    return <SuccessMessage />;
+    return <SuccessMessage onRestart={handleRestart} />;
   }
 
   return (

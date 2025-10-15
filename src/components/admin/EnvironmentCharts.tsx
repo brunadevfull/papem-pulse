@@ -6,7 +6,7 @@ import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Toolti
 import { AlertCircle, Loader2 } from "lucide-react";
 import { environmentQuestions, type SectionStatsResponse } from "@shared/section-metadata";
 import { useSectionStats } from "@/hooks/useSectionStats";
-import { ratingToNumber, ratingToPercentage } from "@/hooks/useStats";
+import { ratingToNumber } from "@/hooks/useStats";
 
 const sectorOptions = [
   { value: "all", label: "Todos os setores" },
@@ -77,6 +77,21 @@ const mapRatingToCategory = (rating: string) => {
   }
 };
 
+type RatingChartEntry = {
+  category: string;
+  key: string;
+  percentage: number;
+  count: number;
+  fill: string;
+};
+
+type CategoricalEntry = {
+  name: string;
+  count: number;
+  percentage: number;
+  fill: string;
+};
+
 export function EnvironmentCharts() {
   const [selectedSector, setSelectedSector] = useState("all");
   const [alojamentoFilter, setAlojamentoFilter] = useState("all");
@@ -93,6 +108,9 @@ export function EnvironmentCharts() {
   const { data, loading, error } = useSectionStats("environment", filters);
 
   const totalParticipants = data?.totalResponses ?? 0;
+
+  const toPercentage = (value: number) =>
+    totalParticipants > 0 ? Math.round((value / totalParticipants) * 100) : 0;
 
   const questionsById = useMemo(() => {
     const map = new Map<string, SectionStatsResponse["questions"][number]>();
@@ -184,12 +202,19 @@ export function EnvironmentCharts() {
           }
 
           if (question.type === "categorical") {
-            const chartData = (stats?.ratings || []).map((entry, idx) => ({
+            const chartData: CategoricalEntry[] = (stats?.ratings || []).map((entry, idx) => ({
               name: entry.rating || "Não informado",
               count: entry.count,
-              percentage: totalResponses > 0 ? Math.round((entry.count / totalResponses) * 100) : 0,
+              percentage: toPercentage(entry.count),
               fill: categoricalColors[idx % categoricalColors.length],
             }));
+
+            chartData.push({
+              name: "Não respondidas",
+              count: unanswered,
+              percentage: toPercentage(unanswered),
+              fill: "#9ca3af",
+            });
 
             return (
               <Card key={question.id} className="h-full">
@@ -214,7 +239,7 @@ export function EnvironmentCharts() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
-                  {totalResponses > 0 ? (
+                  {totalParticipants > 0 ? (
                     <div className="grid gap-4 lg:grid-cols-2">
                       <ResponsiveContainer width="100%" height={260}>
                         <BarChart data={chartData}>
@@ -260,7 +285,6 @@ export function EnvironmentCharts() {
             );
           }
 
-          const percentages = ratingToPercentage(stats?.ratings ?? []);
           const counts = {
             concordoTotalmente: 0,
             concordo: 0,
@@ -275,47 +299,54 @@ export function EnvironmentCharts() {
             }
           });
 
-          const chartData = [
+          const chartData: RatingChartEntry[] = [
             {
               category: "Concordo totalmente",
-              key: "concordoTotalmente" as const,
-              percentage: percentages.concordoTotalmente,
+              key: "concordoTotalmente",
+              percentage: toPercentage(counts.concordoTotalmente),
               count: counts.concordoTotalmente,
               fill: "hsl(var(--success))",
             },
             {
               category: "Concordo",
-              key: "concordo" as const,
-              percentage: percentages.concordo,
+              key: "concordo",
+              percentage: toPercentage(counts.concordo),
               count: counts.concordo,
               fill: "#4ade80",
             },
             {
               category: "Discordo",
-              key: "discordo" as const,
-              percentage: percentages.discordo,
+              key: "discordo",
+              percentage: toPercentage(counts.discordo),
               count: counts.discordo,
               fill: "#f97316",
             },
             {
               category: "Discordo totalmente",
-              key: "discordoTotalmente" as const,
-              percentage: percentages.discordoTotalmente,
+              key: "discordoTotalmente",
+              percentage: toPercentage(counts.discordoTotalmente),
               count: counts.discordoTotalmente,
               fill: "hsl(var(--destructive))",
             },
           ];
 
-          const neutroPercentage = 'neutro' in percentages ? percentages.neutro : undefined;
-          if (typeof neutroPercentage === "number" && counts.neutro > 0) {
+          if (counts.neutro > 0) {
             chartData.splice(2, 0, {
               category: "Neutro (legado)",
-              key: "neutro" as any,
-              percentage: neutroPercentage,
+              key: "neutro",
+              percentage: toPercentage(counts.neutro),
               count: counts.neutro,
               fill: "#94a3b8",
             });
           }
+
+          chartData.push({
+            category: "Não respondidas",
+            key: "naoRespondidas",
+            percentage: toPercentage(unanswered),
+            count: unanswered,
+            fill: "#9ca3af",
+          });
 
           const averageScore = stats?.average ? Math.round(stats.average * 20) : null;
 

@@ -354,8 +354,6 @@ export function EnvironmentCharts() {
             fill: "#9ca3af",
           });
 
-          const averageScore = stats?.average ? Math.round(stats.average * 20) : null;
-
           return (
             <Card key={question.id} className="h-full">
               <CardHeader>
@@ -373,9 +371,6 @@ export function EnvironmentCharts() {
                     </div>
                   ) : (
                     <span>Nenhuma resposta registrada</span>
-                  )}
-                  {averageScore !== null && (
-                    <span className="text-xs">Média: {averageScore}%</span>
                   )}
                 </CardDescription>
               </CardHeader>

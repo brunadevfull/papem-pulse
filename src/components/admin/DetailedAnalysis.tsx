@@ -12,6 +12,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import {
   alojamentoOptions,
   escalaOptions,
@@ -42,6 +43,20 @@ const ratingColumns = [
 ] as const;
 
 type RatingColumn = (typeof ratingColumns)[number];
+
+const ratingColorClasses: Record<RatingColumn, string> = {
+  "Concordo totalmente": "bg-emerald-100 text-emerald-900",
+  Concordo: "bg-sky-100 text-sky-900",
+  Discordo: "bg-amber-100 text-amber-900",
+  "Discordo totalmente": "bg-rose-100 text-rose-900",
+};
+
+const ratingColorDescriptions: Record<RatingColumn, string> = {
+  "Concordo totalmente": "Tons de verde destacam o grau máximo de concordância",
+  Concordo: "Tons de azul representam concordância moderada",
+  Discordo: "Tons de amarelo indicam discordância moderada",
+  "Discordo totalmente": "Tons de vermelho realçam a discordância total",
+};
 
 type TableRowData = {
   section: string;
@@ -232,12 +247,13 @@ export function DetailedAnalysis() {
               Nenhum dado suficiente para exibir a distribuição de respostas.
             </p>
           ) : (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead
-                    className={cn(
-                      "w-[320px]",
+            <TooltipProvider delayDuration={150}>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead
+                      className={cn(
+                        "w-[320px]",
                       sortColumn === "section" && "text-foreground bg-muted/40"
                     )}
                   >
@@ -258,29 +274,37 @@ export function DetailedAnalysis() {
                     <TableHead
                       key={column}
                       className={cn(
-                        "min-w-[160px]",
-                        sortColumn === column && "text-foreground bg-muted/40"
+                        "min-w-[160px] rounded-md font-semibold text-sm",
+                        ratingColorClasses[column],
+                        sortColumn === column &&
+                          "ring-2 ring-offset-2 ring-offset-background ring-primary/40"
                       )}
                     >
-                      <button
-                        type="button"
-                        onClick={() => handleSort(column)}
-                        className="flex items-center gap-2 font-medium text-left transition-colors hover:text-foreground"
-                      >
-                        {column}
-                        {sortColumn === column && (
-                          <span className="text-xs text-muted-foreground">
-                            {sortDirection === "asc" ? "↑" : "↓"}
-                          </span>
-                        )}
-                      </button>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <button
+                            type="button"
+                            onClick={() => handleSort(column)}
+                            aria-label={`Ordenar por ${column}. ${ratingColorDescriptions[column]}.`}
+                            className="flex items-center gap-2 font-semibold text-left transition-colors hover:text-foreground"
+                          >
+                            {column}
+                            {sortColumn === column && (
+                              <span className="text-xs text-muted-foreground">
+                                {sortDirection === "asc" ? "↑" : "↓"}
+                              </span>
+                            )}
+                          </button>
+                        </TooltipTrigger>
+                        <TooltipContent>{ratingColorDescriptions[column]}</TooltipContent>
+                      </Tooltip>
                     </TableHead>
                   ))}
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {sortedRows.map((row) => (
-                  <TableRow key={`${row.section}-${row.question}`}>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {sortedRows.map((row) => (
+                    <TableRow key={`${row.section}-${row.question}`}>
                     <TableCell
                       className={cn(
                         "align-top",
@@ -298,12 +322,15 @@ export function DetailedAnalysis() {
                       return (
                         <TableCell
                           key={column}
+                          aria-label={`${column}: ${rating?.count ?? 0} respostas (${(rating?.percentage ?? 0).toFixed(1)}%)`}
                           className={cn(
-                            "text-sm",
-                            sortColumn === column && "bg-muted/40"
+                            "text-sm rounded-md font-semibold",
+                            ratingColorClasses[column],
+                            sortColumn === column &&
+                              "ring-2 ring-offset-2 ring-offset-background ring-primary/40"
                           )}
                         >
-                          <div className="text-sm font-medium text-foreground">
+                          <div className="text-sm font-semibold text-foreground">
                             {rating?.count ?? 0} ({(rating?.percentage ?? 0).toFixed(1)}%)
                           </div>
                         </TableCell>
@@ -312,7 +339,8 @@ export function DetailedAnalysis() {
                   </TableRow>
                 ))}
               </TableBody>
-            </Table>
+              </Table>
+            </TooltipProvider>
           )}
         </CardContent>
       </Card>

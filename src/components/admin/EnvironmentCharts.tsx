@@ -92,6 +92,8 @@ export function EnvironmentCharts() {
 
   const { data, loading, error } = useSectionStats("environment", filters);
 
+  const totalParticipants = data?.totalResponses ?? 0;
+
   const questionsById = useMemo(() => {
     const map = new Map<string, SectionStatsResponse["questions"][number]>();
     if (data) {
@@ -175,6 +177,7 @@ export function EnvironmentCharts() {
         {environmentQuestions.map((question, index) => {
           const stats = questionsById.get(question.id as string);
           const totalResponses = stats?.totalResponses ?? 0;
+          const unanswered = Math.max(totalParticipants - totalResponses, 0);
 
           if (!stats && !loading) {
             return null;
@@ -192,10 +195,22 @@ export function EnvironmentCharts() {
               <Card key={question.id} className="h-full">
                 <CardHeader>
                   <CardTitle className="text-base font-semibold">{question.label}</CardTitle>
-                  <CardDescription>
-                    {totalResponses > 0
-                      ? `${totalResponses} respostas consideradas`
-                      : "Sem respostas registradas para esta pergunta"}
+                  <CardDescription className="space-y-1 text-sm text-muted-foreground">
+                    {totalParticipants > 0 ? (
+                      <div className="flex flex-wrap items-center gap-2 text-xs">
+                        <Badge variant="outline" className="font-medium">
+                          {totalResponses} respostas
+                        </Badge>
+                        <span className="text-muted-foreground">|</span>
+                        <Badge variant="outline" className="font-medium">
+                          {unanswered} não respondidas
+                        </Badge>
+                      </div>
+                    ) : totalResponses > 0 ? (
+                      `${totalResponses} respostas consideradas`
+                    ) : (
+                      "Sem respostas registradas para esta pergunta"
+                    )}
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
@@ -308,16 +323,22 @@ export function EnvironmentCharts() {
             <Card key={question.id} className="h-full">
               <CardHeader>
                 <CardTitle className="text-base font-semibold">{question.label}</CardTitle>
-                <CardDescription className="flex items-center gap-2 text-sm">
-                  {totalResponses > 0 ? (
-                    <>
-                      <Badge variant="secondary">{totalResponses} respostas</Badge>
-                      {averageScore !== null && (
-                        <span className="text-muted-foreground">Média: {averageScore}%</span>
-                      )}
-                    </>
+                <CardDescription className="space-y-1 text-sm text-muted-foreground">
+                  {totalParticipants > 0 ? (
+                    <div className="flex flex-wrap items-center gap-2 text-xs">
+                      <Badge variant="outline" className="font-medium">
+                        {totalResponses} respostas
+                      </Badge>
+                      <span className="text-muted-foreground">|</span>
+                      <Badge variant="outline" className="font-medium">
+                        {unanswered} não respondidas
+                      </Badge>
+                    </div>
                   ) : (
-                    <span className="text-muted-foreground">Nenhuma resposta registrada</span>
+                    <span>Nenhuma resposta registrada</span>
+                  )}
+                  {averageScore !== null && (
+                    <span className="text-xs">Média: {averageScore}%</span>
                   )}
                 </CardDescription>
               </CardHeader>

@@ -1,6 +1,12 @@
 import { useMemo } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { AlertTriangle, AlertCircle, Loader2 } from "lucide-react";
 import { useSectionStats } from "@/hooks/useSectionStats";
 
@@ -40,11 +46,21 @@ export function DetailedAnalysis() {
 
       return stats.questions
         .filter((question) => question.type === "likert" && question.average !== null)
-        .map((question) => ({
-          section: section.title,
-          question: question.label,
-          score: Math.round((question.average ?? 0) * 20),
-        }));
+        .map((question) => {
+          const negativeCount = question.ratings.reduce((total, rating) => {
+            if (rating.rating === "Discordo" || rating.rating === "Discordo totalmente") {
+              return total + rating.count;
+            }
+            return total;
+          }, 0);
+
+          return {
+            section: section.title,
+            question: question.label,
+            score: Math.round((question.average ?? 0) * 20),
+            negativeCount,
+          };
+        });
     });
 
     return questions
@@ -77,24 +93,48 @@ export function DetailedAnalysis() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="space-y-4">
-            {criticalPoints.length === 0 && (
-              <p className="text-sm text-muted-foreground">Nenhum dado suficiente para identificar pontos críticos.</p>
-            )}
-            {criticalPoints.map((point, index) => (
-              <div key={`${point.question}-${index}`} className="flex items-center justify-between p-3 bg-warning-light rounded-lg border border-warning/20">
-                <div className="flex-1">
-                  <p className="text-sm font-medium">{point.question}</p>
-                  <p className="text-xs text-muted-foreground">{point.section}</p>
+          <TooltipProvider delayDuration={150}>
+            <div className="space-y-4">
+              {criticalPoints.length === 0 && (
+                <p className="text-sm text-muted-foreground">Nenhum dado suficiente para identificar pontos críticos.</p>
+              )}
+              {criticalPoints.map((point, index) => (
+                <div
+                  key={`${point.question}-${index}`}
+                  className="flex items-center justify-between p-3 bg-warning-light rounded-lg border border-warning/20"
+                >
+                  <div className="flex-1">
+                    <p className="text-sm font-medium">{point.question}</p>
+                    <p className="text-xs text-muted-foreground">{point.section}</p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Badge
+                      variant="outline"
+                      className={
+                        point.score < 50
+                          ? "text-destructive"
+                          : point.score < 70
+                            ? "text-warning"
+                            : "text-success"
+                      }
+                    >
+                      {point.score}%
+                    </Badge>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Badge variant="secondary" className="text-xs font-medium">
+                          {point.negativeCount} discordâncias
+                        </Badge>
+                      </TooltipTrigger>
+                      <TooltipContent side="bottom" className="max-w-[220px] text-xs">
+                        Total de respostas "Discordo" ou "Discordo totalmente" para esta pergunta.
+                      </TooltipContent>
+                    </Tooltip>
+                  </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Badge variant="outline" className={point.score < 50 ? "text-destructive" : point.score < 70 ? "text-warning" : "text-success"}>
-                    {point.score}%
-                  </Badge>
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          </TooltipProvider>
         </CardContent>
       </Card>
     </div>

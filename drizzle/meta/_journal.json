@@ -1,0 +1,17 @@
+{
+  "entries": [
+    {
+      "idx": 0,
+      "version": "ab9e51ba-5732-4ab8-8348-67835d3ff8f9",
+      "when": 1760559548000,
+      "tag": "0000_create_admin_users"
+    },
+    {
+      "idx": 1,
+      "version": "b4948afa-bf6b-4860-8114-62fed81889c8",
+      "when": 1760559549000,
+      "tag": "0003_update_admin_password"
+    }
+  ],
+  "current": "b4948afa-bf6b-4860-8114-62fed81889c8"
+}

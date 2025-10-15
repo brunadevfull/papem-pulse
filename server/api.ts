@@ -4,7 +4,7 @@ import cors from 'cors';
 import { randomUUID } from 'node:crypto';
 import { db } from './db';
 import { surveyResponses, surveyStats, adminUsers } from '@shared/schema';
-import { eq, count, sql, and } from 'drizzle-orm';
+import { eq, count, sql, and, or } from 'drizzle-orm';
 import { generateAllChartsHtml } from './simpleCharts';
 import { generatePdfTemplate } from './pdfTemplate';
 import {
@@ -36,11 +36,22 @@ app.post('/api/admin/login', async (req, res) => {
       });
     }
 
-    const sanitizedUsername = username.trim();
+    const sanitizedIdentifier = username.trim();
+    if (!sanitizedIdentifier) {
+      return res.status(400).json({
+        success: false,
+        message: 'Usuário ou e-mail é obrigatório.',
+      });
+    }
     const [admin] = await db
       .select()
       .from(adminUsers)
-      .where(eq(adminUsers.username, sanitizedUsername))
+      .where(
+        or(
+          eq(adminUsers.username, sanitizedIdentifier),
+          eq(adminUsers.email, sanitizedIdentifier)
+        )
+      )
       .limit(1);
 
     if (!admin) {

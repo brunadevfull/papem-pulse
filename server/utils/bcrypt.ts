@@ -46,12 +46,53 @@ function runPython(script: string, args: string[]): Promise<string> {
   });
 }
 
+function toSaltHashFormat(fullHash: string): string {
+  if (typeof fullHash !== 'string') {
+    return fullHash;
+  }
+
+  if (fullHash.includes(':')) {
+    return fullHash;
+  }
+
+  if (fullHash.startsWith('$2') && fullHash.length >= 30) {
+    const saltPart = fullHash.slice(0, 29);
+    const hashPart = fullHash.slice(29);
+
+    if (saltPart && hashPart) {
+      return `${saltPart}:${hashPart}`;
+    }
+  }
+
+  return fullHash;
+}
+
+function normalizeStoredHash(storedHash: string): string {
+  if (typeof storedHash !== 'string' || storedHash.length === 0) {
+    return '';
+  }
+
+  if (!storedHash.includes(':')) {
+    return storedHash;
+  }
+
+  const [saltPart, hashPart] = storedHash.split(':');
+
+  if (!saltPart || !hashPart) {
+    return storedHash;
+  }
+
+  return `${saltPart}${hashPart}`;
+}
+
 export async function hashPassword(password: string, cost = 12): Promise<string> {
   const trimmedPassword = password ?? '';
-  return runPython(HASH_SCRIPT, [trimmedPassword, String(cost)]);
+  const fullHash = await runPython(HASH_SCRIPT, [trimmedPassword, String(cost)]);
+  return toSaltHashFormat(fullHash);
 }
 
 export async function verifyPassword(password: string, hashed: string): Promise<boolean> {
-  const result = await runPython(VERIFY_SCRIPT, [password ?? '', hashed ?? '']);
+  const normalizedHash = normalizeStoredHash(hashed ?? '');
+  const result = await runPython(VERIFY_SCRIPT, [password ?? '', normalizedHash]);
   return result === '1';
 }

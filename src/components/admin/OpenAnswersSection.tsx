@@ -16,7 +16,7 @@ const sectorOptions = [
   { value: "PAPEM-51", label: "PAPEM-51" },
   { value: "PAPEM-52", label: "PAPEM-52" },
   { value: "SECOM", label: "SECOM" },
-  { value: "GABINETE", label: "GABINETE" },
+  { value: "Assessorias", label: "Assessorias" },
 ];
 
 const categories = [

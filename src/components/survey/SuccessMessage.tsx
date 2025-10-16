@@ -1,6 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CheckCircle2, Shield, Sparkles, Star, Anchor, Home } from "lucide-react";
+import { CheckCircle2, Home } from "lucide-react";
+import brasaoPapem from "@/assets/brasao-papem.png";
 
 type SuccessMessageProps = {
   onRestart: () => void;
@@ -18,7 +19,7 @@ export function SuccessMessage({ onRestart }: SuccessMessageProps) {
               <CheckCircle2 className="w-10 h-10 animate-pulse-slow text-success" />
             </div>
             <div className="w-16 h-16 bg-white/10 rounded-3xl flex items-center justify-center backdrop-blur-sm animate-float">
-              <Anchor className="w-8 h-8 animate-glow" />
+              <img src={brasaoPapem} alt="Brasão da PAPEM" className="w-8 h-8 object-contain" />
             </div>
           </div>
 

@@ -24,26 +24,99 @@ if calc is None:
 print('1' if calc == hashed else '0')
 `;
 
-function runPython(script: string, args: string[]): Promise<string> {
+const PYTHON_CANDIDATES = (() => {
+  const candidates: string[] = [];
+  const fromEnv = process.env.PYTHON?.trim();
+
+  if (fromEnv) {
+    candidates.push(fromEnv);
+  }
+
+  for (const candidate of ['python', 'python3', 'py']) {
+    if (!candidates.includes(candidate)) {
+      candidates.push(candidate);
+    }
+  }
+
+  return candidates;
+})();
+
+function executeWithPython(
+  executable: string,
+  script: string,
+  args: string[]
+): Promise<string> {
   return new Promise((resolve, reject) => {
+    let settled = false;
     const child = execFile(
-      'python',
+      executable,
       ['-c', script, ...args],
       { encoding: 'utf8' },
       (error, stdout, stderr) => {
-        if (error) {
-          const details = stderr ? `: ${stderr.trim()}` : '';
-          reject(new Error(`Python execution failed${details}`));
+        if (settled) {
           return;
         }
+
+        if (error) {
+          settled = true;
+          const details = stderr ? `: ${stderr.trim()}` : '';
+          const execError = new Error(
+            `Python execution failed using "${executable}"${details}`
+          );
+          (execError as { cause?: unknown }).cause = error;
+          reject(execError);
+          return;
+        }
+
+        settled = true;
         resolve(stdout.trim());
       }
     );
 
-    child.on('error', (err) => {
-      reject(err);
+    child.on('error', (spawnError) => {
+      if (settled) {
+        return;
+      }
+
+      settled = true;
+      const execError = new Error(
+        `Failed to start Python executable "${executable}": ${spawnError.message}`
+      );
+      (execError as { cause?: unknown }).cause = spawnError;
+      reject(execError);
     });
   });
+}
+
+async function runPython(script: string, args: string[]): Promise<string> {
+  const spawnErrors: string[] = [];
+
+  for (const executable of PYTHON_CANDIDATES) {
+    try {
+      return await executeWithPython(executable, script, args);
+    } catch (error) {
+      const cause = (error as { cause?: unknown })?.cause;
+      const isSpawnError =
+        !!cause && typeof cause === 'object' && 'code' in cause &&
+        (cause as { code?: unknown }).code === 'ENOENT';
+
+      if (isSpawnError) {
+        spawnErrors.push((error as Error).message);
+        continue;
+      }
+
+      throw error;
+    }
+  }
+
+  const errorMessage =
+    spawnErrors.length > 0
+      ? `Unable to locate a working Python executable. Tried ${PYTHON_CANDIDATES.join(
+          ', '
+        )}. Errors: ${spawnErrors.join(' | ')}`
+      : 'Unable to execute Python script.';
+
+  throw new Error(errorMessage);
 }
 
 function toSaltHashFormat(fullHash: string): string {

@@ -277,7 +277,7 @@ export function DetailedAnalysis() {
                           key={column}
                           className={cn(
                             "sticky top-0 min-w-[160px] bg-muted text-primary",
-                            "text-xs font-semibold uppercase tracking-[0.18em]",
+                            "text-right text-xs font-semibold uppercase tracking-[0.18em]",
                             sortColumn === column && "text-foreground"
                           )}
                         >
@@ -287,7 +287,7 @@ export function DetailedAnalysis() {
                                 type="button"
                                 onClick={() => handleSort(column)}
                                 aria-label={`Ordenar por ${column}. ${ratingColorDescriptions[column]}.`}
-                                className="flex items-center justify-between gap-2 text-left text-xs font-semibold uppercase tracking-[0.18em] transition-colors hover:text-foreground"
+                                className="flex items-center justify-end gap-2 text-right text-xs font-semibold uppercase tracking-[0.18em] transition-colors hover:text-foreground"
                               >
                                 {column}
                                 <ChevronDown

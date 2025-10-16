@@ -44,13 +44,6 @@ const ratingColumns = [
 
 type RatingColumn = (typeof ratingColumns)[number];
 
-const ratingColorClasses: Record<RatingColumn, string> = {
-  "Concordo totalmente": "bg-blue-50 text-blue-900",
-  Concordo: "bg-blue-100 text-blue-900",
-  Discordo: "bg-slate-50 text-slate-800",
-  "Discordo totalmente": "bg-slate-100 text-slate-900",
-};
-
 const ratingColorDescriptions: Record<RatingColumn, string> = {
   "Concordo totalmente": "Tons suaves de azul destacam o grau máximo de concordância",
   Concordo: "Azuis claros sinalizam concordância moderada sem perder o tom neutro",
@@ -248,22 +241,25 @@ export function DetailedAnalysis() {
             </p>
           ) : (
             <TooltipProvider delayDuration={150}>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead
-                      className={cn(
-                        "w-[320px]",
-                      sortColumn === "section" && "text-foreground bg-muted/40"
-                    )}
-                  >
-                    <button
-                      type="button"
-                      onClick={() => handleSort("section")}
-                      className="flex items-center gap-2 font-medium text-left transition-colors hover:text-foreground"
-                    >
-                      Seção / Questão
-                      <ChevronDown
+              <div className="rounded-2xl border border-border/60 bg-card shadow-sm overflow-hidden">
+                <Table className="min-w-full border-separate border-spacing-y-1 text-sm [&_td]:px-6 [&_th]:px-6">
+                  <TableHeader className="bg-muted/60 text-primary">
+                    <TableRow className="border-none">
+                      <TableHead
+                        className={cn(
+                          "w-[320px] bg-muted text-primary uppercase tracking-[0.18em]",
+                          "text-xs font-semibold",
+                          "sticky top-0",
+                          sortColumn === "section" && "text-foreground"
+                        )}
+                      >
+                        <button
+                          type="button"
+                          onClick={() => handleSort("section")}
+                          className="flex items-center gap-2 text-left text-xs font-semibold uppercase tracking-[0.18em] transition-colors hover:text-foreground"
+                        >
+                          Seção / Questão
+                          <ChevronDown
                         aria-hidden
                         className={cn(
                           "h-3.5 w-3.5 transition-transform",
@@ -276,82 +272,79 @@ export function DetailedAnalysis() {
                       />
                     </button>
                   </TableHead>
-                  {ratingColumns.map((column) => (
-                    <TableHead
-                      key={column}
-                      className={cn(
-                        "min-w-[160px] rounded-md font-semibold text-sm",
-                        ratingColorClasses[column],
-                        sortColumn === column &&
-                          "ring-2 ring-offset-2 ring-offset-background ring-primary/40"
-                      )}
-                    >
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <button
-                            type="button"
-                            onClick={() => handleSort(column)}
-                            aria-label={`Ordenar por ${column}. ${ratingColorDescriptions[column]}.`}
-                            className="flex items-center gap-2 font-semibold text-left transition-colors hover:text-foreground"
-                          >
-                            {column}
-                            <ChevronDown
-                              aria-hidden
-                              className={cn(
-                                "h-3.5 w-3.5 transition-transform",
-                                sortColumn === column
-                                  ? sortDirection === "asc"
-                                    ? "rotate-180"
-                                    : "rotate-0"
-                                  : "rotate-0 text-muted-foreground/70"
-                              )}
-                            />
-                          </button>
-                        </TooltipTrigger>
-                        <TooltipContent>{ratingColorDescriptions[column]}</TooltipContent>
-                      </Tooltip>
-                    </TableHead>
-                  ))}
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {sortedRows.map((row) => (
-                    <TableRow key={`${row.section}-${row.question}`}>
-                    <TableCell
-                      className={cn(
-                        "align-top",
-                        sortColumn === "section" && "bg-muted/40"
-                      )}
-                    >
-                      <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                        {row.section}
-                      </div>
-                      <div className="text-sm font-medium text-foreground">{row.question}</div>
-                    </TableCell>
-                    {ratingColumns.map((column) => {
-                      const rating = row.ratings[column];
-
-                      return (
-                        <TableCell
+                      {ratingColumns.map((column) => (
+                        <TableHead
                           key={column}
-                          aria-label={`${column}: ${rating?.count ?? 0} respostas (${(rating?.percentage ?? 0).toFixed(1)}%)`}
                           className={cn(
-                            "text-sm rounded-md font-semibold",
-                            ratingColorClasses[column],
-                            sortColumn === column &&
-                              "ring-2 ring-offset-2 ring-offset-background ring-primary/40"
+                            "sticky top-0 min-w-[160px] bg-muted text-primary",
+                            "text-xs font-semibold uppercase tracking-[0.18em]",
+                            sortColumn === column && "text-foreground"
                           )}
                         >
-                          <div className="text-sm font-semibold text-foreground">
-                            {rating?.count ?? 0} ({(rating?.percentage ?? 0).toFixed(1)}%)
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <button
+                                type="button"
+                                onClick={() => handleSort(column)}
+                                aria-label={`Ordenar por ${column}. ${ratingColorDescriptions[column]}.`}
+                                className="flex items-center justify-between gap-2 text-left text-xs font-semibold uppercase tracking-[0.18em] transition-colors hover:text-foreground"
+                              >
+                                {column}
+                                <ChevronDown
+                                  aria-hidden
+                                  className={cn(
+                                    "h-3.5 w-3.5 transition-transform",
+                                    sortColumn === column
+                                      ? sortDirection === "asc"
+                                        ? "rotate-180"
+                                        : "rotate-0"
+                                      : "rotate-0 text-muted-foreground/70"
+                                  )}
+                                />
+                              </button>
+                            </TooltipTrigger>
+                            <TooltipContent>{ratingColorDescriptions[column]}</TooltipContent>
+                          </Tooltip>
+                        </TableHead>
+                      ))}
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {sortedRows.map((row) => (
+                      <TableRow
+                        key={`${row.section}-${row.question}`}
+                        className="transition-colors even:bg-muted/30 hover:bg-muted/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary/40"
+                        tabIndex={0}
+                      >
+                        <TableCell className="align-top">
+                          <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                            {row.section}
                           </div>
+                          <div className="text-sm font-medium text-foreground">{row.question}</div>
                         </TableCell>
-                      );
-                    })}
-                  </TableRow>
-                ))}
-              </TableBody>
-              </Table>
+                        {ratingColumns.map((column) => {
+                          const rating = row.ratings[column];
+
+                          return (
+                            <TableCell
+                              key={column}
+                              aria-label={`${column}: ${rating?.count ?? 0} respostas (${(rating?.percentage ?? 0).toFixed(1)}%)`}
+                              className="text-right align-middle"
+                            >
+                              <div className="inline-flex items-center justify-end gap-2 rounded-lg bg-background/70 px-3 py-2 text-sm font-semibold text-foreground">
+                                <span>{rating?.count ?? 0}</span>
+                                <span className="text-muted-foreground">
+                                  ({(rating?.percentage ?? 0).toFixed(1)}%)
+                                </span>
+                              </div>
+                            </TableCell>
+                          );
+                        })}
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
             </TooltipProvider>
           )}
         </CardContent>

@@ -44,6 +44,13 @@ const ratingColumns = [
 
 type RatingColumn = (typeof ratingColumns)[number];
 
+const ratingIcons: Record<RatingColumn, string> = {
+  "Concordo totalmente": "✅",
+  "Concordo": "✅",
+  "Discordo": "⚠️",
+  "Discordo totalmente": "❌",
+};
+
 const ratingColorDescriptions: Record<RatingColumn, string> = {
   "Concordo totalmente": "Tons suaves de azul destacam o grau máximo de concordância",
   Concordo: "Azuis claros sinalizam concordância moderada sem perder o tom neutro",
@@ -242,21 +249,23 @@ export function DetailedAnalysis() {
           ) : (
             <TooltipProvider delayDuration={150}>
               <div className="rounded-2xl border border-border/60 bg-card shadow-sm overflow-hidden">
-                <Table className="min-w-full border-separate border-spacing-y-1 text-sm [&_td]:px-6 [&_th]:px-6">
-                  <TableHeader className="bg-muted/60 text-primary">
+                <Table
+                  className="min-w-full text-sm [&_thead_th]:px-6 [&_thead_th]:py-4 [&_tbody_td]:px-6 [&_tbody_td]:py-6 [&_tbody_tr]:border-b [&_tbody_tr]:border-border/50 [&_tbody_tr:last-child]:border-b-0"
+                >
+                  <TableHeader className="bg-[#0f172a] text-white">
                     <TableRow className="border-none">
                       <TableHead
                         className={cn(
-                          "w-[320px] bg-muted text-primary uppercase tracking-[0.18em]",
+                          "w-[320px] bg-[#0f172a] text-white uppercase tracking-[0.18em]",
                           "text-xs font-semibold",
-                          "sticky top-0",
-                          sortColumn === "section" && "text-foreground"
+                          "sticky top-0 z-10",
+                          sortColumn === "section" && "text-slate-100"
                         )}
                       >
                         <button
                           type="button"
                           onClick={() => handleSort("section")}
-                          className="flex items-center gap-2 text-left text-xs font-semibold uppercase tracking-[0.18em] transition-colors hover:text-foreground"
+                          className="flex items-center gap-2 text-left text-xs font-semibold uppercase tracking-[0.18em] transition-colors hover:text-slate-200"
                         >
                           Seção / Questão
                           <ChevronDown
@@ -267,7 +276,7 @@ export function DetailedAnalysis() {
                             ? sortDirection === "asc"
                               ? "rotate-180"
                               : "rotate-0"
-                            : "rotate-180 text-muted-foreground/70"
+                            : "rotate-180 text-slate-300"
                         )}
                       />
                     </button>
@@ -276,9 +285,9 @@ export function DetailedAnalysis() {
                         <TableHead
                           key={column}
                           className={cn(
-                            "sticky top-0 min-w-[160px] bg-muted text-primary",
+                            "sticky top-0 z-10 min-w-[160px] bg-[#0f172a] text-white",
                             "text-center text-xs font-semibold uppercase tracking-[0.18em]",
-                            sortColumn === column && "text-foreground"
+                            sortColumn === column && "text-slate-100"
                           )}
                         >
                           <Tooltip>
@@ -287,8 +296,9 @@ export function DetailedAnalysis() {
                                 type="button"
                                 onClick={() => handleSort(column)}
                                 aria-label={`Ordenar por ${column}. ${ratingColorDescriptions[column]}.`}
-                                className="flex items-center justify-center gap-2 text-center text-xs font-semibold uppercase tracking-[0.18em] transition-colors hover:text-foreground"
+                                className="flex items-center justify-center gap-2 text-center text-xs font-semibold uppercase tracking-[0.18em] transition-colors hover:text-slate-200"
                               >
+                                <span aria-hidden>{ratingIcons[column]}</span>
                                 {column}
                                 <ChevronDown
                                   aria-hidden
@@ -298,7 +308,7 @@ export function DetailedAnalysis() {
                                       ? sortDirection === "asc"
                                         ? "rotate-180"
                                         : "rotate-0"
-                                      : "rotate-0 text-muted-foreground/70"
+                                      : "rotate-0 text-slate-300"
                                   )}
                                 />
                               </button>
@@ -309,11 +319,11 @@ export function DetailedAnalysis() {
                       ))}
                     </TableRow>
                   </TableHeader>
-                  <TableBody>
+                  <TableBody className="bg-white/90">
                     {sortedRows.map((row) => (
                       <TableRow
                         key={`${row.section}-${row.question}`}
-                        className="transition-colors even:bg-muted/30 hover:bg-muted/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary/40"
+                        className="transition-colors odd:bg-white even:bg-[#f5f9ff] hover:bg-[#eaf2ff] focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary/40"
                         tabIndex={0}
                       >
                         <TableCell className="align-top">
@@ -331,10 +341,10 @@ export function DetailedAnalysis() {
                               aria-label={`${column}: ${rating?.count ?? 0} respostas (${(rating?.percentage ?? 0).toFixed(1)}%)`}
                               className="text-center align-middle"
                             >
-                              <div className="inline-flex items-center justify-center gap-2 rounded-lg bg-background/70 px-3 py-2 text-sm font-semibold text-foreground">
+                              <div className="mx-auto flex w-max min-w-[96px] flex-col items-center justify-center gap-1 rounded-xl bg-background/80 px-3 py-3 text-sm font-semibold text-foreground shadow-[0_1px_2px_rgba(15,23,42,0.08)]">
                                 <span>{rating?.count ?? 0}</span>
-                                <span className="text-muted-foreground">
-                                  ({(rating?.percentage ?? 0).toFixed(1)}%)
+                                <span className="text-xs font-medium text-muted-foreground">
+                                  {(rating?.percentage ?? 0).toFixed(1)}%
                                 </span>
                               </div>
                             </TableCell>

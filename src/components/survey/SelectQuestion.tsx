@@ -31,6 +31,15 @@ export function SelectQuestion({
         hasError ? 'question-card-error border-destructive/40' : ''
       }`}
     >
+      {required && (
+        <div className="-mx-4 -mt-3 mb-3 px-4 py-2 rounded-t-xl bg-destructive text-white flex items-center gap-2 uppercase tracking-wide text-[11px] sm:text-xs font-semibold">
+          <span className="text-white/80 text-base leading-none" aria-hidden="true">
+            !
+          </span>
+          <span>Obrigatório</span>
+        </div>
+      )}
+
       {hasError && (
         <div className="mb-3 p-3 bg-destructive/10 border border-destructive/20 rounded-lg">
           <p className="text-destructive text-sm font-medium flex items-center gap-2">
@@ -61,15 +70,11 @@ export function SelectQuestion({
               }`}
             >
               {question}
-              {required && (
-                <span className="text-destructive ml-1">*</span>
-              )}
             </Label>
 
             {!value && (
               <p className="text-xs sm:text-sm text-muted-foreground mt-2 italic">
                 {placeholder}
-                {required ? ' *' : ''}
               </p>
             )}
           </div>

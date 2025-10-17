@@ -24,6 +24,15 @@ export function Question({ question, name, value, onChange, options, required = 
             : 'border-slate-200/70'
       }`}
     >
+      {required && (
+        <div className="-mx-4 -mt-3 mb-3 px-4 py-2 rounded-t-xl bg-destructive text-white flex items-center gap-2 uppercase tracking-wide text-[11px] sm:text-xs font-semibold">
+          <span className="text-white/80 text-base leading-none" aria-hidden="true">
+            !
+          </span>
+          <span>Obrigatório</span>
+        </div>
+      )}
+
       {hasError && (
         <div className="mb-3 p-3 bg-destructive/10 border border-destructive/20 rounded-lg">
           <p className="text-destructive text-sm font-medium flex items-center gap-2">
@@ -52,12 +61,6 @@ export function Question({ question, name, value, onChange, options, required = 
               hasError ? 'text-destructive' : 'text-slate-800'
             }`}>
               {question}
-              {required && (
-                <span className="ml-2 inline-flex items-center gap-1 text-[10px] sm:text-xs font-bold text-destructive">
-                  <span aria-hidden="true">*</span>
-                  <span>Obrigatório</span>
-                </span>
-              )}
               {!required && (
                 <span className="text-xs text-muted-foreground ml-2 font-normal">(Opcional)</span>
               )}

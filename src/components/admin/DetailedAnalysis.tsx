@@ -152,7 +152,16 @@ export function DetailedAnalysis() {
           : valueB.localeCompare(valueA);
       }
 
-      return sortDirection === "asc" ? valueA - valueB : valueB - valueA;
+      if (typeof valueA === "number" && typeof valueB === "number") {
+        const numericA = Number(valueA);
+        const numericB = Number(valueB);
+
+        return sortDirection === "asc"
+          ? numericA - numericB
+          : numericB - numericA;
+      }
+
+      return 0;
     });
   }, [rows, sortColumn, sortDirection]);
 

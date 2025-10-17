@@ -24,13 +24,22 @@ export function Question({ question, name, value, onChange, options, required = 
             : 'border-slate-200/70'
       }`}
     >
-      {required && (
+      {hasError ? (
         <div className="-mx-4 -mt-3 mb-3 px-4 py-2 rounded-t-xl bg-destructive text-white flex items-center gap-2 uppercase tracking-wide text-[11px] sm:text-xs font-semibold">
           <span className="text-white/80 text-base leading-none" aria-hidden="true">
             !
           </span>
           <span>Obrigatório</span>
         </div>
+      ) : (
+        required && (
+          <div className="-mx-4 -mt-3 mb-3 px-4 py-2 rounded-t-xl bg-primary/5 text-primary flex items-center gap-2 uppercase tracking-wide text-[11px] sm:text-xs font-semibold border-b border-primary/10">
+            <span className="text-primary/70 text-base leading-none" aria-hidden="true">
+              !
+            </span>
+            <span>Pergunta obrigatória</span>
+          </div>
+        )
       )}
 
       {hasError && (
@@ -57,9 +66,15 @@ export function Question({ question, name, value, onChange, options, required = 
             )}
           </div>
           <div className="flex-1">
-            <Label className={`text-xs sm:text-sm font-semibold leading-relaxed ${
-              hasError ? 'text-destructive' : 'text-slate-800'
-            }`}>
+            <Label
+              className={`text-xs sm:text-sm font-semibold leading-relaxed ${
+                hasError
+                  ? 'text-destructive'
+                  : required
+                    ? 'text-slate-900'
+                    : 'text-slate-800'
+              }`}
+            >
               {question}
               {!required && (
                 <span className="text-xs text-muted-foreground ml-2 font-normal">(Opcional)</span>

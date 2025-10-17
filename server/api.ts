@@ -181,15 +181,22 @@ async function getQuestionStats(question: SectionQuestion, filters: FilterParams
   };
 }
 
+async function getTotalParticipants(filters: FilterParams): Promise<number> {
+  const filterClause = buildWhereClause(filters);
+
+  const baseQuery = db.select({ count: count() }).from(surveyResponses);
+  const query = filterClause ? baseQuery.where(filterClause) : baseQuery;
+  const [row] = await query;
+
+  return row ? Number(row.count) : 0;
+}
+
 async function getSectionStats(section: SectionKey, filters: FilterParams): Promise<SectionStatsResponse> {
   const questions = await Promise.all(
     sectionQuestions[section].map((question) => getQuestionStats(question, filters))
   );
 
-  const totalResponses = questions.reduce(
-    (max, question) => Math.max(max, question.totalResponses),
-    0
-  );
+  const totalResponses = await getTotalParticipants(filters);
 
   return {
     section,

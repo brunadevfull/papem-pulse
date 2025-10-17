@@ -27,17 +27,30 @@ export function SelectQuestion({
   return (
     <div
       id={`question-${name}`}
-      className={`question-card-enhanced px-4 py-3 mb-2 fade-in ${
-        hasError ? 'question-card-error border-destructive/40' : ''
+      className={`question-card-enhanced px-4 py-3 mb-2 fade-in border ${
+        hasError
+          ? 'question-card-error border-destructive/40'
+          : required
+            ? 'border-primary/40 ring-1 ring-primary/10'
+            : 'border-slate-200/70'
       }`}
     >
-      {required && (
+      {hasError ? (
         <div className="-mx-4 -mt-3 mb-3 px-4 py-2 rounded-t-xl bg-destructive text-white flex items-center gap-2 uppercase tracking-wide text-[11px] sm:text-xs font-semibold">
           <span className="text-white/80 text-base leading-none" aria-hidden="true">
             !
           </span>
           <span>Obrigatório</span>
         </div>
+      ) : (
+        required && (
+          <div className="-mx-4 -mt-3 mb-3 px-4 py-2 rounded-t-xl bg-primary/5 text-primary flex items-center gap-2 uppercase tracking-wide text-[11px] sm:text-xs font-semibold border-b border-primary/10">
+            <span className="text-primary/70 text-base leading-none" aria-hidden="true">
+              !
+            </span>
+            <span>Pergunta obrigatória</span>
+          </div>
+        )
       )}
 
       {hasError && (
@@ -66,7 +79,11 @@ export function SelectQuestion({
           <div className="flex-1">
             <Label
               className={`text-xs sm:text-sm font-semibold leading-relaxed block ${
-                hasError ? 'text-destructive' : 'text-slate-800'
+                hasError
+                  ? 'text-destructive'
+                  : required
+                    ? 'text-slate-900'
+                    : 'text-slate-800'
               }`}
             >
               {question}

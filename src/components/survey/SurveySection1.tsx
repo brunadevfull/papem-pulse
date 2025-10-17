@@ -1,7 +1,5 @@
 import type { ReactNode } from "react";
 
-import { Badge } from "@/components/ui/badge";
-
 import { Question } from "./Question";
 import { SelectQuestion } from "./SelectQuestion";
 
@@ -70,25 +68,49 @@ const escalaOptions = [
 
 interface ThematicGroupProps {
   title: string;
+  icon: string;
+  gradientClass?: string;
+  badgeText?: string;
   children: ReactNode;
   hasDivider?: boolean;
 }
 
-function ThematicGroup({ title, children, hasDivider = true }: ThematicGroupProps) {
+function ThematicGroup({
+  title,
+  icon,
+  gradientClass = "from-slate-700 via-slate-600 to-slate-700",
+  badgeText = "Seção obrigatória",
+  children,
+  hasDivider = true,
+}: ThematicGroupProps) {
   return (
-    <div
-      className={`space-y-3 ${
-        hasDivider ? "mt-6 border-t border-destructive/20 pt-4" : ""
+    <section
+      className={`space-y-4 ${
+        hasDivider ? "mt-10 border-t border-slate-200 pt-8" : ""
       }`}
     >
-      <Badge
-        variant="destructive"
-        className="uppercase tracking-wide text-xs font-semibold w-fit"
-      >
-        {title}
-      </Badge>
+      <div className="sticky top-24 md:top-28 z-30">
+        <div
+          className={`relative overflow-hidden rounded-2xl px-4 py-3 sm:px-6 sm:py-4 shadow-lg text-white bg-gradient-to-r ${gradientClass}`}
+        >
+          <div className="absolute inset-0 opacity-40 bg-[radial-gradient(circle_at_top_left,_var(--tw-gradient-stops))] from-white/40 via-transparent to-transparent" />
+          <div className="relative flex items-center gap-3">
+            <span className="text-2xl sm:text-3xl drop-shadow-md">{icon}</span>
+            <div className="flex flex-col">
+              {badgeText && (
+                <span className="text-[10px] uppercase tracking-[0.35em] text-white/70 font-semibold">
+                  {badgeText}
+                </span>
+              )}
+              <h2 className="text-lg sm:text-xl font-bold leading-tight drop-shadow-sm">
+                {title}
+              </h2>
+            </div>
+          </div>
+        </div>
+      </div>
       <div className="space-y-2">{children}</div>
-    </div>
+    </section>
   );
 }
 
@@ -100,7 +122,13 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
 
   return (
     <div className="space-y-6">
-      <ThematicGroup title="Setor de trabalho" hasDivider={false}>
+      <ThematicGroup
+        title="Setor de trabalho"
+        icon="🏢"
+        gradientClass="from-sky-700 via-sky-600 to-sky-700"
+        badgeText="Infraestrutura"
+        hasDivider={false}
+      >
         <SelectQuestion
           question="Para análise das condições do setor de trabalho, informar a localização do setor:"
           name="setor_localizacao"
@@ -167,7 +195,12 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
         />
       </ThematicGroup>
 
-      <ThematicGroup title="Alojamento">
+      <ThematicGroup
+        title="Alojamento"
+        icon="🛏️"
+        gradientClass="from-emerald-600 via-emerald-500 to-emerald-600"
+        badgeText="Bem-estar"
+      >
         <SelectQuestion
           question="Para análise das condições dos alojamentos, informar a localização do alojamento:"
           name="alojamento_localizacao"
@@ -234,7 +267,12 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
         />
       </ThematicGroup>
 
-      <ThematicGroup title="Banheiro">
+      <ThematicGroup
+        title="Banheiro"
+        icon="🚿"
+        gradientClass="from-cyan-600 via-cyan-500 to-cyan-600"
+        badgeText="Higiene"
+      >
         <SelectQuestion
           question="Para análise das condições dos banheiros, informar a localização do banheiro:"
           name="banheiro_localizacao"
@@ -323,7 +361,12 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
         />
       </ThematicGroup>
 
-      <ThematicGroup title="Salão de recreio">
+      <ThematicGroup
+        title="Salão de recreio"
+        icon="🎯"
+        gradientClass="from-purple-600 via-violet-500 to-purple-600"
+        badgeText="Convivência"
+      >
         <SelectQuestion
           question="Para análise das condições dos salões de recreio, informar a localização do salão:"
           name="recreio_localizacao"
@@ -390,7 +433,12 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
         />
       </ThematicGroup>
 
-      <ThematicGroup title="Rancho">
+      <ThematicGroup
+        title="Rancho"
+        icon="🍽️"
+        gradientClass="from-orange-500 via-amber-500 to-orange-500"
+        badgeText="Alimentação"
+      >
         <SelectQuestion
           question="Para análise das condições do rancho, informar a localização do rancho:"
           name="rancho_localizacao"
@@ -457,7 +505,12 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
         />
       </ThematicGroup>
 
-      <ThematicGroup title="Escala de serviço">
+      <ThematicGroup
+        title="Escala de serviço"
+        icon="⚙️"
+        gradientClass="from-slate-700 via-slate-600 to-slate-700"
+        badgeText="Organização"
+      >
         <SelectQuestion
           question="Para análise das condições da escala de serviço, informar sua escala:"
           name="escala_servico_tipo"
@@ -491,7 +544,12 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
         />
       </ThematicGroup>
 
-      <ThematicGroup title="Treinamento Físico Militar (TFM)">
+      <ThematicGroup
+        title="Treinamento Físico Militar (TFM)"
+        icon="🏋️"
+        gradientClass="from-rose-600 via-rose-500 to-rose-600"
+        badgeText="Desenvolvimento"
+      >
         <Question
           questionNumber={36}
           question="Participo com regularidade do Treinamento Físico Militar."

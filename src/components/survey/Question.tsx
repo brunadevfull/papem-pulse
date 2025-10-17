@@ -16,8 +16,12 @@ export function Question({ question, name, value, onChange, options, required = 
   return (
     <div
       id={`question-${name}`}
-      className={`question-card-enhanced px-4 py-3 mb-2 fade-in ${
-        hasError ? 'question-card-error border-destructive/40' : ''
+      className={`question-card-enhanced px-4 py-3 mb-2 fade-in border ${
+        hasError
+          ? 'question-card-error border-destructive/40'
+          : required
+            ? 'border-primary/40 ring-1 ring-primary/10'
+            : 'border-slate-200/70'
       }`}
     >
       {hasError && (
@@ -48,6 +52,12 @@ export function Question({ question, name, value, onChange, options, required = 
               hasError ? 'text-destructive' : 'text-slate-800'
             }`}>
               {question}
+              {required && (
+                <span className="ml-2 inline-flex items-center gap-1 text-[10px] sm:text-xs font-bold text-destructive">
+                  <span aria-hidden="true">*</span>
+                  <span>Obrigatório</span>
+                </span>
+              )}
               {!required && (
                 <span className="text-xs text-muted-foreground ml-2 font-normal">(Opcional)</span>
               )}

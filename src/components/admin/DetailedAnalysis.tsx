@@ -61,7 +61,7 @@ const ratingColorDescriptions: Record<RatingColumn, string> = {
 type TableRowData = {
   section: string;
   question: string;
-  ratings: Record<RatingColumn, { count: number; percentage: number }>;
+  ratings: Record<RatingColumn, { count: number; questionTotal: number }>;
 };
 
 export function DetailedAnalysis() {
@@ -92,8 +92,19 @@ export function DetailedAnalysis() {
   const [sortColumn, setSortColumn] = useState<SortColumn>("section");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
 
-  const rows = useMemo<TableRowData[]>(() => {
-    return sectionsMeta.flatMap((section) => {
+  const { rows, columnTotals } = useMemo<{
+    rows: TableRowData[];
+    columnTotals: Record<RatingColumn, number>;
+  }>(() => {
+    const totals = ratingColumns.reduce(
+      (acc, column) => {
+        acc[column] = 0;
+        return acc;
+      },
+      {} as Record<RatingColumn, number>
+    );
+
+    const computedRows = sectionsMeta.flatMap<TableRowData>((section) => {
       const stats =
         section.key === "environment"
           ? environment.data
@@ -114,11 +125,11 @@ export function DetailedAnalysis() {
           ratingColumns.forEach((column) => {
             const match = question.ratings.find((rating) => rating.rating === column);
             const count = match?.count ?? 0;
-            const percentage = totalResponses > 0 ? (count / totalResponses) * 100 : 0;
+            totals[column] += count;
 
             ratings[column] = {
               count,
-              percentage,
+              questionTotal: totalResponses,
             };
           });
 
@@ -129,6 +140,8 @@ export function DetailedAnalysis() {
           };
         });
     });
+
+    return { rows: computedRows, columnTotals: totals };
   }, [environment.data, motivation.data, relationship.data]);
 
   const sortedRows = useMemo(() => {
@@ -138,8 +151,13 @@ export function DetailedAnalysis() {
       }
 
       const ratingData = row.ratings[sortColumn];
+      const totalForColumn = columnTotals[sortColumn] ?? 0;
 
-      return ratingData?.percentage ?? 0;
+      if (!ratingData || totalForColumn === 0) {
+        return 0;
+      }
+
+      return ratingData.count / totalForColumn;
     };
 
     return [...rows].sort((a, b) => {
@@ -163,7 +181,7 @@ export function DetailedAnalysis() {
 
       return 0;
     });
-  }, [rows, sortColumn, sortDirection]);
+  }, [columnTotals, rows, sortColumn, sortDirection]);
 
   const handleSort = (column: SortColumn) => {
     if (column === sortColumn) {
@@ -343,19 +361,46 @@ export function DetailedAnalysis() {
                         </TableCell>
                         {ratingColumns.map((column) => {
                           const rating = row.ratings[column];
+                          const columnTotal = columnTotals[column] ?? 0;
+                          const questionTotal = rating?.questionTotal ?? 0;
+                          const isActiveColumn = sortColumn === column;
+                          const percentageBase = isActiveColumn
+                            ? columnTotal > 0
+                              ? (rating?.count ?? 0) / columnTotal
+                              : 0
+                            : questionTotal > 0
+                              ? (rating?.count ?? 0) / questionTotal
+                              : 0;
+                          const percentageValue = percentageBase * 100;
+                          const percentageText = `${percentageValue.toFixed(1)}%`;
+                          const percentageContext = isActiveColumn
+                            ? `do total de respostas "${column}"`
+                            : "das respostas desta questão";
+                          const badgeContextLabel = isActiveColumn ? "da coluna" : "da questão";
+                          const responseCount = rating?.count ?? 0;
 
                           return (
                             <TableCell
                               key={column}
-                              aria-label={`${column}: ${rating?.count ?? 0} respostas (${(rating?.percentage ?? 0).toFixed(1)}%)`}
+                              aria-label={`${column}: ${responseCount} respostas (${percentageText} ${percentageContext})`}
                               className="text-center align-middle"
                             >
-                              <div className="mx-auto flex w-max min-w-[96px] flex-col items-center justify-center gap-1 rounded-xl bg-background/80 px-3 py-3 text-sm font-semibold text-foreground shadow-[0_1px_2px_rgba(15,23,42,0.08)]">
-                                <span>{rating?.count ?? 0}</span>
-                                <span className="text-xs font-medium text-muted-foreground">
-                                  {(rating?.percentage ?? 0).toFixed(1)}%
-                                </span>
-                              </div>
+                              <Tooltip>
+                                <TooltipTrigger asChild>
+                                  <div className="mx-auto flex w-max min-w-[96px] flex-col items-center justify-center gap-1 rounded-xl bg-background/80 px-3 py-3 text-sm font-semibold text-foreground shadow-[0_1px_2px_rgba(15,23,42,0.08)]">
+                                    <span>{responseCount}</span>
+                                    <span className="flex flex-col items-center text-xs font-medium text-muted-foreground">
+                                      {percentageText}
+                                      <span className="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground/70">
+                                        {badgeContextLabel}
+                                      </span>
+                                    </span>
+                                  </div>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                  {`${responseCount} respostas (${percentageText} ${percentageContext})`}
+                                </TooltipContent>
+                              </Tooltip>
                             </TableCell>
                           );
                         })}

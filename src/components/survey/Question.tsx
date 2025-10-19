@@ -33,8 +33,8 @@ export function Question({ question, name, value, onChange, options, required = 
         </div>
       ) : (
         required && (
-          <div className="-mx-4 -mt-3 mb-3 px-4 py-2 rounded-t-xl bg-primary/5 text-primary flex items-center gap-2 uppercase tracking-wide text-[11px] sm:text-xs font-semibold border-b border-primary/10">
-            <span className="text-primary/70 text-base leading-none" aria-hidden="true">
+          <div className="-mx-4 -mt-3 mb-3 px-4 py-2 rounded-t-xl bg-red-100 text-red-700 flex items-center gap-2 uppercase tracking-wide text-[11px] sm:text-xs font-semibold border-b border-red-200">
+            <span className="text-red-500 text-base leading-none" aria-hidden="true">
               !
             </span>
             <span>Pergunta obrigatória</span>

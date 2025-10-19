@@ -6,7 +6,7 @@ import {
   Building2,
   CalendarClock,
   Dumbbell,
-  PartyPopper,
+  Sofa,
   ShowerHead,
   UtensilsCrossed,
 } from "lucide-react";
@@ -323,7 +323,7 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
         />
       </ThematicGroup>
 
-      <ThematicGroup title="Salão de recreio" icon={PartyPopper}>
+      <ThematicGroup title="Salão de recreio" icon={Sofa}>
         <SelectQuestion
           question="Para análise das condições dos salões de recreio, informar a localização do salão:"
           name="recreio_localizacao"

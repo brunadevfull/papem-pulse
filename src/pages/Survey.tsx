@@ -322,23 +322,33 @@ export default function Survey() {
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-blue-400/10 to-transparent"></div>
           
           {/* Conteúdo do Header */}
-          <div className="relative flex items-center justify-between">
-            <div className="flex-1">
+          <div className="relative flex flex-col md:flex-row items-center md:items-center gap-6 md:gap-10">
+            <div className="flex-1 text-center md:text-left">
               <h1 className="text-2xl md:text-3xl font-bold mb-2">
                 Pesquisa de Clima Organizacional 2025
               </h1>
-              <p className="text-blue-100 text-xs md:text-sm flex items-center gap-2">
+              <p className="text-blue-100 text-xs md:text-sm flex items-center justify-center md:justify-start gap-2">
                 <Shield className="w-4 h-4" />
-                Pesquisa 100% Anônima e Confidencial · {totalSections} seções ·              </p>
+                Pesquisa 100% Anônima e Confidencial · {totalSections} seções ·
+              </p>
             </div>
-            
-            {/* Mascote */}
-            <div className="text-6xl md:text-8xl drop-shadow-2xl">
-              <img 
-    src="/uploads/pg.png" 
-    alt="Ícone Pong"
-    className="w-24 h-24 md:w-32 md:h-32 drop-shadow-2xl object-contain"
-  />
+
+            {/* Mascote e badge de anonimato */}
+            <div className="relative flex flex-col items-center md:items-end gap-3">
+              <span className="px-3 py-1 text-[10px] md:text-xs font-semibold uppercase tracking-[0.2em] bg-white/10 text-blue-50 rounded-full shadow-md backdrop-blur">
+                Mascote da Pesquisa Anônima
+              </span>
+              <div className="relative">
+                <div className="hidden md:flex items-center gap-2 absolute -left-6 top-1/2 -translate-y-1/2 bg-white/10 border border-white/20 text-white px-3 py-2 rounded-2xl shadow-lg backdrop-blur">
+                  <span className="font-semibold text-[10px] uppercase tracking-wide">Pong avisa:</span>
+                  <span className="text-xs text-blue-100">sua opinião chega de forma sigilosa</span>
+                </div>
+                <img
+                  src="/uploads/pg.png"
+                  alt="Mascote Pong lembrando sobre o sigilo da pesquisa"
+                  className="w-24 h-24 md:w-32 md:h-32 drop-shadow-2xl object-contain"
+                />
+              </div>
             </div>
           </div>
         </div>

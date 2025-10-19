@@ -1,9 +1,19 @@
 import type { ReactNode } from "react";
 
-import { Badge } from "@/components/ui/badge";
+import type { LucideIcon } from "lucide-react";
+import {
+  Bed,
+  Building2,
+  CalendarClock,
+  Dumbbell,
+  PartyPopper,
+  ShowerHead,
+  UtensilsCrossed,
+} from "lucide-react";
 
 import { Question } from "./Question";
 import { SelectQuestion } from "./SelectQuestion";
+import { SessionCard } from "./SessionCard";
 
 interface SurveySection1Props {
   data: any;
@@ -71,24 +81,14 @@ const escalaOptions = [
 interface ThematicGroupProps {
   title: string;
   children: ReactNode;
-  hasDivider?: boolean;
+  icon?: LucideIcon;
 }
 
-function ThematicGroup({ title, children, hasDivider = true }: ThematicGroupProps) {
+function ThematicGroup({ title, children, icon }: ThematicGroupProps) {
   return (
-    <div
-      className={`space-y-3 ${
-        hasDivider ? "mt-6 border-t border-destructive/20 pt-4" : ""
-      }`}
-    >
-      <Badge
-        variant="destructive"
-        className="uppercase tracking-wide text-xs font-semibold w-fit"
-      >
-        {title}
-      </Badge>
-      <div className="space-y-2">{children}</div>
-    </div>
+    <SessionCard title={title} icon={icon} contentClassName="space-y-2">
+      {children}
+    </SessionCard>
   );
 }
 
@@ -100,7 +100,7 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
 
   return (
     <div className="space-y-6">
-      <ThematicGroup title="Setor de trabalho" hasDivider={false}>
+      <ThematicGroup title="Setor de trabalho" icon={Building2}>
         <SelectQuestion
           question="Para análise das condições do setor de trabalho, informar a localização do setor:"
           name="setor_localizacao"
@@ -167,7 +167,7 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
         />
       </ThematicGroup>
 
-      <ThematicGroup title="Alojamento">
+      <ThematicGroup title="Alojamento" icon={Bed}>
         <SelectQuestion
           question="Para análise das condições dos alojamentos, informar a localização do alojamento:"
           name="alojamento_localizacao"
@@ -234,7 +234,7 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
         />
       </ThematicGroup>
 
-      <ThematicGroup title="Banheiro">
+      <ThematicGroup title="Banheiro" icon={ShowerHead}>
         <SelectQuestion
           question="Para análise das condições dos banheiros, informar a localização do banheiro:"
           name="banheiro_localizacao"
@@ -323,7 +323,7 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
         />
       </ThematicGroup>
 
-      <ThematicGroup title="Salão de recreio">
+      <ThematicGroup title="Salão de recreio" icon={PartyPopper}>
         <SelectQuestion
           question="Para análise das condições dos salões de recreio, informar a localização do salão:"
           name="recreio_localizacao"
@@ -390,7 +390,7 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
         />
       </ThematicGroup>
 
-      <ThematicGroup title="Rancho">
+      <ThematicGroup title="Rancho" icon={UtensilsCrossed}>
         <SelectQuestion
           question="Para análise das condições do rancho, informar a localização do rancho:"
           name="rancho_localizacao"
@@ -457,7 +457,7 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
         />
       </ThematicGroup>
 
-      <ThematicGroup title="Escala de serviço">
+      <ThematicGroup title="Escala de serviço" icon={CalendarClock}>
         <SelectQuestion
           question="Para análise das condições da escala de serviço, informar sua escala:"
           name="escala_servico_tipo"
@@ -491,7 +491,10 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
         />
       </ThematicGroup>
 
-      <ThematicGroup title="Treinamento Físico Militar (TFM)">
+      <ThematicGroup
+        title="Treinamento Físico Militar (TFM)"
+        icon={Dumbbell}
+      >
         <Question
           questionNumber={36}
           question="Participo com regularidade do Treinamento Físico Militar."

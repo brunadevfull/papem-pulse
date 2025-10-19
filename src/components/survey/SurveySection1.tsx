@@ -78,11 +78,11 @@ function ThematicGroup({ title, children, hasDivider = true }: ThematicGroupProp
   return (
     <div
       className={`space-y-3 ${
-        hasDivider ? "mt-6 border-t border-destructive/20 pt-4" : ""
+        hasDivider ? "mt-6 border-t border-border pt-4" : ""
       }`}
     >
       <Badge
-        variant="destructive"
+        variant="secondary"
         className="uppercase tracking-wide text-xs font-semibold w-fit"
       >
         {title}

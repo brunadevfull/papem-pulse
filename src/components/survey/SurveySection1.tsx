@@ -1,9 +1,8 @@
-import type { ReactNode } from "react";
-
-import { Badge } from "@/components/ui/badge";
+import { Building2, BedDouble, ShowerHead, Trees, UtensilsCrossed, CalendarClock, Dumbbell } from "lucide-react";
 
 import { Question } from "./Question";
 import { SelectQuestion } from "./SelectQuestion";
+import { SessionCard } from "./SessionCard";
 
 interface SurveySection1Props {
   data: any;
@@ -68,30 +67,6 @@ const escalaOptions = [
   { value: "Não se aplica", label: "Não se aplica" }
 ];
 
-interface ThematicGroupProps {
-  title: string;
-  children: ReactNode;
-  hasDivider?: boolean;
-}
-
-function ThematicGroup({ title, children, hasDivider = true }: ThematicGroupProps) {
-  return (
-    <div
-      className={`space-y-3 ${
-        hasDivider ? "mt-6 border-t border-destructive/20 pt-4" : ""
-      }`}
-    >
-      <Badge
-        variant="destructive"
-        className="uppercase tracking-wide text-xs font-semibold w-fit"
-      >
-        {title}
-      </Badge>
-      <div className="space-y-2">{children}</div>
-    </div>
-  );
-}
-
 export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Props) {
   const handleChange = (field: string) => (value: string) => {
     const updatedData = { ...data, [field]: value };
@@ -100,7 +75,7 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
 
   return (
     <div className="space-y-6">
-      <ThematicGroup title="Setor de trabalho" hasDivider={false}>
+      <SessionCard title="Setor de trabalho" icon={Building2}>
         <SelectQuestion
           question="Para análise das condições do setor de trabalho, informar a localização do setor:"
           name="setor_localizacao"
@@ -165,11 +140,11 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
           required={false}
           hasError={errors.includes("setor_iluminacao")}
         />
-      </ThematicGroup>
+      </SessionCard>
 
-      <ThematicGroup title="Alojamento">
+      <SessionCard title="Alojamento" icon={BedDouble}>
         <SelectQuestion
-          question="Para análise das condições dos alojamentos, informar a localização do alojamento:"
+          question="Para análise das condições de alojamento, informar a localização do alojamento:"
           name="alojamento_localizacao"
           value={data.alojamento_localizacao || ""}
           onChange={handleChange("alojamento_localizacao")}
@@ -213,7 +188,7 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
 
         <Question
           questionNumber={9}
-          question="Os armários estão em boas condições de pintura e preservação."
+          question="As condições de conservação dos armários do alojamento são adequadas."
           name="alojamento_armarios_condicao"
           value={data.alojamento_armarios_condicao || ""}
           onChange={handleChange("alojamento_armarios_condicao")}
@@ -224,7 +199,7 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
 
         <Question
           questionNumber={10}
-          question="Tenho realizado a limpeza e arrumação do meu armário de modo a preservá-lo."
+          question="O armário do alojamento está preservado e íntegro."
           name="alojamento_armario_preservado"
           value={data.alojamento_armario_preservado || ""}
           onChange={handleChange("alojamento_armario_preservado")}
@@ -232,11 +207,11 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
           required={false}
           hasError={errors.includes("alojamento_armario_preservado")}
         />
-      </ThematicGroup>
+      </SessionCard>
 
-      <ThematicGroup title="Banheiro">
+      <SessionCard title="Banheiros" icon={ShowerHead}>
         <SelectQuestion
-          question="Para análise das condições dos banheiros, informar a localização do banheiro:"
+          question="Para análise das condições dos banheiros, informar qual banheiro:"
           name="banheiro_localizacao"
           value={data.banheiro_localizacao || ""}
           onChange={handleChange("banheiro_localizacao")}
@@ -247,7 +222,7 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
 
         <Question
           questionNumber={11}
-          question="Os vasos são suficientes para o contingente de usuários."
+          question="Os vasos sanitários são em quantidade suficiente."
           name="banheiro_vasos_suficientes"
           value={data.banheiro_vasos_suficientes || ""}
           onChange={handleChange("banheiro_vasos_suficientes")}
@@ -258,7 +233,7 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
 
         <Question
           questionNumber={12}
-          question="Os vasos estão em boas condições de limpeza e preservação."
+          question="Os vasos sanitários estão preservados e limpos."
           name="banheiro_vasos_preservados"
           value={data.banheiro_vasos_preservados || ""}
           onChange={handleChange("banheiro_vasos_preservados")}
@@ -280,7 +255,7 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
 
         <Question
           questionNumber={14}
-          question="Os chuveiros são suficientes para o contingente de usuários."
+          question="Os chuveiros são em quantidade suficiente."
           name="banheiro_chuveiros_suficientes"
           value={data.banheiro_chuveiros_suficientes || ""}
           onChange={handleChange("banheiro_chuveiros_suficientes")}
@@ -321,22 +296,22 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
           required={false}
           hasError={errors.includes("banheiro_iluminacao")}
         />
-      </ThematicGroup>
+      </SessionCard>
 
-      <ThematicGroup title="Salão de recreio">
+      <SessionCard title="Área de recreio" icon={Trees}>
         <SelectQuestion
-          question="Para análise das condições dos salões de recreio, informar a localização do salão:"
+          question="Para análise das condições da área de recreio, informar a localização:"
           name="recreio_localizacao"
           value={data.recreio_localizacao || ""}
           onChange={handleChange("recreio_localizacao")}
           options={recreioOptions}
-          placeholder="Selecione um salão"
+          placeholder="Selecione uma área de recreio"
           hasError={errors.includes("recreio_localizacao")}
         />
 
         <Question
           questionNumber={18}
-          question="A quantidade de mobiliário do salão de recreio é adequada para o contingente de usuários."
+          question="Os mobiliários da área de recreio são em quantidade suficiente."
           name="recreio_mobiliario_quantidade"
           value={data.recreio_mobiliario_quantidade || ""}
           onChange={handleChange("recreio_mobiliario_quantidade")}
@@ -347,7 +322,7 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
 
         <Question
           questionNumber={19}
-          question="O mobiliário do salão de recreio está em boas condições."
+          question="Os mobiliários da área de recreio estão em boas condições."
           name="recreio_mobiliario_condicao"
           value={data.recreio_mobiliario_condicao || ""}
           onChange={handleChange("recreio_mobiliario_condicao")}
@@ -358,7 +333,7 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
 
         <Question
           questionNumber={20}
-          question="A limpeza do salão de recreio é adequada."
+          question="A limpeza da área de recreio é adequada."
           name="recreio_limpeza"
           value={data.recreio_limpeza || ""}
           onChange={handleChange("recreio_limpeza")}
@@ -369,7 +344,7 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
 
         <Question
           questionNumber={21}
-          question="A temperatura do salão de recreio é adequada."
+          question="A temperatura da área de recreio é adequada."
           name="recreio_temperatura"
           value={data.recreio_temperatura || ""}
           onChange={handleChange("recreio_temperatura")}
@@ -380,7 +355,7 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
 
         <Question
           questionNumber={22}
-          question="A iluminação do salão de recreio é adequada."
+          question="A iluminação da área de recreio é adequada."
           name="recreio_iluminacao"
           value={data.recreio_iluminacao || ""}
           onChange={handleChange("recreio_iluminacao")}
@@ -388,11 +363,11 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
           required={false}
           hasError={errors.includes("recreio_iluminacao")}
         />
-      </ThematicGroup>
+      </SessionCard>
 
-      <ThematicGroup title="Rancho">
+      <SessionCard title="Rancho" icon={UtensilsCrossed}>
         <SelectQuestion
-          question="Para análise das condições do rancho, informar a localização do rancho:"
+          question="Para análise das condições do rancho, informar a localização:"
           name="rancho_localizacao"
           value={data.rancho_localizacao || ""}
           onChange={handleChange("rancho_localizacao")}
@@ -403,7 +378,7 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
 
         <Question
           questionNumber={23}
-          question="Estou satisfeito com a qualidade da comida servida no rancho."
+          question="A qualidade da alimentação servida no rancho é satisfatória."
           name="rancho_qualidade_comida"
           value={data.rancho_qualidade_comida || ""}
           onChange={handleChange("rancho_qualidade_comida")}
@@ -414,7 +389,7 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
 
         <Question
           questionNumber={24}
-          question="O mobiliário do rancho está em boas condições de preservação e limpeza."
+          question="Os mobiliários do rancho estão em boas condições."
           name="rancho_mobiliario_condicao"
           value={data.rancho_mobiliario_condicao || ""}
           onChange={handleChange("rancho_mobiliario_condicao")}
@@ -455,22 +430,22 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
           required={false}
           hasError={errors.includes("rancho_iluminacao")}
         />
-      </ThematicGroup>
+      </SessionCard>
 
-      <ThematicGroup title="Escala de serviço">
+      <SessionCard title="Escala de serviço" icon={CalendarClock}>
         <SelectQuestion
-          question="Para análise das condições da escala de serviço, informar sua escala:"
+          question="Para análise das condições da escala de serviço, informar o tipo de escala:"
           name="escala_servico_tipo"
           value={data.escala_servico_tipo || ""}
           onChange={handleChange("escala_servico_tipo")}
           options={escalaOptions}
-          placeholder="Selecione uma escala"
+          placeholder="Selecione um tipo de escala"
           hasError={errors.includes("escala_servico_tipo")}
         />
 
         <Question
           questionNumber={28}
-          question="Quando estou de serviço, percebo que os equipamentos utilizados estão em boas condições."
+          question="Os equipamentos utilizados na escala de serviço estão em boas condições."
           name="escala_equipamentos_condicao"
           value={data.escala_equipamentos_condicao || ""}
           onChange={handleChange("escala_equipamentos_condicao")}
@@ -481,7 +456,7 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
 
         <Question
           questionNumber={29}
-          question="Quando estou de serviço, as instalações de pernoite são adequadas."
+          question="A escala de pernoite é adequada."
           name="escala_pernoite_adequada"
           value={data.escala_pernoite_adequada || ""}
           onChange={handleChange("escala_pernoite_adequada")}
@@ -489,12 +464,12 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
           required={false}
           hasError={errors.includes("escala_pernoite_adequada")}
         />
-      </ThematicGroup>
+      </SessionCard>
 
-      <ThematicGroup title="Treinamento Físico Militar (TFM)">
+      <SessionCard title="TFM" icon={Dumbbell}>
         <Question
-          questionNumber={36}
-          question="Participo com regularidade do Treinamento Físico Militar."
+          questionNumber={30}
+          question="Participo regularmente das atividades de TFM."
           name="tfm_participa_regularmente"
           value={data.tfm_participa_regularmente || ""}
           onChange={handleChange("tfm_participa_regularmente")}
@@ -504,8 +479,8 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
         />
 
         <Question
-          questionNumber={37}
-          question="É incentivada a prática de Treinamento Físico Militar."
+          questionNumber={31}
+          question="Sou incentivado a praticar atividades físicas regularmente."
           name="tfm_incentivo_pratica"
           value={data.tfm_incentivo_pratica || ""}
           onChange={handleChange("tfm_incentivo_pratica")}
@@ -515,8 +490,8 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
         />
 
         <Question
-          questionNumber={38}
-          question="Considero as instalações para a prática de Treinamento Físico Militar adequadas."
+          questionNumber={32}
+          question="As instalações disponíveis para a prática de atividades físicas são adequadas."
           name="tfm_instalacoes_adequadas"
           value={data.tfm_instalacoes_adequadas || ""}
           onChange={handleChange("tfm_instalacoes_adequadas")}
@@ -524,7 +499,7 @@ export function SurveySection1({ data, onUpdate, errors = [] }: SurveySection1Pr
           required={false}
           hasError={errors.includes("tfm_instalacoes_adequadas")}
         />
-      </ThematicGroup>
+      </SessionCard>
     </div>
   );
 }

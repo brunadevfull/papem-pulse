@@ -104,7 +104,7 @@ export function RelationshipCharts() {
         </div>
       )}
 
-      <div className="grid gap-6 xl:grid-cols-3 md:grid-cols-2">
+      <div className="grid gap-6 xl:grid-cols-2 md:grid-cols-2">
         {relationshipQuestions.map((question) => {
           const stats = questionsById.get(question.id as string);
           const totalResponses = stats?.totalResponses ?? 0;

@@ -101,16 +101,20 @@ export function SelectQuestion({
         <div className="flex flex-nowrap justify-between gap-2 pl-10">
           {options.map((option, index) => {
             const isSelected = value === option.value;
+            const handleSelection = () => {
+              const nextValue = isSelected ? "" : option.value;
+              onChange(nextValue);
+            };
 
             return (
               <button
                 key={option.value}
                 type="button"
-                onClick={() => onChange(option.value)}
+                onClick={handleSelection}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
-                    onChange(option.value);
+                    handleSelection();
                   }
                 }}
                 tabIndex={0}

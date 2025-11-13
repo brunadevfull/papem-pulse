@@ -218,7 +218,7 @@ export function DetailedAnalysis() {
     [columnTotals, sortColumn]
   );
 
-  const handleExportExcel = useCallback(() => {
+  const handleExportCsv = useCallback(() => {
     if (sortedRows.length === 0) {
       return;
     }
@@ -238,7 +238,7 @@ export function DetailedAnalysis() {
     const worksheet = utils.aoa_to_sheet([header, ...dataRows]);
     const workbook = utils.book_new();
     utils.book_append_sheet(workbook, worksheet, "Análise detalhada");
-    writeFile(workbook, "analise-detalhada.xlsx");
+    writeFile(workbook, "analise-detalhada.csv");
   }, [getRatingMetrics, sortedRows]);
 
   return (
@@ -270,12 +270,12 @@ export function DetailedAnalysis() {
                   <Button
                     type="button"
                     variant="outline"
-                    onClick={handleExportExcel}
-                    aria-label="Exportar análise detalhada em Excel"
+                    onClick={handleExportCsv}
+                    aria-label="Exportar análise detalhada em CSV"
                     disabled={sortedRows.length === 0}
                   >
                     <FileSpreadsheet className="mr-2 h-4 w-4" aria-hidden />
-                    Exportar Excel
+                    Exportar CSV
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent>Baixar planilha com a análise detalhada</TooltipContent>

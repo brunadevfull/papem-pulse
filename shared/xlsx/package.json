@@ -1,0 +1,10 @@
+{
+  "name": "xlsx",
+  "version": "0.18.5",
+  "type": "module",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js"
+  },
+  "types": "index.d.ts"
+}

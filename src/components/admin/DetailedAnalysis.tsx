@@ -1,7 +1,7 @@
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { AlertCircle, ChevronDown, Loader2 } from "lucide-react";
+import { AlertCircle, ChevronDown, FileSpreadsheet, Loader2 } from "lucide-react";
 import { useSectionStats } from "@/hooks/useSectionStats";
 import {
   Table,
@@ -13,12 +13,14 @@ import {
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Button } from "@/components/ui/button";
 import {
   alojamentoOptions,
   escalaOptions,
   ranchoOptions,
   sectorOptions,
 } from "./filterOptions";
+import { utils, writeFile } from "xlsx";
 
 const sectionsMeta = [
   {
@@ -193,6 +195,52 @@ export function DetailedAnalysis() {
     setSortDirection(column === "section" ? "asc" : "desc");
   };
 
+  const getRatingMetrics = useCallback(
+    (row: TableRowData, column: RatingColumn) => {
+      const rating = row.ratings[column];
+      const columnTotal = columnTotals[column] ?? 0;
+      const questionTotal = rating?.questionTotal ?? 0;
+      const isActiveColumn = sortColumn === column;
+      const comparisonBase = isActiveColumn ? columnTotal : questionTotal;
+      const responseCount = rating?.count ?? 0;
+      const percentageBase = comparisonBase > 0 ? responseCount / comparisonBase : 0;
+      const percentageText = `${(percentageBase * 100).toFixed(1)}%`;
+
+      return {
+        responseCount,
+        percentageText,
+        percentageContext: isActiveColumn
+          ? `do total de respostas "${column}"`
+          : "das respostas desta questão",
+        badgeContextLabel: isActiveColumn ? "da coluna" : "da questão",
+      };
+    },
+    [columnTotals, sortColumn]
+  );
+
+  const handleExportExcel = useCallback(() => {
+    if (sortedRows.length === 0) {
+      return;
+    }
+
+    const header = ["Seção / Questão", ...ratingColumns];
+
+    const dataRows = sortedRows.map((row) => {
+      const sectionQuestion = `${row.section}\n${row.question}`;
+      const ratings = ratingColumns.map((column) => {
+        const { responseCount, percentageText } = getRatingMetrics(row, column);
+        return `${responseCount} • ${percentageText}`;
+      });
+
+      return [sectionQuestion, ...ratings];
+    });
+
+    const worksheet = utils.aoa_to_sheet([header, ...dataRows]);
+    const workbook = utils.book_new();
+    utils.book_append_sheet(workbook, worksheet, "Análise detalhada");
+    writeFile(workbook, "analise-detalhada.xlsx");
+  }, [getRatingMetrics, sortedRows]);
+
   return (
     <div className="space-y-6">
       {loading && (
@@ -209,10 +257,31 @@ export function DetailedAnalysis() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Distribuição das respostas por questão</CardTitle>
-          <CardDescription>
-            Quantidade de respostas e porcentagem por alternativa nas seções Ambiente de Trabalho, Relacionamento e Motivação.
-          </CardDescription>
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+            <div className="space-y-1">
+              <CardTitle>Distribuição das respostas por questão</CardTitle>
+              <CardDescription>
+                Quantidade de respostas e porcentagem por alternativa nas seções Ambiente de Trabalho, Relacionamento e Motivação.
+              </CardDescription>
+            </div>
+            <TooltipProvider delayDuration={150}>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={handleExportExcel}
+                    aria-label="Exportar análise detalhada em Excel"
+                    disabled={sortedRows.length === 0}
+                  >
+                    <FileSpreadsheet className="mr-2 h-4 w-4" aria-hidden />
+                    Exportar Excel
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Baixar planilha com a análise detalhada</TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
         </CardHeader>
         <CardContent>
           <div className="grid gap-4 pb-6 md:grid-cols-2 lg:grid-cols-4">
@@ -360,25 +429,8 @@ export function DetailedAnalysis() {
                           <div className="text-sm font-medium text-foreground">{row.question}</div>
                         </TableCell>
                         {ratingColumns.map((column) => {
-                          const rating = row.ratings[column];
-                          const columnTotal = columnTotals[column] ?? 0;
-                          const questionTotal = rating?.questionTotal ?? 0;
-                          const isActiveColumn = sortColumn === column;
-                          const percentageBase = isActiveColumn
-                            ? columnTotal > 0
-                              ? (rating?.count ?? 0) / columnTotal
-                              : 0
-                            : questionTotal > 0
-                              ? (rating?.count ?? 0) / questionTotal
-                              : 0;
-                          const percentageValue = percentageBase * 100;
-                          const percentageText = `${percentageValue.toFixed(1)}%`;
-                          const percentageContext = isActiveColumn
-                            ? `do total de respostas "${column}"`
-                            : "das respostas desta questão";
-                          const badgeContextLabel = isActiveColumn ? "da coluna" : "da questão";
-                          const responseCount = rating?.count ?? 0;
-
+                          const { responseCount, percentageText, percentageContext, badgeContextLabel } =
+                            getRatingMetrics(row, column);
                           return (
                             <TableCell
                               key={column}

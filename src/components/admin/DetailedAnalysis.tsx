@@ -243,20 +243,36 @@ export function DetailedAnalysis() {
       orientation: "landscape",
       unit: "mm",
       format: "a4",
+      putOnlyUsedFonts: true,
     });
 
-    // Título
-    doc.setFontSize(16);
-    doc.text("Análise Detalhada - Distribuição das Respostas", 14, 15);
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
 
-    // Filtros ativos
-    doc.setFontSize(10);
-    doc.text(`Filtros: ${getActiveFiltersText()}`, 14, 22);
+    // Título principal
+    doc.setFontSize(18);
+    doc.setFont("helvetica", "bold");
+    doc.text("Analise Detalhada - Distribuicao das Respostas", pageWidth / 2, 15, { align: "center" });
 
-    // Preparar dados para a tabela
+    // Subtítulo com filtros ativos
+    doc.setFontSize(9);
+    doc.setFont("helvetica", "normal");
+    const filtersText = getActiveFiltersText()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, ""); // Remove acentos
+    doc.text(`Filtros aplicados: ${filtersText}`, 14, 22);
+
+    // Linha separadora
+    doc.setDrawColor(15, 23, 42);
+    doc.setLineWidth(0.5);
+    doc.line(14, 24, pageWidth - 14, 24);
+
+    // Preparar dados para a tabela - remover acentos de todos os textos
     const tableData = sortedRows.map((row) => {
+      const removeAccents = (str: string) => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
       return [
-        `${row.section}\n${row.question}`,
+        `${removeAccents(row.section)}\n${removeAccents(row.question)}`,
         `${row.ratings["Concordo totalmente"]?.count ?? 0}\n${(row.ratings["Concordo totalmente"]?.percentage ?? 0).toFixed(1)}%`,
         `${row.ratings["Concordo"]?.count ?? 0}\n${(row.ratings["Concordo"]?.percentage ?? 0).toFixed(1)}%`,
         `${row.ratings["Discordo"]?.count ?? 0}\n${(row.ratings["Discordo"]?.percentage ?? 0).toFixed(1)}%`,
@@ -264,38 +280,70 @@ export function DetailedAnalysis() {
       ];
     });
 
-    // Gerar tabela
+    // Gerar tabela com configurações otimizadas
     autoTable(doc, {
       head: [
         [
-          "Seção / Questão",
-          "✅ Concordo totalmente",
-          "✅ Concordo",
-          "⚠️ Discordo",
-          "❌ Discordo totalmente",
+          "Secao / Questao",
+          "Concordo Totalmente",
+          "Concordo",
+          "Discordo",
+          "Discordo Totalmente",
         ],
       ],
       body: tableData,
       startY: 28,
       styles: {
         fontSize: 8,
-        cellPadding: 3,
+        cellPadding: 3.5,
+        lineColor: [220, 220, 220],
+        lineWidth: 0.1,
+        font: "helvetica",
       },
       headStyles: {
         fillColor: [15, 23, 42],
         textColor: [255, 255, 255],
         fontSize: 9,
         fontStyle: "bold",
+        halign: "center",
+        valign: "middle",
       },
       columnStyles: {
-        0: { cellWidth: 80 },
-        1: { cellWidth: 35, halign: "center" },
-        2: { cellWidth: 35, halign: "center" },
-        3: { cellWidth: 35, halign: "center" },
-        4: { cellWidth: 35, halign: "center" },
+        0: { cellWidth: 100, halign: "left", valign: "top" },
+        1: { cellWidth: 35, halign: "center", valign: "middle" },
+        2: { cellWidth: 35, halign: "center", valign: "middle" },
+        3: { cellWidth: 35, halign: "center", valign: "middle" },
+        4: { cellWidth: 35, halign: "center", valign: "middle" },
       },
       alternateRowStyles: {
-        fillColor: [245, 249, 255],
+        fillColor: [248, 250, 252],
+      },
+      margin: { top: 28, left: 14, right: 14 },
+      didDrawPage: (data) => {
+        // Rodapé com data de geração
+        doc.setFontSize(8);
+        doc.setFont("helvetica", "normal");
+        doc.setTextColor(100);
+        const now = new Date();
+        const dateStr = now.toLocaleDateString("pt-BR");
+        const timeStr = now.toLocaleTimeString("pt-BR");
+        doc.text(
+          `Gerado em: ${dateStr} as ${timeStr}`,
+          pageWidth / 2,
+          pageHeight - 10,
+          { align: "center" }
+        );
+
+        // Número da página
+        const pageCount = (doc as any).internal.pages.length - 1;
+        if (pageCount > 1) {
+          doc.text(
+            `Pagina ${data.pageNumber} de ${pageCount}`,
+            pageWidth - 14,
+            pageHeight - 10,
+            { align: "right" }
+          );
+        }
       },
     });
 

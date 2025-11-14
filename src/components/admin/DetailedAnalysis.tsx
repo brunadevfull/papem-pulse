@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { AlertCircle, ChevronDown, Loader2 } from "lucide-react";
+import { AlertCircle, ChevronDown, Loader2, FileSpreadsheet, FileText } from "lucide-react";
 import { useSectionStats } from "@/hooks/useSectionStats";
 import {
   Table,
@@ -11,6 +11,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import {
@@ -19,6 +20,9 @@ import {
   ranchoOptions,
   sectorOptions,
 } from "./filterOptions";
+import * as XLSX from "xlsx";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 
 const sectionsMeta = [
   {
@@ -166,6 +170,143 @@ export function DetailedAnalysis() {
     setSortDirection(column === "section" ? "asc" : "desc");
   };
 
+  const getActiveFiltersText = () => {
+    const activeFilters = [];
+    if (selectedSector !== "all") {
+      const sectorLabel = sectorOptions.find(s => s.value === selectedSector)?.label;
+      activeFilters.push(`Setor: ${sectorLabel}`);
+    }
+    if (alojamentoFilter !== "all") {
+      const alojamentoLabel = alojamentoOptions.find(a => a.value === alojamentoFilter)?.label;
+      activeFilters.push(`Alojamento: ${alojamentoLabel}`);
+    }
+    if (ranchoFilter !== "all") {
+      const ranchoLabel = ranchoOptions.find(r => r.value === ranchoFilter)?.label;
+      activeFilters.push(`Rancho: ${ranchoLabel}`);
+    }
+    if (escalaFilter !== "all") {
+      const escalaLabel = escalaOptions.find(e => e.value === escalaFilter)?.label;
+      activeFilters.push(`Escala: ${escalaLabel}`);
+    }
+    return activeFilters.length > 0 ? activeFilters.join(" | ") : "Todos os dados";
+  };
+
+  const exportToExcel = () => {
+    // Preparar dados para exportação
+    const exportData = sortedRows.map((row) => {
+      const rowData: any = {
+        "Seção": row.section,
+        "Questão": row.question,
+      };
+
+      ratingColumns.forEach((column) => {
+        const rating = row.ratings[column];
+        rowData[`${column} (Qtd)`] = rating?.count ?? 0;
+        rowData[`${column} (%)`] = (rating?.percentage ?? 0).toFixed(1) + "%";
+      });
+
+      return rowData;
+    });
+
+    // Criar workbook e worksheet
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.json_to_sheet(exportData);
+
+    // Ajustar largura das colunas
+    const colWidths = [
+      { wch: 20 }, // Seção
+      { wch: 50 }, // Questão
+      { wch: 15 }, // Concordo totalmente (Qtd)
+      { wch: 15 }, // Concordo totalmente (%)
+      { wch: 15 }, // Concordo (Qtd)
+      { wch: 15 }, // Concordo (%)
+      { wch: 15 }, // Discordo (Qtd)
+      { wch: 15 }, // Discordo (%)
+      { wch: 15 }, // Discordo totalmente (Qtd)
+      { wch: 15 }, // Discordo totalmente (%)
+    ];
+    ws["!cols"] = colWidths;
+
+    // Adicionar worksheet ao workbook
+    XLSX.utils.book_append_sheet(wb, ws, "Análise Detalhada");
+
+    // Gerar nome do arquivo com filtros ativos
+    const timestamp = new Date().toISOString().split("T")[0];
+    const fileName = `analise-detalhada-${timestamp}.xlsx`;
+
+    // Fazer download
+    XLSX.writeFile(wb, fileName);
+  };
+
+  const exportToPDF = () => {
+    const doc = new jsPDF({
+      orientation: "landscape",
+      unit: "mm",
+      format: "a4",
+    });
+
+    // Título
+    doc.setFontSize(16);
+    doc.text("Análise Detalhada - Distribuição das Respostas", 14, 15);
+
+    // Filtros ativos
+    doc.setFontSize(10);
+    doc.text(`Filtros: ${getActiveFiltersText()}`, 14, 22);
+
+    // Preparar dados para a tabela
+    const tableData = sortedRows.map((row) => {
+      return [
+        `${row.section}\n${row.question}`,
+        `${row.ratings["Concordo totalmente"]?.count ?? 0}\n${(row.ratings["Concordo totalmente"]?.percentage ?? 0).toFixed(1)}%`,
+        `${row.ratings["Concordo"]?.count ?? 0}\n${(row.ratings["Concordo"]?.percentage ?? 0).toFixed(1)}%`,
+        `${row.ratings["Discordo"]?.count ?? 0}\n${(row.ratings["Discordo"]?.percentage ?? 0).toFixed(1)}%`,
+        `${row.ratings["Discordo totalmente"]?.count ?? 0}\n${(row.ratings["Discordo totalmente"]?.percentage ?? 0).toFixed(1)}%`,
+      ];
+    });
+
+    // Gerar tabela
+    autoTable(doc, {
+      head: [
+        [
+          "Seção / Questão",
+          "✅ Concordo totalmente",
+          "✅ Concordo",
+          "⚠️ Discordo",
+          "❌ Discordo totalmente",
+        ],
+      ],
+      body: tableData,
+      startY: 28,
+      styles: {
+        fontSize: 8,
+        cellPadding: 3,
+      },
+      headStyles: {
+        fillColor: [15, 23, 42],
+        textColor: [255, 255, 255],
+        fontSize: 9,
+        fontStyle: "bold",
+      },
+      columnStyles: {
+        0: { cellWidth: 80 },
+        1: { cellWidth: 35, halign: "center" },
+        2: { cellWidth: 35, halign: "center" },
+        3: { cellWidth: 35, halign: "center" },
+        4: { cellWidth: 35, halign: "center" },
+      },
+      alternateRowStyles: {
+        fillColor: [245, 249, 255],
+      },
+    });
+
+    // Gerar nome do arquivo
+    const timestamp = new Date().toISOString().split("T")[0];
+    const fileName = `analise-detalhada-${timestamp}.pdf`;
+
+    // Fazer download
+    doc.save(fileName);
+  };
+
   return (
     <div className="space-y-6">
       {loading && (
@@ -182,10 +323,36 @@ export function DetailedAnalysis() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Distribuição das respostas por questão</CardTitle>
-          <CardDescription>
-            Quantidade de respostas e porcentagem por alternativa nas seções Ambiente de Trabalho, Relacionamento e Motivação.
-          </CardDescription>
+          <div className="flex items-start justify-between">
+            <div className="flex-1">
+              <CardTitle>Distribuição das respostas por questão</CardTitle>
+              <CardDescription>
+                Quantidade de respostas e porcentagem por alternativa nas seções Ambiente de Trabalho, Relacionamento e Motivação.
+              </CardDescription>
+            </div>
+            <div className="flex gap-2">
+              <Button
+                onClick={exportToExcel}
+                disabled={sortedRows.length === 0 || loading}
+                variant="outline"
+                size="sm"
+                className="gap-2"
+              >
+                <FileSpreadsheet className="h-4 w-4" />
+                Exportar Excel
+              </Button>
+              <Button
+                onClick={exportToPDF}
+                disabled={sortedRows.length === 0 || loading}
+                variant="outline"
+                size="sm"
+                className="gap-2"
+              >
+                <FileText className="h-4 w-4" />
+                Exportar PDF
+              </Button>
+            </div>
+          </div>
         </CardHeader>
         <CardContent>
           <div className="grid gap-4 pb-6 md:grid-cols-2 lg:grid-cols-4">

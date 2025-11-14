@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { AlertCircle, ChevronDown, FileSpreadsheet, Loader2 } from "lucide-react";
+import { AlertCircle, ChevronDown, FileSpreadsheet, FileText, Loader2 } from "lucide-react";
 import { useSectionStats } from "@/hooks/useSectionStats";
 import {
   Table,
@@ -238,8 +238,42 @@ export function DetailedAnalysis() {
     const worksheet = utils.aoa_to_sheet([header, ...dataRows]);
     const workbook = utils.book_new();
     utils.book_append_sheet(workbook, worksheet, "Análise detalhada");
-    writeFile(workbook, "analise-detalhada.csv");
+    writeFile(workbook, "analise-detalhada.xlsx");
   }, [getRatingMetrics, sortedRows]);
+
+  const handleExportPdf = useCallback(async () => {
+    if (sortedRows.length === 0) {
+      return;
+    }
+
+    try {
+      const queryParams = new URLSearchParams();
+      if (selectedSector !== "all") queryParams.append("setor", selectedSector);
+      if (alojamentoFilter !== "all") queryParams.append("alojamento", alojamentoFilter);
+      if (ranchoFilter !== "all") queryParams.append("rancho", ranchoFilter);
+      if (escalaFilter !== "all") queryParams.append("escala", escalaFilter);
+
+      const url = `/api/export/detailed-analysis-pdf?${queryParams.toString()}`;
+      const response = await fetch(url);
+
+      if (!response.ok) {
+        throw new Error("Erro ao gerar PDF");
+      }
+
+      const blob = await response.blob();
+      const downloadUrl = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = downloadUrl;
+      link.download = `analise-detalhada-${new Date().toISOString().split("T")[0]}.html`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(downloadUrl);
+    } catch (error) {
+      console.error("Erro ao exportar PDF:", error);
+      alert("Erro ao exportar PDF. Por favor, tente novamente.");
+    }
+  }, [sortedRows, selectedSector, alojamentoFilter, ranchoFilter, escalaFilter]);
 
   return (
     <div className="space-y-6">
@@ -264,23 +298,42 @@ export function DetailedAnalysis() {
                 Quantidade de respostas e porcentagem por alternativa nas seções Ambiente de Trabalho, Relacionamento e Motivação.
               </CardDescription>
             </div>
-            <TooltipProvider delayDuration={150}>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={handleExportCsv}
-                    aria-label="Exportar análise detalhada em CSV"
-                    disabled={sortedRows.length === 0}
-                  >
-                    <FileSpreadsheet className="mr-2 h-4 w-4" aria-hidden />
-                    Exportar CSV
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>Baixar planilha com a análise detalhada</TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+            <div className="flex gap-2">
+              <TooltipProvider delayDuration={150}>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={handleExportCsv}
+                      aria-label="Exportar análise detalhada em Excel"
+                      disabled={sortedRows.length === 0}
+                    >
+                      <FileSpreadsheet className="mr-2 h-4 w-4" aria-hidden />
+                      Exportar Excel
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>Baixar planilha Excel com a análise detalhada</TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+              <TooltipProvider delayDuration={150}>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={handleExportPdf}
+                      aria-label="Exportar análise detalhada em PDF"
+                      disabled={sortedRows.length === 0}
+                    >
+                      <FileText className="mr-2 h-4 w-4" aria-hidden />
+                      Exportar PDF
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>Baixar relatório PDF com a análise detalhada</TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
           </div>
         </CardHeader>
         <CardContent>

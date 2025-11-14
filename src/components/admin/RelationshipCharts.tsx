@@ -104,7 +104,7 @@ export function RelationshipCharts() {
         </div>
       )}
 
-      <div className="grid gap-6 xl:grid-cols-3 md:grid-cols-2">
+      <div className="grid gap-6 xl:grid-cols-2 md:grid-cols-2">
         {relationshipQuestions.map((question) => {
           const stats = questionsById.get(question.id as string);
           const totalResponses = stats?.totalResponses ?? 0;
@@ -201,7 +201,16 @@ export function RelationshipCharts() {
                 <ResponsiveContainer width="100%" height={200}>
                   <BarChart data={chartData}>
                     <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.2} />
-                    <XAxis dataKey="category" tick={{ fontSize: 12 }} />
+                    <XAxis
+                      dataKey="category"
+                      tick={{ fontSize: 12 }}
+                      interval={0}
+                      tickLine={false}
+                      tickMargin={12}
+                      height={60}
+                      angle={-15}
+                      textAnchor="end"
+                    />
                     <YAxis tickFormatter={(value) => `${value}%`} width={40} />
                     <Tooltip
                       formatter={(value: number, _name, props) => [

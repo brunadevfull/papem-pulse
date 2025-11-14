@@ -27,10 +27,32 @@ export function SelectQuestion({
   return (
     <div
       id={`question-${name}`}
-      className={`question-card-enhanced px-4 py-3 mb-2 fade-in ${
-        hasError ? 'question-card-error border-destructive/40' : ''
+      className={`question-card-enhanced px-4 py-3 mb-2 fade-in border ${
+        hasError
+          ? 'question-card-error border-destructive/40'
+          : required
+            ? 'border-primary/40 ring-1 ring-primary/10'
+            : 'border-slate-200/70'
       }`}
     >
+      {hasError ? (
+        <div className="-mx-4 -mt-3 mb-3 px-4 py-2 rounded-t-xl bg-destructive text-white flex items-center gap-2 uppercase tracking-wide text-[11px] sm:text-xs font-semibold">
+          <span className="text-white/80 text-base leading-none" aria-hidden="true">
+            !
+          </span>
+          <span>Obrigatório</span>
+        </div>
+      ) : (
+        required && (
+          <div className="-mx-4 -mt-3 mb-3 px-4 py-2 rounded-t-xl bg-red-100 text-red-700 flex items-center gap-2 uppercase tracking-wide text-[11px] sm:text-xs font-semibold border-b border-red-200">
+            <span className="text-red-500 text-base leading-none" aria-hidden="true">
+              !
+            </span>
+            <span>Pergunta obrigatória</span>
+          </div>
+        )
+      )}
+
       {hasError && (
         <div className="mb-3 p-3 bg-destructive/10 border border-destructive/20 rounded-lg">
           <p className="text-destructive text-sm font-medium flex items-center gap-2">
@@ -57,19 +79,19 @@ export function SelectQuestion({
           <div className="flex-1">
             <Label
               className={`text-xs sm:text-sm font-semibold leading-relaxed block ${
-                hasError ? 'text-destructive' : 'text-slate-800'
+                hasError
+                  ? 'text-destructive'
+                  : required
+                    ? 'text-slate-900'
+                    : 'text-slate-800'
               }`}
             >
               {question}
-              {required && (
-                <span className="text-destructive ml-1">*</span>
-              )}
             </Label>
 
             {!value && (
               <p className="text-xs sm:text-sm text-muted-foreground mt-2 italic">
                 {placeholder}
-                {required ? ' *' : ''}
               </p>
             )}
           </div>
@@ -79,16 +101,20 @@ export function SelectQuestion({
         <div className="flex flex-nowrap justify-between gap-2 pl-10">
           {options.map((option, index) => {
             const isSelected = value === option.value;
+            const handleSelection = () => {
+              const nextValue = isSelected ? "" : option.value;
+              onChange(nextValue);
+            };
 
             return (
               <button
                 key={option.value}
                 type="button"
-                onClick={() => onChange(option.value)}
+                onClick={handleSelection}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
-                    onChange(option.value);
+                    handleSelection();
                   }
                 }}
                 tabIndex={0}

@@ -15,11 +15,9 @@ export function SuccessMessage({ onRestart }: SuccessMessageProps) {
 
         <CardHeader className="text-center relative z-10 py-8">
           <div className="flex items-center justify-center gap-3 mb-6">
-            <div className="w-20 h-20 bg-gradient-glass rounded-full flex items-center justify-center backdrop-blur-sm shadow-neon animate-float border border-white/20">
-              <CheckCircle2 className="w-10 h-10 animate-pulse-slow text-success" />
-            </div>
-            <div className="w-16 h-16 bg-white/10 rounded-3xl flex items-center justify-center backdrop-blur-sm animate-float">
-              <img src={brasaoPapem} alt="Brasão da PAPEM" className="w-8 h-8 object-contain" />
+        
+            <div className="w-20 h-20 rounded-3xl flex items-center justify-center ">
+              <img src="/uploads/brasao-marinha.png" alt="Brasão da PAPEM" className="w-18 h-18 object-contain" />
             </div>
           </div>
 

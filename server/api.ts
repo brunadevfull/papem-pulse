@@ -513,16 +513,84 @@ app.get('/api/export/pdf', async (req, res) => {
     });
 
     const fileName = `Relatorio_Clima_Organizacional_PAPEM_${new Date().toISOString().split('T')[0]}.html`;
-    
+
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
     res.setHeader('Content-Disposition', `attachment; filename="${fileName}"`);
     res.send(htmlContent);
-    
+
   } catch (error) {
     console.error('Erro ao gerar relatório:', error);
     res.status(500).json({
       success: false,
       message: 'Erro ao gerar relatório'
+    });
+  }
+});
+
+// GET: Export detailed analysis as downloadable PDF-ready HTML file
+app.get('/api/export/detailed-analysis-pdf', async (req, res) => {
+  try {
+    const filters = extractFilters(req.query as Record<string, unknown>);
+
+    // Fetch data for all sections
+    const environmentStats = await getSectionStats('environment', filters);
+    const relationshipStats = await getSectionStats('relationship', filters);
+    const motivationStats = await getSectionStats('motivation', filters);
+
+    const allSections = [
+      { key: 'environment', title: 'Ambiente de Trabalho', stats: environmentStats },
+      { key: 'relationship', title: 'Relacionamento', stats: relationshipStats },
+      { key: 'motivation', title: 'Motivação', stats: motivationStats },
+    ];
+
+    const ratingColumns = ['Concordo totalmente', 'Concordo', 'Discordo', 'Discordo totalmente'];
+
+    // Build table rows
+    const tableRows = allSections.flatMap(section =>
+      section.stats.questions
+        .filter(q => q.type === 'likert')
+        .map(question => ({
+          section: section.title,
+          question: question.label,
+          ratings: ratingColumns.map(rating => {
+            const match = question.ratings.find(r => r.rating === rating);
+            const count = match?.count ?? 0;
+            const percentage = question.totalResponses > 0
+              ? ((count / question.totalResponses) * 100).toFixed(1)
+              : '0.0';
+            return { rating, count, percentage };
+          })
+        }))
+    );
+
+    // Generate HTML
+    const htmlContent = generateDetailedAnalysisPdfTemplate({
+      tableRows,
+      ratingColumns,
+      filters,
+      generatedAt: new Date().toLocaleString('pt-BR', {
+        timeZone: 'America/Sao_Paulo',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        weekday: 'long'
+      }),
+      totalResponses: environmentStats.totalResponses
+    });
+
+    const fileName = `Analise_Detalhada_${new Date().toISOString().split('T')[0]}.html`;
+
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.setHeader('Content-Disposition', `attachment; filename="${fileName}"`);
+    res.send(htmlContent);
+
+  } catch (error) {
+    console.error('Erro ao gerar análise detalhada:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Erro ao gerar análise detalhada'
     });
   }
 });
@@ -932,6 +1000,203 @@ function getFriendlyFieldName(field) {
   };
 
   return fieldNames[field] || field;
+}
+
+function generateDetailedAnalysisPdfTemplate({ tableRows, ratingColumns, filters, generatedAt, totalResponses }) {
+  const ratingIcons = {
+    'Concordo totalmente': '✅',
+    'Concordo': '✅',
+    'Discordo': '⚠️',
+    'Discordo totalmente': '❌'
+  };
+
+  const filterDescription = [];
+  if (filters.setor) filterDescription.push(`Setor: ${filters.setor}`);
+  if (filters.alojamento) filterDescription.push(`Alojamento: ${filters.alojamento}`);
+  if (filters.rancho) filterDescription.push(`Rancho: ${filters.rancho}`);
+  if (filters.escala) filterDescription.push(`Escala: ${filters.escala}`);
+  const filterText = filterDescription.length > 0
+    ? `<p><strong>Filtros aplicados:</strong> ${filterDescription.join(', ')}</p>`
+    : '<p><em>Nenhum filtro aplicado - dados de todos os respondentes</em></p>';
+
+  return `
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análise Detalhada - PAPEM</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            margin: 2cm;
+            color: #333;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #1e3c72;
+            padding-bottom: 20px;
+        }
+        .header h1 {
+            color: #1e3c72;
+            font-size: 26px;
+            margin: 0;
+            font-weight: bold;
+        }
+        .header p {
+            color: #666;
+            font-size: 14px;
+            margin: 10px 0;
+        }
+        .section {
+            margin: 20px 0;
+        }
+        .filters {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #1e3c72;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 12px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #0f172a;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        th.section-col {
+            text-align: left;
+            min-width: 250px;
+        }
+        td.section-cell {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+        td.question-cell {
+            padding-left: 20px;
+        }
+        td.rating-cell {
+            text-align: center;
+            font-size: 11px;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            color: #666;
+            font-size: 11px;
+            border-top: 1px solid #ddd;
+            padding-top: 15px;
+        }
+        .metric {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            border-left: 4px solid #1e3c72;
+            margin-bottom: 20px;
+        }
+        .metric-value {
+            font-size: 28px;
+            font-weight: bold;
+            color: #1e3c72;
+            margin-bottom: 5px;
+        }
+        .metric-label {
+            font-size: 13px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        @media print {
+            body { margin: 1cm; }
+            table { page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>ANÁLISE DETALHADA POR QUESTÃO</h1>
+        <p><strong>PAPEM - Distribuição das Respostas</strong></p>
+        <p>Gerado em: ${generatedAt}</p>
+    </div>
+
+    <div class="filters">
+        ${filterText}
+        <p><strong>Total de respondentes:</strong> ${totalResponses}</p>
+    </div>
+
+    <div class="section">
+        <table>
+            <thead>
+                <tr>
+                    <th class="section-col">Seção / Questão</th>
+                    ${ratingColumns.map(col => `<th>${ratingIcons[col]} ${col}</th>`).join('')}
+                </tr>
+            </thead>
+            <tbody>
+                ${tableRows.map(row => `
+                    <tr>
+                        <td class="question-cell">
+                            <div style="font-size: 10px; color: #666; text-transform: uppercase; font-weight: 600; margin-bottom: 4px;">
+                                ${row.section}
+                            </div>
+                            <div style="font-size: 12px; font-weight: 500;">
+                                ${row.question}
+                            </div>
+                        </td>
+                        ${row.ratings.map(rating => `
+                            <td class="rating-cell">
+                                <div style="font-weight: bold;">${rating.count}</div>
+                                <div style="color: #666; font-size: 10px;">${rating.percentage}%</div>
+                            </td>
+                        `).join('')}
+                    </tr>
+                `).join('')}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2 style="color: #1e3c72; font-size: 18px; border-bottom: 2px solid #ddd; padding-bottom: 5px;">
+            📋 Notas sobre a Análise
+        </h2>
+        <ul style="font-size: 13px; line-height: 1.8;">
+            <li>Esta análise apresenta a distribuição detalhada das respostas para cada questão das seções:
+                <strong>Ambiente de Trabalho</strong>, <strong>Relacionamento</strong> e <strong>Motivação</strong>.</li>
+            <li>Os valores mostram a <strong>quantidade absoluta</strong> de respostas e a <strong>porcentagem</strong>
+                em relação ao total de respostas da questão.</li>
+            <li>As questões são do tipo Likert, com 4 opções de resposta variando de concordância total a discordância total.</li>
+            <li>Os filtros aplicados (se houver) afetam todos os dados apresentados nesta análise.</li>
+        </ul>
+    </div>
+
+    <div class="footer">
+        <p><strong>Relatório gerado automaticamente pelo Sistema de Pesquisa PAPEM</strong></p>
+        <p>Este documento HTML pode ser aberto em qualquer navegador e convertido para PDF</p>
+        <p>Data de geração: ${generatedAt}</p>
+    </div>
+</body>
+</html>
+  `;
 }
 
 async function updateStats() {
